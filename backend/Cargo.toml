@@ -18,7 +18,7 @@ path = "src/bin/bloggen.rs"
 [dependencies]
 axum = "0.7"
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "fs"] }
-tower-http = { version = "0.5", features = ["fs", "cors", "trace"] }
+tower-http = { version = "0.5", features = ["fs", "cors", "trace", "set-header"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 serde = { version = "1", features = ["derive"] }

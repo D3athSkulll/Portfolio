@@ -6,6 +6,7 @@ use std::sync::Arc;
 
 use axum::extract::{Path as AxPath, State};
 use axum::http::StatusCode;
+use axum::http::{header, HeaderValue};
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
@@ -14,7 +15,10 @@ use portfolio_backend::{blog_assets_dir, content_root, gen_dir};
 use serde::Deserialize;
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
+use tower_http::set_header::SetResponseHeaderLayer;
 use tower_http::trace::TraceLayer;
+
+const IMMUTABLE: HeaderValue = HeaderValue::from_static("public, max-age=31536000, immutable");
 
 #[derive(Clone)]
 struct AppState {
@@ -55,15 +59,20 @@ async fn main() {
         .route("/api/blog", get(blog_index))
         .route("/api/blog/:slug", get(blog_post))
         .route("/api/contact", post(contact))
-        .nest_service("/blog-assets", ServeDir::new(blog_assets_dir(&root)))
         .with_state(state)
         .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http());
+
+    // Content-hashed assets — cache for a year. Kept on its own sub-router so the
+    // immutable header never leaks onto the API or index.html.
+    let mut assets =
+        Router::new().nest_service("/blog-assets", ServeDir::new(blog_assets_dir(&root)));
 
     // Serve the built SPA if it exists (production single-binary mode).
     let dist = root.join("frontend").join("dist");
     if dist.is_dir() {
         let index = dist.join("index.html");
+        assets = assets.nest_service("/assets", ServeDir::new(dist.join("assets")));
         // Try a real static file first; otherwise hand the SPA its index (200, so
         // client-side routes like /projects resolve on hard refresh).
         let spa = ServeDir::new(&dist).fallback(axum::routing::get(move || {
@@ -82,6 +91,11 @@ async fn main() {
         app = app.fallback_service(spa);
         tracing::info!("serving SPA from {}", dist.display());
     }
+
+    let app = app.merge(assets.layer(SetResponseHeaderLayer::overriding(
+        header::CACHE_CONTROL,
+        IMMUTABLE,
+    )));
 
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
