@@ -10,6 +10,12 @@ node_modules/
 /frontend/public/blog-assets/
 *.gen.json
 
+# Playwright
+/frontend/test-results/
+/frontend/playwright-report/
+/frontend/blob-report/
+/frontend/.playwright/
+
 # Env / editor
 .env
 .env.local

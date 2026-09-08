@@ -53,3 +53,26 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install deps
+        run: |
+          npm ci
+          (cd frontend && npm ci)
+      - name: generate blog + build SPA
+        run: |
+          cargo run --bin bloggen --manifest-path backend/Cargo.toml -- --dev
+          (cd frontend && npm run build)
+        env:
+          CONTENT_ROOT: ${{ github.workspace }}
+      - run: cd frontend && npx playwright install --with-deps chromium
+      - run: cd frontend && npm run e2e
+        env:
+          CI: "1"
