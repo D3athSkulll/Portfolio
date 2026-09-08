@@ -2,13 +2,15 @@
 
 A personal portfolio with **two skins over one dataset**:
 
-- **Retro / arcade** (default, light-ish) — an arcade-cabinet treatment drawn from the
-  *Abhishar v15* cover: flame-gradient wordmark, poster-wall background, CRT scanlines,
-  health-bar section labels, Game Boy cartridge nav, `HI-SCORE` / `PUSH START` HUD.
-- **Docs** (dark) — a calm Rust-Book / terminal-OS look: letter-spaced lime headings,
-  bordered panels with floating labels, terminal-window chrome, a bottom status bar.
+- **ARCADE** (default) — an arcade-cabinet treatment: Street-Fighter-style *Brutal Pro*
+  wordmark ("D3athSkulll"), a retro-tech collage background (CRTs, VHS, cartridges,
+  joysticks…), CRT scanlines, health-bar section labels, cartridge nav, `HI-SCORE` /
+  `PUSH START` HUD.
+- **VIM** (dark) — a calm terminal-OS / editor look: letter-spaced lime headings,
+  bordered nav endpoints, panels with floating labels, terminal-window chrome, a
+  bottom status bar.
 
-One visible toggle flips between them; both render the **same content**.
+A switch in the top bar flips between them; both render the **same content**.
 
 | | |
 |---|---|
