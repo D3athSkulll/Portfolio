@@ -340,6 +340,20 @@ export function BlogPost() {
           </span>
         ))}
       </div>
+      {data.toc.length > 1 && (
+        <nav className="post-toc">
+          <span className="section-label" style={{ display: "inline-block" }}>
+            ON THIS PAGE
+          </span>
+          <ul>
+            {data.toc.map((t) => (
+              <li key={t.id} style={{ marginLeft: (t.level - 2) * 14 }}>
+                <a href={`#${t.id}`}>{t.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       <hr />
       <div className="prose" dangerouslySetInnerHTML={{ __html: data.html }} />
       <p style={{ marginTop: 16 }}>

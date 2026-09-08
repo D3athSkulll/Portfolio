@@ -198,47 +198,59 @@ fn markdown_to_html(md: &str) -> (String, Vec<TocItem>) {
     opts.insert(Options::ENABLE_STRIKETHROUGH);
     opts.insert(Options::ENABLE_FOOTNOTES);
 
-    let mut toc = Vec::new();
-    let mut heading_buf: Option<(u8, String)> = None;
+    let level_num = |level: HeadingLevel| match level {
+        HeadingLevel::H1 => 1u8,
+        HeadingLevel::H2 => 2,
+        HeadingLevel::H3 => 3,
+        HeadingLevel::H4 => 4,
+        HeadingLevel::H5 => 5,
+        HeadingLevel::H6 => 6,
+    };
 
-    let parser = Parser::new_ext(md, opts).map(|event| match event {
-        Event::Start(Tag::Heading { level, .. }) => {
-            let lvl = match level {
-                HeadingLevel::H1 => 1,
-                HeadingLevel::H2 => 2,
-                HeadingLevel::H3 => 3,
-                HeadingLevel::H4 => 4,
-                HeadingLevel::H5 => 5,
-                HeadingLevel::H6 => 6,
-            };
-            heading_buf = Some((lvl, String::new()));
-            event
-        }
-        Event::Text(ref t) => {
-            if let Some((_, ref mut s)) = heading_buf {
-                s.push_str(t);
+    let mut toc = Vec::new();
+    // Two-pass so headings can be rewritten with a stable id anchor.
+    let mut in_heading: Option<(u8, String, Vec<Event>)> = None;
+    let mut out: Vec<Event> = Vec::new();
+
+    for event in Parser::new_ext(md, opts) {
+        match event {
+            Event::Start(Tag::Heading { level, .. }) => {
+                in_heading = Some((level_num(level), String::new(), Vec::new()));
             }
-            event.clone()
-        }
-        Event::End(TagEnd::Heading(_)) => {
-            if let Some((level, text)) = heading_buf.take() {
-                toc.push(TocItem {
-                    level,
-                    id: slugify(&text),
-                    text,
-                });
+            Event::End(TagEnd::Heading(_)) => {
+                if let Some((lvl, text, inner)) = in_heading.take() {
+                    let id = slugify(&text);
+                    out.push(Event::Html(format!("<h{lvl} id=\"{id}\">").into()));
+                    out.extend(inner);
+                    out.push(Event::Html(format!("</h{lvl}>").into()));
+                    toc.push(TocItem {
+                        level: lvl,
+                        id,
+                        text,
+                    });
+                }
             }
-            event
+            Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) => {
+                out.push(Event::Html(
+                    format!("<pre><code class=\"language-{}\">", lang.trim()).into(),
+                ));
+            }
+            Event::End(TagEnd::CodeBlock) => out.push(Event::Html("</code></pre>".into())),
+            other => {
+                if let Some((_, ref mut text, ref mut inner)) = in_heading {
+                    if let Event::Text(ref t) | Event::Code(ref t) = other {
+                        text.push_str(t);
+                    }
+                    inner.push(other);
+                } else {
+                    out.push(other);
+                }
+            }
         }
-        Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) => {
-            Event::Html(format!("<pre><code class=\"language-{}\">", lang.trim()).into())
-        }
-        Event::End(TagEnd::CodeBlock) => Event::Html("</code></pre>".into()),
-        other => other,
-    });
+    }
 
     let mut html = String::new();
-    pulldown_cmark::html::push_html(&mut html, parser);
+    pulldown_cmark::html::push_html(&mut html, out.into_iter());
     (html, toc)
 }
 
@@ -255,7 +267,8 @@ mod tests {
         assert_eq!(fm.slug, "t");
         assert_eq!(fm.tags, vec!["a", "b"]);
         let (html, toc) = markdown_to_html(&body);
-        assert!(html.contains("<h2"));
+        assert!(html.contains("<h2 id=\"hi\">Hi</h2>"), "got: {html}");
         assert_eq!(toc[0].id, "hi");
+        assert_eq!(toc[0].text, "Hi");
     }
 }
