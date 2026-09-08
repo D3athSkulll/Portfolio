@@ -61,6 +61,13 @@ export default function Layout({ children }: { children: ReactNode }) {
   const prev = routes[(idx - 1 + routes.length) % routes.length];
   const next = routes[(idx + 1) % routes.length];
 
+  // Per-route <title>. BlogPost overrides this with its own effect afterwards.
+  useEffect(() => {
+    const name = data?.profile.name ?? "Portfolio";
+    const section = idx >= 0 && idx !== 0 ? routes[idx].label : null;
+    document.title = section ? `${section} · ${name}` : name;
+  }, [data?.profile.name, idx, loc.pathname]);
+
   return (
     <div style={{ maxWidth: 1180, margin: "0 auto", padding: "14px" }}>
       {/* era tab row = arcade STAGE SELECT (decorative, non-breaking) */}

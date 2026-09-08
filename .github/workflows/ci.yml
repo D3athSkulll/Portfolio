@@ -76,3 +76,22 @@ jobs:
       - run: cd frontend && npm run e2e
         env:
           CI: "1"
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: browser-actions/setup-chrome@v1
+      - run: npm ci
+      - name: build the production bundle
+        run: |
+          (cd frontend && npm ci && npm run build)
+          cargo run --bin bloggen --manifest-path backend/Cargo.toml -- --dev
+          cargo build --release --manifest-path backend/Cargo.toml
+        env:
+          CONTENT_ROOT: ${{ github.workspace }}
+      - run: npm run lighthouse   # asserts Perf & A11y >= 0.9 on / and /blog

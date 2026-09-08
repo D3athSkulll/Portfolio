@@ -15,9 +15,11 @@
     "blog:rm-image": "node scripts/blog.mjs rm-image",
     "blog:rm": "node scripts/blog.mjs rm",
     "blog:check": "node scripts/blog.mjs check",
-    "check": "node scripts/validate-profile.mjs && node scripts/blog.mjs check"
+    "check": "node scripts/validate-profile.mjs && node scripts/blog.mjs check",
+    "lighthouse": "lhci autorun"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.14.0",
     "concurrently": "^9.1.0",
     "cross-env": "^7.0.3"
   }

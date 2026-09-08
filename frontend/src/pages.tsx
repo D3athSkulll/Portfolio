@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProfile, useBlogIndex, useBlogPost } from "./api";
 import type { Entry } from "./types";
@@ -327,6 +327,17 @@ export function BlogIndex() {
 export function BlogPost() {
   const { slug = "" } = useParams();
   const { data, isLoading, error } = useBlogPost(slug);
+  useEffect(() => {
+    if (!data) return;
+    document.title = `${data.title} · Blog`;
+    let m = document.querySelector('meta[name="description"]');
+    if (!m) {
+      m = document.createElement("meta");
+      m.setAttribute("name", "description");
+      document.head.appendChild(m);
+    }
+    m.setAttribute("content", data.summary);
+  }, [data]);
   if (isLoading) return <Loading />;
   if (error || !data) return <Broken msg={`no post: ${slug}`} />;
   return (

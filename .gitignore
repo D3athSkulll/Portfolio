@@ -10,6 +10,9 @@ node_modules/
 /frontend/public/blog-assets/
 *.gen.json
 
+# Lighthouse CI
+/.lighthouseci/
+
 # Playwright
 /frontend/test-results/
 /frontend/playwright-report/

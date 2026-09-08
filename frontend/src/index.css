@@ -287,6 +287,33 @@ a { color: var(--link); }
 }
 [data-theme="retro"] .post-toc a { color: #ffd23f; }
 
+form label { display: block; font-family: var(--font-mono); font-size: 12px; }
+form input,
+form textarea {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--panel-fg);
+  background: #fff;
+  border: 2px solid var(--border);
+  padding: 7px 8px;
+}
+[data-theme="retro"] form input,
+[data-theme="retro"] form textarea {
+  background: #fffdf5;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+[data-theme="docs"] form input,
+[data-theme="docs"] form textarea {
+  background: #0b0f0a;
+  color: var(--panel-fg);
+  border-color: var(--border);
+}
+form input:focus,
+form textarea:focus {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 1px;
+}
+
 .theme-toggle {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -457,9 +484,9 @@ a { color: var(--link); }
 [data-theme="retro"] .chip { }
 [data-theme="retro"] .eof::before { content: "» "; }
 [data-theme="retro"] .eof {
-  color: var(--accent-2);
+  color: #7a4a00; /* readable amber-brown on the cream panel (AA) */
   text-transform: uppercase;
-  opacity: 0.9;
+  opacity: 1;
 }
 
 /* readable body text stays dark-on-cream inside the panel */
