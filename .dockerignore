@@ -1,0 +1,7 @@
+**/target
+**/node_modules
+**/dist
+.gen
+frontend/public/blog-assets
+.git
+*.md

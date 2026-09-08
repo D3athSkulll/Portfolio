@@ -9,11 +9,11 @@ use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use serde::Deserialize;
 use portfolio_backend::model::Profile;
 use portfolio_backend::{blog_assets_dir, content_root, gen_dir};
+use serde::Deserialize;
 use tower_http::cors::CorsLayer;
-use tower_http::services::{ServeDir, ServeFile};
+use tower_http::services::ServeDir;
 use tower_http::trace::TraceLayer;
 
 #[derive(Clone)]
@@ -41,10 +41,16 @@ async fn main() {
 
     let state = Arc::new(AppState { root: root.clone() });
 
-    let port: u16 = std::env::var("PORT").ok().and_then(|p| p.parse().ok()).unwrap_or(8080);
+    let port: u16 = std::env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(8080);
 
     let mut app = Router::new()
-        .route("/api/health", get(|| async { Json(serde_json::json!({ "status": "ok" })) }))
+        .route(
+            "/api/health",
+            get(|| async { Json(serde_json::json!({ "status": "ok" })) }),
+        )
         .route("/api/profile", get(profile))
         .route("/api/blog", get(blog_index))
         .route("/api/blog/:slug", get(blog_post))
@@ -58,13 +64,28 @@ async fn main() {
     let dist = root.join("frontend").join("dist");
     if dist.is_dir() {
         let index = dist.join("index.html");
-        app = app.fallback_service(
-            ServeDir::new(&dist).not_found_service(ServeFile::new(index)),
-        );
+        // Try a real static file first; otherwise hand the SPA its index (200, so
+        // client-side routes like /projects resolve on hard refresh).
+        let spa = ServeDir::new(&dist).fallback(axum::routing::get(move || {
+            let index = index.clone();
+            async move {
+                match tokio::fs::read(&index).await {
+                    Ok(bytes) => (
+                        [(axum::http::header::CONTENT_TYPE, "text/html; charset=utf-8")],
+                        bytes,
+                    )
+                        .into_response(),
+                    Err(_) => (StatusCode::NOT_FOUND, "missing index.html").into_response(),
+                }
+            }
+        }));
+        app = app.fallback_service(spa);
         tracing::info!("serving SPA from {}", dist.display());
     }
 
-    let listener = tokio::net::TcpListener::bind(("0.0.0.0", port)).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
+        .await
+        .unwrap();
     tracing::info!("listening on http://localhost:{port}");
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
@@ -80,7 +101,11 @@ async fn shutdown_signal() {
 async fn profile(State(state): State<Arc<AppState>>) -> impl IntoResponse {
     match Profile::load(&state.root) {
         Ok(p) => Json(p).into_response(),
-        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, format!("profile.json: {e}")).into_response(),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            format!("profile.json: {e}"),
+        )
+            .into_response(),
     }
 }
 
@@ -97,8 +122,16 @@ async fn blog_post(
     }
     let rel = format!("blog/{slug}.json");
     match tokio::fs::read(gen_dir(&state.root).join(&rel)).await {
-        Ok(bytes) => ([(axum::http::header::CONTENT_TYPE, "application/json")], bytes).into_response(),
-        Err(_) => (StatusCode::NOT_FOUND, Json(serde_json::json!({ "error": "not found" }))).into_response(),
+        Ok(bytes) => (
+            [(axum::http::header::CONTENT_TYPE, "application/json")],
+            bytes,
+        )
+            .into_response(),
+        Err(_) => (
+            StatusCode::NOT_FOUND,
+            Json(serde_json::json!({ "error": "not found" })),
+        )
+            .into_response(),
     }
 }
 
@@ -133,7 +166,11 @@ async fn contact(Json(form): Json<ContactForm>) -> impl IntoResponse {
 
 async fn read_gen_json(root: PathBuf, name: &str) -> axum::response::Response {
     match tokio::fs::read(gen_dir(&root).join(name)).await {
-        Ok(bytes) => ([(axum::http::header::CONTENT_TYPE, "application/json")], bytes).into_response(),
+        Ok(bytes) => (
+            [(axum::http::header::CONTENT_TYPE, "application/json")],
+            bytes,
+        )
+            .into_response(),
         Err(_) => (
             StatusCode::SERVICE_UNAVAILABLE,
             Json(serde_json::json!({ "error": "blog not generated — run bloggen" })),

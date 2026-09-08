@@ -86,7 +86,9 @@ fn parse_front_matter(fm: &str) -> Result<FrontMatter> {
     let mut cover = None;
     let mut draft = false;
     for line in fm.lines() {
-        let Some((k, v)) = line.split_once(':') else { continue };
+        let Some((k, v)) = line.split_once(':') else {
+            continue;
+        };
         let v = v.trim().trim_matches(|c| c == '"' || c == '\'');
         match k.trim() {
             "title" => title = Some(v.to_string()),
@@ -120,8 +122,14 @@ fn parse_front_matter(fm: &str) -> Result<FrontMatter> {
 fn hashed_name(bytes: &[u8], name: &str) -> String {
     let mut h = DefaultHasher::new();
     bytes.hash(&mut h);
-    let stem = Path::new(name).file_stem().and_then(|s| s.to_str()).unwrap_or("img");
-    let ext = Path::new(name).extension().and_then(|s| s.to_str()).unwrap_or("bin");
+    let stem = Path::new(name)
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("img");
+    let ext = Path::new(name)
+        .extension()
+        .and_then(|s| s.to_str())
+        .unwrap_or("bin");
     format!("{}-{:08x}.{}", slugify(stem), (h.finish() as u32), ext)
 }
 
