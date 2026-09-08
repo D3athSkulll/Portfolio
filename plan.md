@@ -1,14 +1,17 @@
 # Implementation Plan — Commit-by-Commit
 
-> **Status (updated):** Phases 0–8 landed in 11 commits. Delivered: monorepo +
-> toolchains + CI, `profile.json` + validator, blog authoring CLI + first post,
-> Axum backend (`/api/profile`, static blog endpoints, `bloggen`, `/api/contact`,
-> immutable asset caching, SPA fallback), React frontend with all routes and the
-> dual **arcade/CRT retro** ↔ **docs** theme, `ts-rs` type generation, blog heading
-> anchors + on-this-page nav, multi-stage Dockerfile, and a Playwright smoke suite
-> (every route × both themes, blog image, 404, theme persistence). Not yet done:
-> CI Lighthouse budget assertion, and per-section altitude polish beyond the
-> data-driven baseline.
+> **Status (updated):** Phases 0–8 complete, 14 commits. Delivered: monorepo +
+> toolchains + CI (content / backend / frontend / e2e / lighthouse jobs),
+> `profile.json` + validator, blog authoring CLI + first post, Axum backend
+> (`/api/profile`, static blog endpoints, `bloggen`, `/api/contact`, immutable asset
+> caching, SPA fallback), React frontend with all routes and the dual
+> **arcade/CRT retro** ↔ **docs** theme, `ts-rs` type generation, blog heading
+> anchors + on-this-page nav, per-route `<title>` + meta description, styled contact
+> form, multi-stage Dockerfile, a Playwright smoke suite (every route × both themes,
+> blog image, 404, theme persistence), and a Lighthouse-CI budget (Perf & A11y ≥ 0.9
+> on `/` and `/blog`; local run measured Perf 1.0 / A11y 0.95 / BP 1.0 / SEO 0.91).
+> Optional follow-ups: deeper per-section visual polish, real SMTP wiring for
+> `/api/contact`.
 
 Stack (per `prompt.md`): **Rust + Axum + Tokio** backend, **React + TypeScript + Vite + Tailwind** frontend, `profile.json` at repo root as the single data source, blog authored as folders under `content/blog/` and **rendered fully statically** (build-time generation, no runtime DB).
 
