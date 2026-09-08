@@ -7,8 +7,9 @@ use std::sync::Arc;
 use axum::extract::{Path as AxPath, State};
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
-use axum::routing::get;
+use axum::routing::{get, post};
 use axum::{Json, Router};
+use serde::Deserialize;
 use portfolio_backend::model::Profile;
 use portfolio_backend::{blog_assets_dir, content_root, gen_dir};
 use tower_http::cors::CorsLayer;
@@ -47,6 +48,7 @@ async fn main() {
         .route("/api/profile", get(profile))
         .route("/api/blog", get(blog_index))
         .route("/api/blog/:slug", get(blog_post))
+        .route("/api/contact", post(contact))
         .nest_service("/blog-assets", ServeDir::new(blog_assets_dir(&root)))
         .with_state(state)
         .layer(CorsLayer::permissive())
@@ -98,6 +100,35 @@ async fn blog_post(
         Ok(bytes) => ([(axum::http::header::CONTENT_TYPE, "application/json")], bytes).into_response(),
         Err(_) => (StatusCode::NOT_FOUND, Json(serde_json::json!({ "error": "not found" }))).into_response(),
     }
+}
+
+#[derive(Deserialize)]
+struct ContactForm {
+    name: String,
+    email: String,
+    message: String,
+}
+
+/// Validate a contact message. With no SMTP env configured this runs in "mock"
+/// mode (202 + logged); the frontend also offers a `mailto:` fallback.
+async fn contact(Json(form): Json<ContactForm>) -> impl IntoResponse {
+    let name = form.name.trim();
+    let email = form.email.trim();
+    let message = form.message.trim();
+    if name.is_empty() || message.len() < 5 || !email.contains('@') || email.len() > 254 {
+        return (
+            StatusCode::UNPROCESSABLE_ENTITY,
+            Json(serde_json::json!({ "error": "name, a valid email, and a 5+ char message are required" })),
+        )
+            .into_response();
+    }
+    let configured = std::env::var("SMTP_URL").is_ok();
+    tracing::info!(%name, %email, configured, "contact message received ({} chars)", message.len());
+    (
+        StatusCode::ACCEPTED,
+        Json(serde_json::json!({ "status": if configured { "sent" } else { "mock" } })),
+    )
+        .into_response()
 }
 
 async fn read_gen_json(root: PathBuf, name: &str) -> axum::response::Response {

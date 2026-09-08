@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProfile, useBlogIndex, useBlogPost } from "./api";
 import type { Entry } from "./types";
@@ -239,8 +240,58 @@ export function Contact() {
         <br />
         preferred contact: email or linkedin
       </div>
+      <Label>&gt; TRANSMIT_MESSAGE</Label>
+      <ContactForm mailto={data.profile.contact.find((c) => c.icon === "envelope")?.href} />
       <Eof />
     </>
+  );
+}
+
+function ContactForm({ mailto }: { mailto?: string }) {
+  const [f, setF] = useState({ name: "", email: "", message: "" });
+  const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setState("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(f),
+      });
+      setState(res.ok ? "ok" : "err");
+    } catch {
+      setState("err");
+    }
+  };
+  const field = { display: "block", width: "100%", marginTop: 4, marginBottom: 10, padding: 6, fontFamily: "var(--font-mono)" } as const;
+  return (
+    <form onSubmit={submit}>
+      <label>
+        &gt; NAME
+        <input style={field} required value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+      </label>
+      <label>
+        &gt; EMAIL
+        <input style={field} type="email" required value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
+      </label>
+      <label>
+        &gt; MESSAGE
+        <textarea style={{ ...field, minHeight: 90 }} required value={f.message} onChange={(e) => setF({ ...f, message: e.target.value })} />
+      </label>
+      <button className="cta next" style={{ padding: "8px 14px", border: "2px solid var(--border)" }} disabled={state === "sending"}>
+        {state === "sending" ? "TRANSMITTING..." : "TRANSMIT_DATA ▶"}
+      </button>
+      {state === "ok" && <p className="eof">» MESSAGE QUEUED. THANKS.</p>}
+      {state === "err" && (
+        <p className="eof">
+          » TRANSMISSION FAILED.{" "}
+          {mailto && (
+            <a href={`${mailto}?subject=hello&body=${encodeURIComponent(f.message)}`}>use email instead</a>
+          )}
+        </p>
+      )}
+    </form>
   );
 }
 
