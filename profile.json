@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "siteTitle": "SHIVAM DEOLANKAR",
+    "tagline": "This is not a portfolio. It's a system.",
+    "footerCredit": "Made with Vim",
+    "visitorCountSeed": 13376,
+    "y2kCountdownTarget": "2028-04-30"
+  },
+  "profile": {
+    "name": "Shivam Deolankar",
+    "role": "Systems Programmer",
+    "location": "Gwalior, India",
+    "summary": "A systems programmer with 3 years of experience working on low-level systems in C and Rust, focusing on performance and memory safety. An active open-source contributor, proficient in backend, OS internals, embedded systems, and debugging.",
+    "contact": [
+      { "label": "+91 8390566237", "href": "tel:+918390566237", "icon": "phone" },
+      { "label": "shivam.deolankar@gmail.com", "href": "mailto:shivam.deolankar@gmail.com", "icon": "envelope" },
+      { "label": "D3athSkulll", "href": "https://github.com/D3athSkulll", "icon": "github" },
+      { "label": "shivamdeolankar2211", "href": "https://linkedin.com/in/shivamdeolankar2211", "icon": "linkedin" },
+      { "label": "D3athSkulll", "href": "https://leetcode.com/u/D3athSkulll/", "icon": "code" }
+    ]
+  },
+  "education": [
+    {
+      "institution": "ABV - Indian Institute of Information Technology and Management, Gwalior",
+      "degree": "Integrated B.Tech. + M.Tech. in Information Technology",
+      "from": "2023-08",
+      "to": "2028-04",
+      "detail": "CGPA - 7.95/10 (6th Sem)"
+    }
+  ],
+  "experience": [
+    {
+      "title": "ML Research Intern @ ABV-IIITM Gwalior",
+      "subtitle": "Adaptive Wavelet Attention for improving Energy Forecasting Models",
+      "from": "2026-05",
+      "to": "2026-08",
+      "location": "Remote",
+      "links": [
+        { "href": "https://github.com/D3athSkulll/SIMPLETM/tree/main", "icon": "github" },
+        { "href": "https://github.com/D3athSkulll/SIMPLETM/blob/main/BTP%20Combined%20Report.pdf", "icon": "google-drive" }
+      ],
+      "bullets": [
+        "Developed a Band Attention module for SimpleTM, inspired by FEDformer's frequency domain approach.",
+        "Enabled adaptive frequency weighting through wavelet bands to capture multi-scale patterns in electricity load dataset.",
+        "Improved forecasting accuracy across 5+ horizons, achieving 23.5% higher R2, 17.4% higher EVS, and 1.3% lower MSE."
+      ]
+    },
+    {
+      "title": "RTEMS - Real Time Operating System",
+      "subtitle": "Open Source Contributor",
+      "from": "2026-01",
+      "to": "2026-06",
+      "location": "Remote",
+      "links": [
+        { "href": "https://www.rtems.org/", "icon": "globe" },
+        { "href": "https://github.com/RTEMS/rtems/commits/main/?author=D3athSkulll", "icon": "github" },
+        { "href": "https://gitlab.rtems.org/rtems/rtos/rtems/-/merge_requests/?sort=merged_at_desc&state=all&author_username=D3athSkulll&first_page_size=20", "icon": "gitlab" }
+      ],
+      "bullets": [
+        "Resolved a Stack Checker Reporter defect by restructuring flag handling and decoupling SECTION FLAGS from COMPILER FLAGS, eliminating flag conflicts and ensuring consistent configuration, improving overall build reliability.",
+        "Resolved POSIX B0 baud rate edge case issue across UART drivers for 13 BSPs and drivers, implementing runtime safeguard mechanisms to prevent divide-by-zero, and standardizing termios handling for robust serial communication.",
+        "Implemented fallback-safe MMU mapping for missing PCIe nodes in device trees, ensuring reliable handling of incomplete hardware descriptions and enabling stable boot with correct memory initialization across BSP environments.",
+        "Migrated FatFS codebase, fixed error.h macro conflicts and libdl overflow, improving build stability and safety."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "SMTP Server",
+      "subtitle": "Custom SMTP Server using Golang (smtpd), Node.js (smtp-server), AWS EC2, Cloudflare DNS",
+      "from": "2026-08",
+      "to": "2026-08",
+      "links": [{ "href": "https://github.com/D3athSkulll/SMTP-Server", "icon": "github" }],
+      "bullets": [
+        "Implemented a custom AWS EC2 instance to securely handle incoming emails using a self-managed infrastructure.",
+        "Integrated the instance with a custom domain via Cloudflare DNS by setting up isolated MX records, effectively masking the personal email address and enforcing strict receive-only protocols for enhanced security and privacy."
+      ]
+    },
+    {
+      "title": "FerrisLedger",
+      "subtitle": "Rust-based fintech backend with RBAC, secure APIs and real-time analytics.",
+      "from": "2026-03",
+      "to": "2026-03",
+      "links": [
+        { "href": "https://github.com/D3athSkulll/FerrisLedger", "icon": "github" },
+        { "href": "https://fintech-backend-n1n0.onrender.com/", "icon": "globe" }
+      ],
+      "bullets": [
+        "Rust-based fintech backend using Axum, Tokio, and PostgreSQL with JWT auth, RBAC (3 roles), and Argon2 hashing.",
+        "Developed transaction APIs with filtering, pagination, and ownership to secure CRUD operations over 100+ records.",
+        "Implemented a financial analytics dashboard computing 5+ metrics, for real-time insights and data-driven decisions."
+      ]
+    },
+    {
+      "title": "PikaNote",
+      "subtitle": "A lightweight terminal text editor in Rust featuring efficient rendering and low-level control.",
+      "from": "2025-02",
+      "to": "2025-08",
+      "links": [{ "href": "https://github.com/D3athSkulll/PikaNote", "icon": "github" }],
+      "bullets": [
+        "Implemented rich text editing features including insertion, deletion, line breaks, cursor navigation, and file I/O.",
+        "Built real-time terminal interaction using Crossterm, handling key events and dynamic cursor control responsively.",
+        "Implemented incremental screen rendering using queued terminal updates to minimize redraw overhead efficiently.",
+        "Developed bidirectional incremental search with live highlighting using an annotated string system for large buffers.",
+        "Designed a modular terminal UI with 3 components including editor view, message/command bar and a status bar."
+      ]
+    }
+  ],
+  "achievements": [
+    "Overall Winner of Webkriti 2024, organised by AASF for developing Yatramitra, a travel ticket booking platform.",
+    "Secured 3rd position in Product Management Track of AASF Winter Projects, 2025."
+  ],
+  "positions": [
+    "Core Team Lead, Alumni Meet 2026, ABV-IIITM Gwalior.",
+    "Technical and Design Lead, IEEE Student Branch, ABV-IIITM Gwalior.",
+    "Executive, Student Activity Council 2025 (Technical), at ABV-IIITM Gwalior.",
+    "Facilitated a 2-day workshop on Web Basics - JS for 50+ students at ABV-IIITM Gwalior.",
+    "Designed official cover page for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF."
+  ],
+  "skills": [
+    { "category": "Systems Programming", "items": ["Rust", "Golang", "JavaScript", "C++", "C", "Python"] },
+    { "category": "Backend Frameworks", "items": ["Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets"] },
+    { "category": "Databases and ORM", "items": ["SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB"] },
+    { "category": "DevOps", "items": ["Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "EC2", "S3"] },
+    { "category": "AI and ML", "items": ["MCP", "Vector Embeddings", "Transformers", "LLMS", "Predictive Load Forecasting"] },
+    { "category": "Development Tools", "items": ["Git", "GitHub", "Gitlab", "Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React"] },
+    { "category": "Other Tools", "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion"] }
+  ],
+  "resume": { "href": "/resume.pdf", "label": "DOWNLOAD_RESUME.PDF" }
+}
