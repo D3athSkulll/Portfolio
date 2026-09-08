@@ -1,54 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Search } from "lucide-react";
 import { useProfile, useBlogIndex, useBlogPost } from "./api";
 import type { Entry } from "./types";
+import { AccordionCard } from "./components/Accordion";
+import { Icon, IconLink } from "./components/Icon";
 
-const MONTHS = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const MONTHS = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const ym = (s: string) => {
   const [y, m] = s.split("-");
   return `${MONTHS[Number(m)] ?? m} ${y}`;
 };
-const range = (a: string, b: string) => (a === b ? ym(a) : `${ym(a)} — ${ym(b)}`);
+const range = (a: string, b: string) => (a === b ? ym(a) : `${ym(a)} – ${ym(b)}`);
 
 function Label({ children }: { children: React.ReactNode }) {
   return <h2 className="section-label">{children}</h2>;
 }
+const Loading = () => <p className="eof">&gt; loading...</p>;
+const Broken = ({ msg }: { msg: string }) => <p className="eof">▓ UNDER CONSTRUCTION — {msg}</p>;
+const Eof = () => <p className="eof">EOF. WAITING FOR INPUT...</p>;
 
-function Loading() {
-  return <p className="eof">&gt; loading...</p>;
-}
-function Broken({ msg }: { msg: string }) {
-  return <p className="eof">▓ UNDER CONSTRUCTION — {msg}</p>;
-}
-function Eof() {
-  return <p className="eof">EOF. WAITING FOR INPUT...</p>;
-}
+/* ---------------------------------------------------------------- entry card */
 
-function EntryBlock({ e }: { e: Entry }) {
+function EntryCard({ e, showTag = false }: { e: Entry; showTag?: boolean }) {
   return (
-    <div className="entry">
-      <h3>{e.title}</h3>
-      {e.subtitle && <div style={{ fontStyle: "italic" }}>{e.subtitle}</div>}
-      <div className="meta">
-        {range(e.from, e.to)}
-        {e.location ? ` · ${e.location}` : ""}
-        {e.links?.map((l) => (
-          <span key={l.href}>
-            {" · "}
-            <a href={l.href} target="_blank" rel="noreferrer">
-              [{l.icon}]
-            </a>
+    <AccordionCard
+      tag={showTag && e.type ? <span className={`ptag ${e.type.toLowerCase().replace(/\W+/g, "-")}`}>{e.type}</span> : null}
+      header={
+        <>
+          <span className="card-title">{e.title}</span>
+          {e.subtitle && <span className="card-sub">{e.subtitle}</span>}
+          <span className="card-meta">
+            <span>{range(e.from, e.to)}</span>
+            {e.location && <span>· {e.location}</span>}
+            {e.links?.map((l) => (
+              <IconLink key={l.href} href={l.href} icon={l.icon} />
+            ))}
           </span>
-        ))}
-      </div>
+        </>
+      }
+    >
       <ul>
         {e.bullets.map((b, i) => (
           <li key={i}>{b}</li>
         ))}
       </ul>
-    </div>
+    </AccordionCard>
   );
 }
+
+/* --------------------------------------------------------------------- pages */
 
 export function Home() {
   const { data, isLoading, error } = useProfile();
@@ -57,28 +58,9 @@ export function Home() {
   const p = data.profile;
   return (
     <>
-      <Label>[SYSTEM_INFO]</Label>
-      <p style={{ fontFamily: "var(--font-mono)", fontSize: 13 }}>
-        NAME: {p.name}
-        <br />
-        ROLE: {p.role}
-        <br />
-        LOC: {p.location}
-        <br />
-        STATUS: ONLINE
-      </p>
-      <hr />
+      <Label>WHOAMI</Label>
+      <p className="lead">{p.role}.</p>
       <p>{p.summary}</p>
-      <Label>&gt; CONTACT</Label>
-      <ul>
-        {p.contact.map((c) => (
-          <li key={c.href}>
-            <a href={c.href} target="_blank" rel="noreferrer">
-              {c.icon}: {c.label}
-            </a>
-          </li>
-        ))}
-      </ul>
       <Eof />
     </>
   );
@@ -90,9 +72,11 @@ export function Experience() {
   return (
     <>
       <Label>WORK_EXPERIENCE</Label>
-      {data.experience.map((e) => (
-        <EntryBlock key={e.title} e={e} />
-      ))}
+      <div className="card-list">
+        {data.experience.map((e) => (
+          <EntryCard key={e.title} e={e} />
+        ))}
+      </div>
       <Eof />
     </>
   );
@@ -103,10 +87,12 @@ export function Projects() {
   if (isLoading || !data) return <Loading />;
   return (
     <>
-      <Label>PROJECTS/ — ls -la --human-readable</Label>
-      {data.projects.map((e) => (
-        <EntryBlock key={e.title} e={e} />
-      ))}
+      <Label>PROJECTS/</Label>
+      <div className="card-list">
+        {data.projects.map((e) => (
+          <EntryCard key={e.title} e={e} showTag />
+        ))}
+      </div>
       <Eof />
     </>
   );
@@ -118,18 +104,20 @@ export function Skills() {
   return (
     <>
       <Label>TECHNICAL_MATRIX</Label>
-      {data.skills.map((g) => (
-        <div key={g.category} className="entry">
-          <h3>{g.category}</h3>
-          <div>
-            {g.items.map((it) => (
-              <span key={it} className="chip">
-                {it}
-              </span>
-            ))}
+      <div className="skill-grid">
+        {data.skills.map((g) => (
+          <div key={g.category} className="skill-card">
+            <h3>{g.category}</h3>
+            <div className="chips">
+              {g.items.map((it) => (
+                <span key={it} className="chip">
+                  {it}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
       <Eof />
     </>
   );
@@ -141,16 +129,22 @@ export function EducationPage() {
   return (
     <>
       <Label>SCHOOL_DAZE</Label>
-      {data.education.map((e) => (
-        <div key={e.institution} className="entry">
-          <h3>{e.institution}</h3>
-          <div className="meta">
-            {range(e.from, e.to)}
-            {e.detail ? ` · ${e.detail}` : ""}
+      <div className="card-list">
+        {data.education.map((e) => (
+          <div key={e.institution} className="card static">
+            <div className="card-head">
+              <span className="card-head-main">
+                <span className="card-title">{e.institution}</span>
+                <span className="card-sub">{e.degree}</span>
+                <span className="card-meta">
+                  <span>{range(e.from, e.to)}</span>
+                  {e.detail && <span>· {e.detail}</span>}
+                </span>
+              </span>
+            </div>
           </div>
-          <p>{e.degree}</p>
-        </div>
-      ))}
+        ))}
+      </div>
       <Eof />
     </>
   );
@@ -161,18 +155,21 @@ export function Achievements() {
   if (isLoading || !data) return <Loading />;
   return (
     <>
-      <Label>ACHIEVEMENTS</Label>
-      <ul>
-        {data.achievements.map((a, i) => (
-          <li key={i}>{a}</li>
-        ))}
-      </ul>
-      <Label>POSITIONS_OF_RESPONSIBILITY</Label>
-      <ul>
+      <Label>EXTRA_CURRICULAR / POR</Label>
+      <div className="por-list">
         {data.positions.map((a, i) => (
-          <li key={i}>{a}</li>
+          <div className="por-item" key={`p${i}`}>
+            <span className="por-k">POR</span>
+            <span>{a}</span>
+          </div>
         ))}
-      </ul>
+        {data.achievements.map((a, i) => (
+          <div className="por-item" key={`a${i}`}>
+            <span className="por-k win">WIN</span>
+            <span>{a}</span>
+          </div>
+        ))}
+      </div>
       <Eof />
     </>
   );
@@ -183,28 +180,38 @@ export function Resume() {
   if (isLoading || !data) return <Loading />;
   return (
     <>
-      <p>
-        <a
-          className="cta next"
-          style={{ display: "inline-block", padding: "10px 16px", textDecoration: "none" }}
-          href={data.resume.href}
-        >
-          ⬇ {data.resume.label}
-        </a>
-      </p>
-      <Label>WORK_EXPERIENCE</Label>
+      <Label>RESUME.DOC</Label>
+      <p className="lead">Pick the version tuned for the role you're hiring for.</p>
+      <div className="resume-btns">
+        {data.resume.map((r) => (
+          <a key={r.role} className="resume-btn" href={r.href} download>
+            <Icon name="google-drive" size={16} />
+            <span>
+              <strong>{r.role}</strong>
+              <em>{r.label}</em>
+            </span>
+            <span className="dl">DOWNLOAD ▾</span>
+          </a>
+        ))}
+      </div>
+
+      <Label>EXPERIENCE</Label>
       {data.experience.map((e) => (
-        <EntryBlock key={e.title} e={e} />
+        <p key={e.title} className="resume-line">
+          <strong>{e.title}</strong> <span className="card-meta">{range(e.from, e.to)}</span>
+          <br />
+          {e.subtitle}
+        </p>
       ))}
       <Label>EDUCATION</Label>
       {data.education.map((e) => (
-        <p key={e.institution}>
-          <strong>{e.institution}</strong> — {e.degree} ({range(e.from, e.to)})
+        <p key={e.institution} className="resume-line">
+          <strong>{e.institution}</strong> — {e.degree} <span className="card-meta">({range(e.from, e.to)})</span>
         </p>
       ))}
       <Label>SKILLS</Label>
       {data.skills.map((g) => (
-        <p key={g.category}>
+        <p key={g.category} className="resume-line">
           <strong>{g.category}:</strong> {g.items.join(", ")}
         </p>
       ))}
@@ -222,7 +229,7 @@ export function Contact() {
   return (
     <>
       <Label>COMM_LINK.PROTO</Label>
-      <p style={{ marginTop: -4 }}>Establish secure connection with system administrator.</p>
+      <p style={{ marginTop: -4 }}>Establish a connection.</p>
 
       <div className="comm-grid" style={{ marginTop: 14 }}>
         <div className="comm-panel">
@@ -235,46 +242,26 @@ export function Contact() {
             <span className="lbl">Direct_Communication</span>
             {direct.map((x) => (
               <div className="row" key={x.href}>
-                <span className="k">{x.icon === "phone" ? "phone" : "email"}</span>
+                <span className="k">
+                  <Icon name={x.icon} /> {x.icon === "phone" ? "phone" : "email"}
+                </span>
                 <a href={x.href}>{x.label}</a>
               </div>
             ))}
-            <div className="row">
-              <span className="k">location</span>
-              <span>{data.profile.location}</span>
-            </div>
           </div>
 
           <div className="comm-panel" style={{ marginTop: 18 }}>
             <span className="lbl">Professional_Networks</span>
             {networks.map((x) => (
               <div className="row" key={x.href}>
-                <span className="k">{x.icon}</span>
+                <span className="k">
+                  <Icon name={x.icon} /> {x.icon}
+                </span>
                 <a href={x.href} target="_blank" rel="noreferrer">
                   {x.label}
                 </a>
               </div>
             ))}
-          </div>
-
-          <div className="comm-panel" style={{ marginTop: 18 }}>
-            <span className="lbl">Availability_Status</span>
-            <div className="row">
-              <span className="k">status</span>
-              <span>● ONLINE</span>
-            </div>
-            <div className="row">
-              <span className="k">freelance</span>
-              <span>AVAILABLE</span>
-            </div>
-            <div className="row">
-              <span className="k">full-time</span>
-              <span>OPEN TO DISCUSS</span>
-            </div>
-            <div className="row">
-              <span className="k">reply time</span>
-              <span>~1 day · email or linkedin</span>
-            </div>
           </div>
         </div>
       </div>
@@ -305,34 +292,15 @@ function ContactForm({ mailto }: { mailto?: string }) {
     <form onSubmit={submit}>
       <label>
         &gt; ENTER_NAME
-        <input
-          style={field}
-          placeholder="[Type name here...]"
-          required
-          value={f.name}
-          onChange={(e) => setF({ ...f, name: e.target.value })}
-        />
+        <input style={field} placeholder="[Type name here...]" required value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
       </label>
       <label>
         &gt; YOUR_EMAIL
-        <input
-          style={field}
-          type="email"
-          placeholder="[user@remote_host.net]"
-          required
-          value={f.email}
-          onChange={(e) => setF({ ...f, email: e.target.value })}
-        />
+        <input style={field} type="email" placeholder="[user@remote_host.net]" required value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
       </label>
       <label>
         &gt; MESSAGE_STRING
-        <textarea
-          style={{ ...field, minHeight: 110 }}
-          placeholder="[Initiating text buffer...]"
-          required
-          value={f.message}
-          onChange={(e) => setF({ ...f, message: e.target.value })}
-        />
+        <textarea style={{ ...field, minHeight: 110 }} placeholder="[Initiating text buffer...]" required value={f.message} onChange={(e) => setF({ ...f, message: e.target.value })} />
       </label>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
         <span className="buffer-ready">Buffer_Ready</span>
@@ -344,39 +312,85 @@ function ContactForm({ mailto }: { mailto?: string }) {
       {state === "err" && (
         <p className="eof">
           » TRANSMISSION FAILED.{" "}
-          {mailto && (
-            <a href={`${mailto}?subject=hello&body=${encodeURIComponent(f.message)}`}>use email instead</a>
-          )}
+          {mailto && <a href={`${mailto}?body=${encodeURIComponent(f.message)}`}>use email instead</a>}
         </p>
       )}
     </form>
   );
 }
 
+/* ---------------------------------------------------------------------- blog */
+
 export function BlogIndex() {
   const { data, isLoading, error } = useBlogIndex();
+  const [q, setQ] = useState("");
+  const [tag, setTag] = useState<string | null>(null);
+
+  const allTags = useMemo(
+    () => [...new Set((data ?? []).flatMap((p) => p.tags))].sort(),
+    [data],
+  );
+  const shown = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    return (data ?? []).filter((p) => {
+      if (tag && !p.tags.includes(tag)) return false;
+      if (!needle) return true;
+      return (p.title + " " + p.summary + " " + p.tags.join(" ")).toLowerCase().includes(needle);
+    });
+  }, [data, q, tag]);
+
   if (isLoading) return <Loading />;
   if (error || !data) return <Broken msg="blog not generated — run bloggen" />;
+
   return (
     <>
-      <Label>BLOG/ — {data.length} entr{data.length === 1 ? "y" : "ies"}</Label>
-      {data.map((p) => (
-        <div key={p.slug} className="entry">
-          <h3>
-            <Link to={`/blog/${p.slug}`}>{p.title}</Link>
-          </h3>
-          <div className="meta">
-            {p.date}
-            {p.tags.map((t) => (
-              <span key={t}>
-                {" "}
-                <span className="chip">{t}</span>
-              </span>
-            ))}
-          </div>
-          <p>{p.summary}</p>
+      <Label>BLOG/</Label>
+
+      <div className="blog-controls">
+        <div className="blog-search">
+          <Search size={14} strokeWidth={1.75} aria-hidden />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="grep posts..."
+            aria-label="search posts"
+          />
         </div>
-      ))}
+        <div className="blog-tags">
+          <button className={`tagf${tag === null ? " on" : ""}`} onClick={() => setTag(null)}>
+            all
+          </button>
+          {allTags.map((t) => (
+            <button key={t} className={`tagf${tag === t ? " on" : ""}`} onClick={() => setTag(t === tag ? null : t)}>
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <p className="blog-count">
+        {shown.length} / {data.length} post{data.length === 1 ? "" : "s"}
+      </p>
+
+      <div className="post-list">
+        {shown.map((p) => (
+          <Link key={p.slug} to={`/blog/${p.slug}`} className="post-row">
+            <span className="post-date">{p.date}</span>
+            <span className="post-main">
+              <span className="post-title">{p.title}</span>
+              <span className="post-sum">{p.summary}</span>
+              <span className="chips">
+                {p.tags.map((t) => (
+                  <span key={t} className="chip">
+                    {t}
+                  </span>
+                ))}
+              </span>
+            </span>
+          </Link>
+        ))}
+        {shown.length === 0 && <p className="eof">no posts match.</p>}
+      </div>
       <Eof />
     </>
   );
@@ -399,10 +413,13 @@ export function BlogPost() {
   if (isLoading) return <Loading />;
   if (error || !data) return <Broken msg={`no post: ${slug}`} />;
   return (
-    <>
-      <Label>{data.title}</Label>
-      <div className="meta">
-        {data.date} · {data.readingMinutes} min read ·{" "}
+    <article className="post">
+      <p className="post-back">
+        <Link to="/blog">◀ BLOG/</Link>
+      </p>
+      <h1 className="post-h1">{data.title}</h1>
+      <div className="post-byline">
+        {data.date} · {data.readingMinutes} min ·{" "}
         {data.tags.map((t) => (
           <span key={t} className="chip">
             {t}
@@ -411,9 +428,7 @@ export function BlogPost() {
       </div>
       {data.toc.length > 1 && (
         <nav className="post-toc">
-          <span className="section-label" style={{ display: "inline-block" }}>
-            ON THIS PAGE
-          </span>
+          <span className="lbl">ON THIS PAGE</span>
           <ul>
             {data.toc.map((t) => (
               <li key={t.id} style={{ marginLeft: (t.level - 2) * 14 }}>
@@ -423,13 +438,9 @@ export function BlogPost() {
           </ul>
         </nav>
       )}
-      <hr />
       <div className="prose" dangerouslySetInnerHTML={{ __html: data.html }} />
-      <p style={{ marginTop: 16 }}>
-        <Link to="/blog">◀ back to BLOG/</Link>
-      </p>
       <Eof />
-    </>
+    </article>
   );
 }
 
@@ -437,9 +448,7 @@ export function NotFound() {
   return (
     <>
       <Label>404</Label>
-      <p>
-        PAGE NOT FOUND — this corner of the information superhighway is ▓ UNDER CONSTRUCTION ▓.
-      </p>
+      <p>PAGE NOT FOUND — this corner of the information superhighway is ▓ UNDER CONSTRUCTION ▓.</p>
       <p>
         <Link to="/">◀ back to ABOUT_ME.TXT</Link>
       </p>

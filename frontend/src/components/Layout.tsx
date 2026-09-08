@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { routes } from "../routes.config";
-import { useTheme } from "../theme";
+import { THEMES, useTheme } from "../theme";
 import { useProfile } from "../api";
 
-const ERAS = ["1986", "1996", "2006", "2016", "2026", "2036", "2046"];
 const STATUS = [
   "INSERT COIN",
   "PLAYER 1 READY",
@@ -31,9 +30,8 @@ function useCountdown(target: string) {
 function VisitorCounter({ seed }: { seed: number }) {
   const count = useMemo(() => {
     try {
-      const k = "visits";
-      const v = Number(localStorage.getItem(k) ?? "0") + 1;
-      localStorage.setItem(k, String(v));
+      const v = Number(localStorage.getItem("visits") ?? "0") + 1;
+      localStorage.setItem("visits", String(v));
       return seed + v;
     } catch {
       return seed;
@@ -46,12 +44,32 @@ function VisitorCounter({ seed }: { seed: number }) {
   );
 }
 
+function ThemeSwitch() {
+  const { theme, setTheme } = useTheme();
+  return (
+    <div className="theme-switch" role="group" aria-label="theme">
+      <span className="theme-switch-label">THEME</span>
+      {THEMES.map((t) => (
+        <button
+          key={t.id}
+          className={theme === t.id ? "on" : ""}
+          aria-pressed={theme === t.id}
+          onClick={() => setTheme(t.id)}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function Layout({ children }: { children: ReactNode }) {
-  const { theme, toggle } = useTheme();
+  const { theme } = useTheme();
   const { data } = useProfile();
   const loc = useLocation();
   const meta = data?.meta;
   const countdown = useCountdown(meta?.y2kCountdownTarget ?? "2028-04-30");
+  const first = data?.profile.name.split(" ")[0] ?? "Shivam";
 
   const idx = routes.findIndex(
     (r) => r.path === loc.pathname || (r.path !== "/" && loc.pathname.startsWith(r.path)),
@@ -61,7 +79,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   const prev = routes[(idx - 1 + routes.length) % routes.length];
   const next = routes[(idx + 1) % routes.length];
 
-  // Per-route <title>. BlogPost overrides this with its own effect afterwards.
   useEffect(() => {
     const name = data?.profile.name ?? "Portfolio";
     const section = idx >= 0 && idx !== 0 ? routes[idx].label : null;
@@ -69,31 +86,16 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, [data?.profile.name, idx, loc.pathname]);
 
   return (
-    <div style={{ maxWidth: 1180, margin: "0 auto", padding: "14px" }}>
-      {/* era tab row = arcade STAGE SELECT (decorative, non-breaking) */}
-      <div style={{ textAlign: "center" }}>
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 11,
-            letterSpacing: 2,
-            opacity: 0.7,
-          }}
-        >
-          — STAGE SELECT —
-        </span>
-        <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", marginTop: 4 }}>
-          {ERAS.map((e) => (
-            <span key={e} className="chip" style={{ opacity: e === "1996" ? 1 : 0.4 }}>
-              {e}
-            </span>
-          ))}
-        </div>
+    <div className="shell">
+      <div className="topbar">
+        <ThemeSwitch />
       </div>
 
-      <header className="banner" style={{ marginTop: 10 }}>
-        <h1>{meta?.siteTitle ?? "LOADING..."}</h1>
-        <p>{meta?.tagline ?? "\u00a0"}</p>
+      <header className="banner">
+        <p className="banner-hi">
+          Hi, I am <span className="banner-sub">{data?.profile.name ?? "Shivam Deolankar"}</span>, aka
+        </p>
+        <h1>D3athSkulll</h1>
         <p className="blink" style={{ marginTop: 4, color: "var(--hud)" }}>
           {"\u25b6"} PUSH START
         </p>
@@ -113,17 +115,14 @@ export default function Layout({ children }: { children: ReactNode }) {
         <NavLink className="cta prev" to={prev.path}>
           ◀ {prev.label.toUpperCase()}
         </NavLink>
-        <button className="theme-toggle" onClick={toggle}>
-          THEME: {theme === "retro" ? "RETRO ▓" : "DOCS ░"}
-        </button>
         <NavLink className="cta next" to={next.path}>
           {next.label.toUpperCase()} ▶
         </NavLink>
       </div>
 
-      <div style={{ display: "flex", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
-        <aside style={{ width: 210, flexShrink: 0 }} className="menu">
-          <div className="menu-title">★ MENU ★</div>
+      <div className="layout">
+        <aside className="menu">
+          <div className="menu-title">{theme === "vim" ? "~/NAVIGATION" : "★ MENU ★"}</div>
           {routes.map((r) => (
             <NavLink
               key={r.path}
@@ -131,52 +130,49 @@ export default function Layout({ children }: { children: ReactNode }) {
               end={r.path === "/"}
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              {theme === "docs" ? r.file : `> ${r.label}`}
+              {theme === "vim" ? r.file : `> ${r.label}`}
             </NavLink>
           ))}
 
           {meta && (
-            <>
+            <div className="retro-only">
               <div className="menu-title" style={{ marginTop: 12 }}>
                 [SYSTEM INFO]
               </div>
               <div className="badge" style={{ textAlign: "left" }}>
-                user: {data?.profile.name.split(" ")[0].toLowerCase()}
+                user: {first.toLowerCase()}
                 <br />
                 role: {data?.profile.role}
                 <br />
-                status: ONLINE
+                status: ONLINE &nbsp; uptime: 99.9%
+              </div>
+              <VisitorCounter seed={meta.visitorCountSeed} />
+              <div className="badge">▓ UNDER CONSTRUCTION ▓</div>
+              <button
+                className="badge"
+                style={{ width: "100%", cursor: "pointer" }}
+                onClick={() => alert("i told you not to click here.")}
+              >
+                !! DON'T CLICK HERE !!
+              </button>
+              <div className="badge">✉ YOU'VE GOT MAIL</div>
+              <div className="countdown" style={{ marginTop: 8 }}>
+                *** COUNTDOWN ***
                 <br />
-                uptime: 99.9%
+                {countdown}
+                <br />
+                <small>until convocation</small>
               </div>
-              <div className="retro-only">
-                <VisitorCounter seed={meta.visitorCountSeed} />
-                <div className="badge">▓ UNDER CONSTRUCTION ▓</div>
-                <button
-                  className="badge"
-                  style={{ width: "100%", cursor: "pointer" }}
-                  onClick={() => alert("i told you not to click here.")}
-                >
-                  !! DON'T CLICK HERE !!
-                </button>
-                <div className="badge">✉ YOU'VE GOT MAIL</div>
-                <div className="countdown" style={{ marginTop: 8 }}>
-                  *** COUNTDOWN ***
-                  <br />
-                  {countdown}
-                  <br />
-                  <small>until convocation</small>
-                </div>
-              </div>
-            </>
+            </div>
           )}
         </aside>
 
-        <main style={{ flex: 1, minWidth: 280 }}>
+        <main className="content">
           <div className="win">
             <div className="win-titlebar">
               <span>
-                C:\USERS\SHIVAM\{fileLabel}
+                {theme === "vim" ? "~/shivam/" : "C:\\USERS\\SHIVAM\\"}
+                {fileLabel}
               </span>
               <span className="win-dots">
                 <i />
@@ -184,7 +180,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <i />
               </span>
             </div>
-            <div style={{ padding: "16px 18px" }}>{children}</div>
+            <div className="win-body">{children}</div>
           </div>
 
           <div className="cta-bar" style={{ marginTop: 12 }}>
@@ -198,15 +194,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <footer
-        style={{
-          textAlign: "center",
-          fontFamily: "var(--font-mono)",
-          fontSize: 12,
-          marginTop: 18,
-          opacity: 0.8,
-        }}
-      >
+      <footer className="site-footer">
         © {new Date().getFullYear()} {data?.profile.name ?? ""} · {meta?.footerCredit ?? ""} · No
         frames. No problem.
       </footer>
@@ -214,10 +202,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       <div className="statusbar">
         <span>
           UPTIME: <span className="lit">99.9%</span> &nbsp;|&nbsp; USER:{" "}
-          <span className="lit">
-            {(data?.profile.name.split(" ")[0] ?? "guest").toLowerCase()}_dev
-          </span>{" "}
-          &nbsp;|&nbsp; NET: <span className="lit">CONNECTED</span>
+          <span className="lit">{first.toLowerCase()}_dev</span> &nbsp;|&nbsp; NET:{" "}
+          <span className="lit">CONNECTED</span>
         </span>
         <span>V1.0.4-STABLE</span>
       </div>

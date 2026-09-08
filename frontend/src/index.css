@@ -9,8 +9,8 @@
 [data-theme="retro"] {
   /* cinematic arcade-room dark chrome, bright "CRT screen / cartridge label" content */
   --bg: #0c0a12;
-  /* poster-wall collage (inline SVG) — echoes the Abhishar v15 cover */
-  --bg-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='380'%3E%3Crect width='100%25' height='100%25' fill='%23100c18'/%3E%3Cg opacity='0.55'%3E%3Crect x='10' y='12' width='80' height='118' rx='3' fill='%232f171d' transform='rotate(-3 50 71)'/%3E%3Crect x='108' y='20' width='76' height='110' fill='%23202834' transform='rotate(2 146 75)'/%3E%3Crect x='200' y='10' width='84' height='122' fill='%23342a16' transform='rotate(-2 242 71)'/%3E%3Crect x='20' y='150' width='78' height='116' fill='%231d2a22' transform='rotate(2 59 208)'/%3E%3Crect x='116' y='160' width='80' height='118' fill='%232d1a12' transform='rotate(-3 156 219)'/%3E%3Crect x='210' y='152' width='74' height='112' fill='%23261327' transform='rotate(3 247 208)'/%3E%3Crect x='28' y='292' width='76' height='78' fill='%231f2633' transform='rotate(-2 66 331)'/%3E%3Crect x='122' y='298' width='78' height='74' fill='%23322614' transform='rotate(2 161 335)'/%3E%3Crect x='214' y='290' width='70' height='80' fill='%232a181c' transform='rotate(-3 249 330)'/%3E%3C/g%3E%3C/svg%3E");
+  /* retro-tech collage tile (original vector art) */
+  --bg-tile: url("./assets/retro-collage.svg");
   --panel: #ece7d6;
   --panel-fg: #1b1712;
   --ink: #ece7d6;
@@ -29,7 +29,7 @@
   --frame-shadow: inset -3px -3px 0 #9a9482, inset 3px 3px 0 #fffdf5;
 }
 
-[data-theme="docs"] {
+[data-theme="vim"] {
   /* deep blue-black terminal-OS, one lime accent — per the COMM_LINK.PROTO screen */
   --bg: #0d0f16;
   --bg-tile: none;
@@ -95,7 +95,7 @@ a { color: var(--link); }
   border: 2px solid var(--border);
   box-shadow: var(--frame-shadow);
 }
-[data-theme="docs"] .win { box-shadow: none; border-radius: 6px; }
+[data-theme="vim"] .win { box-shadow: none; border-radius: 6px; }
 
 .win-titlebar {
   display: flex;
@@ -109,14 +109,14 @@ a { color: var(--link); }
   color: var(--banner-fg);
   border-bottom: 2px solid var(--border);
 }
-[data-theme="docs"] .win-titlebar {
+[data-theme="vim"] .win-titlebar {
   background: #050704;
   color: var(--accent-2);
   border-bottom: 1px solid var(--border);
 }
 .win-dots { display: flex; gap: 5px; }
 .win-dots i { width: 10px; height: 10px; border: 1px solid var(--border); display: inline-block; }
-[data-theme="docs"] .win-dots i { border-radius: 50%; }
+[data-theme="vim"] .win-dots i { border-radius: 50%; }
 
 /* ---- banner ---- */
 .banner {
@@ -125,7 +125,7 @@ a { color: var(--link); }
   border: 3px solid var(--accent);
   padding: 14px;
 }
-[data-theme="docs"] .banner { border: none; background: transparent; padding: 8px 0 0; text-align: left; }
+[data-theme="vim"] .banner { border: none; background: transparent; padding: 8px 0 0; text-align: left; }
 .banner h1 {
   margin: 0;
   font-size: clamp(1.6rem, 5vw, 2.8rem);
@@ -133,9 +133,9 @@ a { color: var(--link); }
   color: var(--banner-fg);
   text-shadow: 2px 2px 0 #000;
 }
-[data-theme="docs"] .banner h1 { text-shadow: none; letter-spacing: 0; }
+[data-theme="vim"] .banner h1 { text-shadow: none; letter-spacing: 0; }
 .banner p { margin: 6px 0 0; color: #cfe3ff; }
-[data-theme="docs"] .banner p { color: var(--accent-2); }
+[data-theme="vim"] .banner p { color: var(--accent-2); }
 
 /* ---- marquee ---- */
 .marquee {
@@ -148,7 +148,7 @@ a { color: var(--link); }
   border: 2px solid var(--border);
   padding: 3px 0;
 }
-[data-theme="docs"] .marquee { background: transparent; border: 1px dashed var(--border); }
+[data-theme="vim"] .marquee { background: transparent; border: 1px dashed var(--border); }
 .marquee-track { display: inline-block; padding-left: 100%; animation: scroll 22s linear infinite; }
 @keyframes scroll { to { transform: translateX(-100%); } }
 
@@ -166,7 +166,7 @@ a { color: var(--link); }
 }
 .cta.prev { background: var(--banner-fg); }
 .cta.next { background: var(--accent-2); }
-[data-theme="docs"] .cta { background: transparent; color: var(--accent); border-color: var(--border); }
+[data-theme="vim"] .cta { background: transparent; color: var(--accent); border-color: var(--border); }
 
 /* ---- nav menu ---- */
 .menu { }
@@ -178,7 +178,7 @@ a { color: var(--link); }
   border: 2px solid var(--border);
   padding: 3px;
 }
-[data-theme="docs"] .menu-title { background: transparent; color: var(--accent-2); border: none; text-align: left; padding: 0 0 6px; }
+[data-theme="vim"] .menu-title { background: transparent; color: var(--accent-2); border: none; text-align: left; padding: 0 0 6px; }
 .menu a {
   display: block;
   padding: 6px 8px;
@@ -191,7 +191,7 @@ a { color: var(--link); }
   font-family: var(--font-mono);
   font-size: 13px;
 }
-[data-theme="docs"] .menu a {
+[data-theme="vim"] .menu a {
   text-align: left;
   background: transparent;
   border: none;
@@ -201,7 +201,7 @@ a { color: var(--link); }
   padding: 3px 10px;
 }
 .menu a.active { background: var(--accent); color: #fff; }
-[data-theme="docs"] .menu a.active { background: transparent; color: var(--accent); border-left-color: var(--accent); }
+[data-theme="vim"] .menu a.active { background: transparent; color: var(--accent); border-left-color: var(--accent); }
 
 /* ---- widgets ---- */
 .badge {
@@ -223,7 +223,7 @@ a { color: var(--link); }
   text-align: center;
   padding: 6px;
 }
-[data-theme="docs"] .badge, [data-theme="docs"] .counter { background: var(--chip-bg); color: var(--accent-2); border-color: var(--border); }
+[data-theme="vim"] .badge, [data-theme="vim"] .counter { background: var(--chip-bg); color: var(--accent-2); border-color: var(--border); }
 .countdown {
   text-align: center;
   background: #000;
@@ -232,7 +232,7 @@ a { color: var(--link); }
   font-family: var(--font-mono);
   padding: 14px;
 }
-[data-theme="docs"] .countdown { border-color: var(--border); background: var(--chip-bg); color: var(--accent); }
+[data-theme="vim"] .countdown { border-color: var(--border); background: var(--chip-bg); color: var(--accent); }
 
 /* ---- content ---- */
 .section-label {
@@ -241,9 +241,9 @@ a { color: var(--link); }
   color: var(--accent);
   margin: 0 0 10px;
 }
-[data-theme="docs"] .section-label { color: var(--accent-2); }
-[data-theme="docs"] .section-label::before { content: "[ "; }
-[data-theme="docs"] .section-label::after { content: " ]"; }
+[data-theme="vim"] .section-label { color: var(--accent-2); }
+[data-theme="vim"] .section-label::before { content: "[ "; }
+[data-theme="vim"] .section-label::after { content: " ]"; }
 
 .chip {
   display: inline-block;
@@ -260,13 +260,13 @@ a { color: var(--link); }
 .entry h3 { margin: 0; font-size: 1.05rem; }
 .entry .meta { font-family: var(--font-mono); font-size: 12px; opacity: 0.8; }
 .entry ul { margin: 8px 0 0; padding-left: 18px; }
-[data-theme="docs"] .entry ul { list-style: none; padding-left: 0; }
-[data-theme="docs"] .entry ul li::before { content: "> "; color: var(--accent-2); }
+[data-theme="vim"] .entry ul { list-style: none; padding-left: 0; }
+[data-theme="vim"] .entry ul li::before { content: "> "; color: var(--accent-2); }
 
 .eof { font-family: var(--font-mono); font-size: 12px; opacity: 0.6; margin-top: 20px; }
 
 .prose :is(h2, h3) { font-family: var(--font-mono); color: var(--accent); }
-[data-theme="docs"] .prose :is(h2, h3) { color: var(--panel-fg); }
+[data-theme="vim"] .prose :is(h2, h3) { color: var(--panel-fg); }
 .prose pre {
   background: #0b0f0a;
   color: #c9d3c1;
@@ -307,8 +307,8 @@ form textarea {
   background: #fffdf5;
   box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
-[data-theme="docs"] form input,
-[data-theme="docs"] form textarea {
+[data-theme="vim"] form input,
+[data-theme="vim"] form textarea {
   background: #0b0f0a;
   color: var(--panel-fg);
   border-color: var(--border);
@@ -328,12 +328,12 @@ form textarea:focus {
   color: #fff;
   cursor: pointer;
 }
-[data-theme="docs"] .theme-toggle { background: transparent; color: var(--accent); }
+[data-theme="vim"] .theme-toggle { background: transparent; color: var(--accent); }
 
 /* the loud novelty widgets only make sense in the retro skin */
-[data-theme="docs"] .retro-only { display: none; }
-[data-theme="docs"] .marquee { display: none; }
-[data-theme="docs"] .blink { display: none; }
+[data-theme="vim"] .retro-only { display: none; }
+[data-theme="vim"] .marquee { display: none; }
+[data-theme="vim"] .blink { display: none; }
 
 /* ============================================================
    RETRO ARCADE LAYER
@@ -503,9 +503,9 @@ form textarea:focus {
    big letter-spaced lime title, muted subtitle, bordered panels
    with floating lime labels, terminal-window chrome, status bar.
    ============================================================ */
-[data-theme="docs"] body { background: var(--bg); }
+[data-theme="vim"] body { background: var(--bg); }
 
-[data-theme="docs"] .banner h1 {
+[data-theme="vim"] .banner h1 {
   font-family: var(--font-mono);
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -513,19 +513,19 @@ form textarea:focus {
   color: var(--accent);
   font-size: clamp(1.7rem, 4.5vw, 2.6rem);
 }
-[data-theme="docs"] .banner p {
+[data-theme="vim"] .banner p {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.22em;
   font-size: 11px;
 }
 
-[data-theme="docs"] .win {
+[data-theme="vim"] .win {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 2px;
 }
-[data-theme="docs"] .win-titlebar {
+[data-theme="vim"] .win-titlebar {
   background: var(--panel-2);
   color: var(--muted);
   border-bottom: 1px solid var(--border);
@@ -533,7 +533,7 @@ form textarea:focus {
   text-transform: uppercase;
   font-size: 11px;
 }
-[data-theme="docs"] .win-dots i {
+[data-theme="vim"] .win-dots i {
   width: 9px;
   height: 9px;
   border-radius: 0;
@@ -542,24 +542,24 @@ form textarea:focus {
 }
 
 /* the first label inside a content panel = the page's hero title */
-[data-theme="docs"] main .win .section-label:first-child {
+[data-theme="vim"] main .win .section-label:first-child {
   font-size: clamp(1.3rem, 3.2vw, 2rem);
   font-weight: 800;
   letter-spacing: 0.12em;
   color: var(--accent);
   margin-bottom: 14px;
 }
-[data-theme="docs"] main .win .section-label:first-child::before,
-[data-theme="docs"] main .win .section-label:first-child::after { content: ""; }
+[data-theme="vim"] main .win .section-label:first-child::before,
+[data-theme="vim"] main .win .section-label:first-child::after { content: ""; }
 
-[data-theme="docs"] .section-label {
+[data-theme="vim"] .section-label {
   color: var(--accent);
   letter-spacing: 0.1em;
   font-size: 12px;
 }
 
 /* bordered card with a floating lime label (badges reused as info panels) */
-[data-theme="docs"] .badge {
+[data-theme="vim"] .badge {
   position: relative;
   background: var(--panel-2);
   border: 1px solid var(--border);
@@ -571,25 +571,25 @@ form textarea:focus {
   margin-top: 14px;
   line-height: 1.9;
 }
-[data-theme="docs"] .badge:first-line {
+[data-theme="vim"] .badge:first-line {
   color: var(--accent);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-[data-theme="docs"] .menu-title {
+[data-theme="vim"] .menu-title {
   color: var(--accent);
   letter-spacing: 0.14em;
 }
-[data-theme="docs"] .menu a { letter-spacing: 0.08em; font-size: 12px; }
-[data-theme="docs"] .menu a.active {
+[data-theme="vim"] .menu a { letter-spacing: 0.08em; font-size: 12px; }
+[data-theme="vim"] .menu a.active {
   background: var(--accent);
   color: #0d0f16;
   border-left-color: var(--accent);
   font-weight: 700;
 }
 
-[data-theme="docs"] .chip {
+[data-theme="vim"] .chip {
   background: transparent;
   border: 1px solid var(--border-lit);
   color: var(--accent);
@@ -597,15 +597,15 @@ form textarea:focus {
   letter-spacing: 0.06em;
 }
 
-[data-theme="docs"] .cta {
+[data-theme="vim"] .cta {
   background: transparent;
   border: 1px solid var(--border-lit);
   color: var(--accent);
   border-radius: 2px;
   letter-spacing: 0.12em;
 }
-[data-theme="docs"] .cta:hover { background: var(--panel-2); }
-[data-theme="docs"] .theme-toggle {
+[data-theme="vim"] .cta:hover { background: var(--panel-2); }
+[data-theme="vim"] .theme-toggle {
   background: transparent;
   border: 1px solid var(--border-lit);
   color: var(--accent);
@@ -613,26 +613,26 @@ form textarea:focus {
   letter-spacing: 0.12em;
 }
 
-[data-theme="docs"] form label { color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-[data-theme="docs"] form input,
-[data-theme="docs"] form textarea {
+[data-theme="vim"] form label { color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+[data-theme="vim"] form input,
+[data-theme="vim"] form textarea {
   background: #0b0d13;
   border: 1px solid var(--border);
   color: var(--panel-fg);
   border-radius: 2px;
 }
-[data-theme="docs"] form input::placeholder,
-[data-theme="docs"] form textarea::placeholder { color: var(--muted); }
-[data-theme="docs"] form button.cta {
+[data-theme="vim"] form input::placeholder,
+[data-theme="vim"] form textarea::placeholder { color: var(--muted); }
+[data-theme="vim"] form button.cta {
   background: var(--accent);
   color: #0d0f16;
   border-color: var(--accent);
   font-weight: 700;
 }
 
-[data-theme="docs"] .eof { color: var(--muted); letter-spacing: 0.1em; }
-[data-theme="docs"] hr { border: none; border-top: 1px solid var(--border); }
-[data-theme="docs"] .entry { border-top: 1px solid var(--border); }
+[data-theme="vim"] .eof { color: var(--muted); letter-spacing: 0.1em; }
+[data-theme="vim"] hr { border: none; border-top: 1px solid var(--border); }
+[data-theme="vim"] .entry { border-top: 1px solid var(--border); }
 
 /* full-width bottom status bar */
 .statusbar {
@@ -695,3 +695,376 @@ form textarea:focus {
 [data-theme="retro"] .comm-panel .row .k { color: #7a4a00; }
 .buffer-ready { font-family: var(--font-mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
 .buffer-ready::before { content: "● "; }
+
+/* ============================================================
+   V3 — Brutal display font, top theme switch, accordion cards,
+   project tags, POR list, resume buttons, blog UX, vim borders.
+   ============================================================ */
+@font-face {
+  font-family: "Brutal Pro";
+  src: url("./assets/BrutalFontProRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+:root { --font-display: "Brutal Pro", "Arial Black", Impact, sans-serif; }
+
+/* ---- layout scaffold (was inline styles) ---- */
+.shell { max-width: 1180px; margin: 0 auto; padding: 14px; }
+.layout { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.menu { width: 210px; flex-shrink: 0; }
+.content { flex: 1; min-width: 280px; }
+.win-body { padding: 18px 20px; }
+.site-footer {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-top: 18px;
+  opacity: 0.8;
+}
+
+/* ---- top theme switch (replaces the era row + old toggle) ---- */
+.topbar { display: flex; justify-content: center; }
+.theme-switch {
+  display: inline-flex;
+  align-items: stretch;
+  border: 2px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow: hidden;
+}
+.theme-switch-label {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  letter-spacing: 0.14em;
+  background: var(--banner-bg);
+  color: var(--banner-fg);
+}
+.theme-switch button {
+  border: none;
+  border-left: 2px solid var(--border);
+  padding: 5px 14px;
+  cursor: pointer;
+  letter-spacing: 0.12em;
+  background: var(--chip-bg);
+  color: var(--panel-fg);
+  font: inherit;
+}
+.theme-switch button.on { background: var(--accent); color: #0d0f16; font-weight: 700; }
+[data-theme="retro"] .theme-switch { border-color: #000; box-shadow: 0 5px 0 #000; }
+[data-theme="retro"] .theme-switch button.on { color: #fff; }
+[data-theme="vim"] .theme-switch { border-color: var(--border-lit); }
+[data-theme="vim"] .theme-switch button { background: transparent; color: var(--muted); border-left-color: var(--border); }
+[data-theme="vim"] .theme-switch button.on { background: var(--accent); color: #0d0f16; }
+[data-theme="vim"] .theme-switch-label { background: transparent; color: var(--accent-2); }
+
+/* ---- banner: "Hi, I am … aka" + Street-Fighter wordmark ---- */
+.banner-hi {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.banner-sub { color: var(--accent-2); }
+[data-theme="retro"] .banner-hi { color: #ffd23f; }
+[data-theme="retro"] .banner-sub { color: #fff; }
+
+.banner h1 {
+  font-family: var(--font-display);
+  margin: 4px 0 0;
+}
+[data-theme="retro"] .banner h1 {
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: 0.9;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transform: skewX(-9deg);
+  text-transform: uppercase;
+  color: #ffd23f;
+  background: linear-gradient(179deg, #fff6c0 2%, #ffd23f 30%, #ff8a1e 60%, #f5391b 84%, #9c0f06 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 3px #2a0f04;
+  paint-order: stroke fill;
+  filter: drop-shadow(4px 5px 0 #000) drop-shadow(0 0 18px rgba(255, 138, 30, 0.35));
+}
+[data-theme="vim"] .banner h1 {
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  filter: none;
+}
+
+/* ---- generic section lead paragraph ---- */
+.lead { font-size: 1.05rem; margin: 0 0 10px; }
+[data-theme="vim"] .lead { color: var(--accent); }
+[data-theme="retro"] .lead { font-weight: bold; }
+
+/* ---- accordion cards (experience / projects / education) ---- */
+.card-list { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 6px; }
+.card { border: 2px solid var(--border); background: var(--chip-bg); }
+[data-theme="vim"] .card { border: 1px solid var(--border); background: var(--panel-2); border-radius: 3px; }
+.card-head {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 11px 13px;
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.card.static .card-head { cursor: default; }
+.card-head-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.card-head-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.card-title { font-weight: 700; font-size: 1rem; }
+.card-sub { font-size: 0.9rem; opacity: 0.85; font-style: italic; }
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+.chev { transition: transform 0.15s ease; opacity: 0.7; }
+.card.open .chev { transform: rotate(180deg); }
+.card.static .chev { display: none; }
+.card-body {
+  padding: 0 14px 12px 14px;
+  border-top: 1px dashed var(--border);
+}
+.card-body ul { margin: 10px 0 0; padding-left: 18px; }
+[data-theme="vim"] .card-body ul { list-style: none; padding-left: 0; }
+[data-theme="vim"] .card-body ul li { padding: 2px 0; }
+[data-theme="vim"] .card-body ul li::before { content: "› "; color: var(--accent); }
+
+.iconlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  padding: 1px 3px;
+  border: 1px solid transparent;
+}
+.iconlink:hover { border-color: var(--border); }
+
+/* ---- project type tag ---- */
+.ptag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.ptag.systems, .ptag.low-level { color: #ff8a1e; }
+.ptag.ml { color: #c76bff; }
+.ptag.backend { color: #3bd6ff; }
+.ptag.cloud { color: #35ff5b; }
+.ptag.embedded { color: #ff5b7f; }
+[data-theme="vim"] .ptag { color: var(--accent) !important; border-color: var(--border-lit); }
+
+/* ---- skills grid ---- */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 6px 0;
+}
+.skill-card { border: 2px solid var(--border); background: var(--chip-bg); padding: 12px; }
+[data-theme="vim"] .skill-card { border: 1px solid var(--border); background: var(--panel-2); border-radius: 3px; }
+.skill-card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+[data-theme="vim"] .skill-card h3 { color: var(--accent-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* ---- POR / extra-curricular list ---- */
+.por-list { display: flex; flex-direction: column; gap: 8px; margin: 6px 0; }
+.por-item {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  border-left: 3px solid var(--accent-2);
+  padding: 7px 10px;
+  background: var(--chip-bg);
+}
+[data-theme="vim"] .por-item { background: var(--panel-2); border-left-color: var(--border-lit); }
+.por-k {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+  color: var(--accent-2);
+  flex-shrink: 0;
+}
+.por-k.win { color: #35ff5b; }
+[data-theme="retro"] .por-k.win { color: #1c7a2e; }
+
+/* ---- resume role buttons ---- */
+.resume-btns { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 4px; }
+.resume-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  background: var(--accent-2);
+  color: #1b1712;
+  min-width: 240px;
+}
+.resume-btn strong { display: block; font-size: 0.95rem; }
+.resume-btn em { display: block; font-style: normal; font-size: 11px; opacity: 0.8; }
+.resume-btn .dl { margin-left: auto; font-family: var(--font-mono); font-size: 11px; }
+[data-theme="retro"] .resume-btn { border-color: #000; box-shadow: 0 5px 0 #000; }
+[data-theme="retro"] .resume-btn:nth-child(2) { background: var(--hud); }
+[data-theme="vim"] .resume-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border-lit);
+  border-radius: 3px;
+}
+.resume-line { margin: 6px 0; }
+
+/* ---- vim: bordered nav endpoints (per the OS-theme reference) ---- */
+[data-theme="vim"] .menu a {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-top: 5px;
+  padding: 6px 10px;
+}
+[data-theme="vim"] .menu a.active {
+  background: var(--accent);
+  color: #0d0f16;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+[data-theme="vim"] .menu-title { letter-spacing: 0.14em; margin-bottom: 6px; }
+
+/* ---- blog: retro window + readable spacing ---- */
+.blog-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 4px 0 10px;
+}
+.blog-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--border);
+  padding: 5px 8px;
+  background: var(--panel);
+}
+[data-theme="vim"] .blog-search { border: 1px solid var(--border); background: #0b0d13; }
+.blog-search input {
+  border: none;
+  background: none;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: inherit;
+  outline: none;
+  width: 180px;
+}
+.blog-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tagf {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+.tagf.on { background: var(--accent); color: #0d0f16; border-color: var(--accent); }
+.blog-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.6; margin: 0 0 10px; }
+
+.post-list { display: flex; flex-direction: column; }
+.post-row {
+  display: flex;
+  gap: 16px;
+  padding: 14px 4px;
+  border-top: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+}
+.post-row:last-child { border-bottom: 1px solid var(--border); }
+.post-row:hover { background: var(--chip-bg); }
+[data-theme="vim"] .post-row:hover { background: var(--panel-2); }
+.post-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.6;
+  flex-shrink: 0;
+  width: 82px;
+  padding-top: 2px;
+}
+.post-main { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.post-title { font-weight: 700; font-size: 1.02rem; }
+.post-sum { opacity: 0.85; font-size: 0.92rem; }
+
+/* single post */
+.post { max-width: 68ch; }
+.post-back { font-family: var(--font-mono); font-size: 12px; margin: 0 0 14px; }
+.post-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  line-height: 1.1;
+  margin: 0 0 8px;
+}
+[data-theme="retro"] .post-h1 { color: var(--panel-fg); }
+[data-theme="vim"] .post-h1 { color: var(--accent); font-family: var(--font-mono); }
+.post-byline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.75;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.post .prose { line-height: 1.7; }
+.post .prose > * { margin: 0 0 1rem; }
+.post .prose :is(h2, h3) { margin: 1.8rem 0 0.6rem; }
+.post-toc { margin: 0 0 18px; }
+.post-toc .lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+.post-toc ul { list-style: none; margin: 6px 0 0; padding: 0; }
+.post-toc li { padding: 2px 0; font-family: var(--font-mono); font-size: 12px; }
+
+/* contact key cells now hold an icon */
+.comm-panel .row .k { display: inline-flex; align-items: center; gap: 5px; }
+
+/* the old single theme-toggle button is gone */
+.theme-toggle { display: none; }

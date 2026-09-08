@@ -58,7 +58,10 @@ for (const [i, s] of (data.skills ?? []).entries()) {
   ok(isStr(s.category) && isArr(s.items) && s.items.every(isStr), `skills[${i}] needs category and string items`);
 }
 
-ok(data.resume && isStr(data.resume.href) && isStr(data.resume.label), "resume needs href and label");
+ok(isArr(data.resume) && data.resume.length > 0, "resume must be a non-empty array of variants");
+for (const [i, r] of (data.resume ?? []).entries()) {
+  ok(isStr(r.role) && isStr(r.label) && isStr(r.href), `resume[${i}] needs role, label, href`);
+}
 
 if (errors.length) {
   console.error("profile.json failed validation:");

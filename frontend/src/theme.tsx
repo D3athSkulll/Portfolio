@@ -1,16 +1,23 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-export type Theme = "retro" | "docs";
+export type Theme = "retro" | "vim";
 
-const ThemeCtx = createContext<{ theme: Theme; toggle: () => void }>({
-  theme: "retro",
-  toggle: () => {},
-});
+export const THEMES: { id: Theme; label: string }[] = [
+  { id: "retro", label: "ARCADE" },
+  { id: "vim", label: "VIM" },
+];
+
+const ThemeCtx = createContext<{
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+  toggle: () => void;
+}>({ theme: "retro", setTheme: () => {}, toggle: () => {} });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (document.documentElement.dataset.theme as Theme) || "retro",
-  );
+  const [theme, setTheme] = useState<Theme>(() => {
+    const t = document.documentElement.dataset.theme;
+    return t === "vim" || t === "retro" ? t : "retro";
+  });
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -23,7 +30,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeCtx.Provider
-      value={{ theme, toggle: () => setTheme((t) => (t === "retro" ? "docs" : "retro")) }}
+      value={{
+        theme,
+        setTheme,
+        toggle: () => setTheme((t) => (t === "retro" ? "vim" : "retro")),
+      }}
     >
       {children}
     </ThemeCtx.Provider>

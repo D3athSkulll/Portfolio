@@ -23,3 +23,6 @@ node_modules/
 .env
 .env.local
 .DS_Store
+
+# stray ts-rs output when TS_RS_EXPORT_DIR is unset
+/backend/bindings/

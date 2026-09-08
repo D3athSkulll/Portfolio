@@ -14,7 +14,9 @@
       try {
         var q = new URLSearchParams(location.search).get("theme");
         var t = q || localStorage.getItem("theme");
-        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "docs" : "retro";
+        if (t === "docs") t = "vim"; // migrate old value
+        if (t !== "retro" && t !== "vim")
+          t = matchMedia("(prefers-color-scheme: dark)").matches ? "vim" : "retro";
         document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>

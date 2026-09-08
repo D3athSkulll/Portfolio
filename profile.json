@@ -2,8 +2,8 @@
   "meta": {
     "siteTitle": "SHIVAM DEOLANKAR",
     "tagline": "This is not a portfolio. It's a system.",
-    "footerCredit": "Made with Vim",
-    "visitorCountSeed": 13376,
+    "footerCredit": "Made with Rust",
+    "visitorCountSeed": 0,
     "y2kCountdownTarget": "2028-04-30"
   },
   "profile": {
@@ -67,6 +67,7 @@
   "projects": [
     {
       "title": "SMTP Server",
+      "type": "Cloud",
       "subtitle": "Custom SMTP Server using Golang (smtpd), Node.js (smtp-server), AWS EC2, Cloudflare DNS",
       "from": "2026-08",
       "to": "2026-08",
@@ -78,6 +79,7 @@
     },
     {
       "title": "FerrisLedger",
+      "type": "Backend",
       "subtitle": "Rust-based fintech backend with RBAC, secure APIs and real-time analytics.",
       "from": "2026-03",
       "to": "2026-03",
@@ -93,6 +95,7 @@
     },
     {
       "title": "PikaNote",
+      "type": "Systems",
       "subtitle": "A lightweight terminal text editor in Rust featuring efficient rendering and low-level control.",
       "from": "2025-02",
       "to": "2025-08",
@@ -126,5 +129,8 @@
     { "category": "Development Tools", "items": ["Git", "GitHub", "Gitlab", "Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React"] },
     { "category": "Other Tools", "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion"] }
   ],
-  "resume": { "href": "/resume.pdf", "label": "DOWNLOAD_RESUME.PDF" }
+  "resume": [
+    { "role": "SDE", "label": "SDE / Backend", "href": "/resume-sde.pdf" },
+    { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/resume-embedded.pdf" }
+  ]
 }

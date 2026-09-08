@@ -2,7 +2,11 @@
 
 export type Education = { institution: string, degree: string, from: string, to: string, detail: string | null, };
 
-export type Entry = { title: string, subtitle: string | null, from: string, to: string, location: string | null, links: Array<Link>, bullets: Array<string>, };
+export type Entry = { title: string, 
+/**
+ * Optional category tag, e.g. "Systems" / "ML" / "Backend" / "Cloud" / "Embedded".
+ */
+type: string | null, subtitle: string | null, from: string, to: string, location: string | null, links: Array<Link>, bullets: Array<string>, };
 
 export type Link = { label: string | null, href: string, icon: string, };
 
@@ -10,8 +14,12 @@ export type Meta = { siteTitle: string, tagline: string, footerCredit: string, v
 
 export type Person = { name: string, role: string, location: string, summary: string, contact: Array<Link>, };
 
-export type Profile = { meta: Meta, profile: Person, education: Array<Education>, experience: Array<Entry>, projects: Array<Entry>, achievements: Array<string>, positions: Array<string>, skills: Array<SkillGroup>, resume: ResumeLink, };
+export type Profile = { meta: Meta, profile: Person, education: Array<Education>, experience: Array<Entry>, projects: Array<Entry>, achievements: Array<string>, positions: Array<string>, skills: Array<SkillGroup>, resume: Array<ResumeVariant>, };
 
-export type ResumeLink = { href: string, label: string, };
+export type ResumeVariant = { 
+/**
+ * Short role key, e.g. "SDE" / "Embedded".
+ */
+role: string, label: string, href: string, };
 
 export type SkillGroup = { category: string, items: Array<string>, };

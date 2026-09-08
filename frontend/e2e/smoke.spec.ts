@@ -12,7 +12,7 @@ const ROUTES = [
   "/blog",
 ];
 
-for (const theme of ["retro", "docs"] as const) {
+for (const theme of ["retro", "vim"] as const) {
   for (const path of ROUTES) {
     test(`${theme} ${path} renders`, async ({ page }) => {
       await page.addInitScript((t) => {
@@ -24,9 +24,10 @@ for (const theme of ["retro", "docs"] as const) {
       }, theme);
       const res = await page.goto(path);
       expect(res?.status()).toBeLessThan(400);
-      await expect(page.locator(".banner h1")).toContainText("SHIVAM", {
+      await expect(page.locator(".banner h1")).toContainText("D3athSkulll", {
         timeout: 10_000,
       });
+      await expect(page.locator(".banner-sub")).toContainText("Shivam");
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     });
   }
@@ -49,13 +50,11 @@ test("unknown route shows the retro 404", async ({ page }) => {
   await expect(page.locator(".section-label")).toContainText("404");
 });
 
-test("theme toggle persists across reload", async ({ page }) => {
+test("theme switch persists across reload", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "retro");
-  const toggle = page.getByRole("button", { name: /THEME:/ });
-  await toggle.click();
-  await expect(toggle).toContainText("DOCS");
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "docs");
+  await page.getByRole("button", { name: "VIM", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "vim");
   await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "docs");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "vim");
 });

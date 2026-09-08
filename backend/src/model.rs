@@ -15,7 +15,7 @@ pub struct Profile {
     pub achievements: Vec<String>,
     pub positions: Vec<String>,
     pub skills: Vec<SkillGroup>,
-    pub resume: ResumeLink,
+    pub resume: Vec<ResumeVariant>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -71,6 +71,9 @@ pub struct Education {
 #[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Entry {
     pub title: String,
+    /// Optional category tag, e.g. "Systems" / "ML" / "Backend" / "Cloud" / "Embedded".
+    #[serde(default, rename = "type")]
+    pub kind: Option<String>,
     #[serde(default)]
     pub subtitle: Option<String>,
     pub from: String,
@@ -93,9 +96,11 @@ pub struct SkillGroup {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
-pub struct ResumeLink {
-    pub href: String,
+pub struct ResumeVariant {
+    /// Short role key, e.g. "SDE" / "Embedded".
+    pub role: String,
     pub label: String,
+    pub href: String,
 }
 
 impl Profile {
