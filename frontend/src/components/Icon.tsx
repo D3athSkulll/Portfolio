@@ -5,7 +5,7 @@ import {
   Phone,
   Globe,
   Code2,
-  GitlabIcon,
+  Gitlab,
   FileText,
   ExternalLink,
   type LucideIcon,
@@ -19,7 +19,7 @@ const MAP: Record<string, LucideIcon> = {
   phone: Phone,
   globe: Globe,
   code: Code2,
-  gitlab: GitlabIcon,
+  gitlab: Gitlab,
   "google-drive": FileText,
 };
 
@@ -28,7 +28,6 @@ export function Icon({ name, size = 15 }: { name: string; size?: number }) {
   return <C size={size} strokeWidth={1.75} aria-hidden />;
 }
 
-/** A labelled outbound link with its icon. */
 export function IconLink({
   href,
   icon,
@@ -40,14 +39,14 @@ export function IconLink({
 }) {
   return (
     <a
-      className="iconlink"
       href={href}
       target="_blank"
       rel="noreferrer"
       title={label ?? icon}
+      className="inline-flex items-center gap-1 rounded-sm border border-transparent px-1 hover:border-line"
     >
       <Icon name={icon} />
-      {label && <span>{label}</span>}
+      {label && <span className="capitalize">{label}</span>}
     </a>
   );
 }

@@ -5,8 +5,10 @@ const ROUTES = [
   "/experience",
   "/projects",
   "/skills",
+  "/designs",
   "/education",
-  "/achievements",
+  "/extracurricular",
+  "/wins",
   "/resume",
   "/contact",
   "/blog",
@@ -24,7 +26,7 @@ for (const theme of ["retro", "vim"] as const) {
       }, theme);
       const res = await page.goto(path);
       expect(res?.status()).toBeLessThan(400);
-      await expect(page.locator(".banner h1")).toContainText("D3athSkulll", {
+      await expect(page.locator(".wordmark")).toContainText("D3athSkulll", {
         timeout: 10_000,
       });
       await expect(page.locator(".banner-sub")).toContainText("Shivam");
@@ -45,9 +47,16 @@ test("blog post renders with its image", async ({ page }) => {
   expect(ok).toBeTruthy();
 });
 
-test("unknown route shows the retro 404", async ({ page }) => {
+test("blog search filters the list", async ({ page }) => {
+  await page.goto("/blog");
+  await expect(page.getByRole("link", { name: /B0 Baud/i })).toBeVisible();
+  await page.getByPlaceholder("grep posts...").fill("nonsense-xyz");
+  await expect(page.getByText("no posts match.")).toBeVisible();
+});
+
+test("unknown route shows the 404 section", async ({ page }) => {
   await page.goto("/no-such-page");
-  await expect(page.locator(".section-label")).toContainText("404");
+  await expect(page.getByRole("heading", { name: /404/ })).toBeVisible();
 });
 
 test("theme switch persists across reload", async ({ page }) => {

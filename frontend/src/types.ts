@@ -7,7 +7,10 @@ export type {
   Entry,
   Education,
   SkillGroup,
+  Design,
+  Resume,
   ResumeVariant,
+  SourceLink,
   Meta,
 } from "./types/profile.gen";
 

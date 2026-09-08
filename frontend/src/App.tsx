@@ -5,8 +5,10 @@ import {
   Experience,
   Projects,
   Skills,
+  Designs,
   EducationPage,
-  Achievements,
+  Extracurricular,
+  Wins,
   Resume,
   Contact,
   BlogIndex,
@@ -23,8 +25,10 @@ export default function App() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
+          <Route path="/designs" element={<Designs />} />
           <Route path="/education" element={<EducationPage />} />
-          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/extracurricular" element={<Extracurricular />} />
+          <Route path="/wins" element={<Wins />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<BlogIndex />} />

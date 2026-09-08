@@ -25,12 +25,18 @@
       "degree": "Integrated B.Tech. + M.Tech. in Information Technology",
       "from": "2023-08",
       "to": "2028-04",
-      "detail": "CGPA - 7.95/10 (6th Sem)"
+      "detail": "CGPA - 7.95/10 (6th Sem)",
+      "bullets": [
+        "Coursework across OS, computer networks, DBMS, compilers, and computer architecture.",
+        "Active in the IEEE Student Branch and the technical Student Activity Council.",
+        "Self-directed focus on systems programming, Rust, and OS internals alongside the curriculum."
+      ]
     }
   ],
   "experience": [
     {
       "title": "ML Research Intern @ ABV-IIITM Gwalior",
+      "tags": ["ML", "Intern"],
       "subtitle": "Adaptive Wavelet Attention for improving Energy Forecasting Models",
       "from": "2026-05",
       "to": "2026-08",
@@ -47,6 +53,7 @@
     },
     {
       "title": "RTEMS - Real Time Operating System",
+      "tags": ["Open Source", "Systems"],
       "subtitle": "Open Source Contributor",
       "from": "2026-01",
       "to": "2026-06",
@@ -121,16 +128,39 @@
     "Designed official cover page for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF."
   ],
   "skills": [
-    { "category": "Systems Programming", "items": ["Rust", "Golang", "JavaScript", "C++", "C", "Python"] },
-    { "category": "Backend Frameworks", "items": ["Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets"] },
-    { "category": "Databases and ORM", "items": ["SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB"] },
-    { "category": "DevOps", "items": ["Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "EC2", "S3"] },
-    { "category": "AI and ML", "items": ["MCP", "Vector Embeddings", "Transformers", "LLMS", "Predictive Load Forecasting"] },
-    { "category": "Development Tools", "items": ["Git", "GitHub", "Gitlab", "Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React"] },
-    { "category": "Other Tools", "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion"] }
+    { "category": "Systems Programming", "roles": ["Systems", "SDE"], "items": ["Rust", "Golang", "JavaScript", "C++", "C", "Python"] },
+    { "category": "Backend Frameworks", "roles": ["Backend", "SDE"], "items": ["Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets"] },
+    { "category": "Databases and ORM", "roles": ["Backend", "SDE"], "items": ["SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB"] },
+    { "category": "DevOps", "roles": ["Cloud", "SDE"], "items": ["Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "EC2", "S3"] },
+    { "category": "AI and ML", "roles": ["ML"], "items": ["MCP", "Vector Embeddings", "Transformers", "LLMS", "Predictive Load Forecasting"] },
+    { "category": "Development Tools", "roles": ["SDE", "Systems", "Backend"], "items": ["Git", "GitHub", "Gitlab", "Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React"] },
+    { "category": "Other Tools", "roles": ["Systems", "Cloud"], "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion"] }
   ],
-  "resume": [
-    { "role": "SDE", "label": "SDE / Backend", "href": "/resume-sde.pdf" },
-    { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/resume-embedded.pdf" }
-  ]
+  "designs": [
+    {
+      "title": "Abhishar V15 — Magazine Cover",
+      "kind": "Print",
+      "description": "Official cover for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF. A retro 90s-gaming collage: CRT, cartridges and movie/game posters framing a kid at a console.",
+      "links": [{ "href": "https://github.com/D3athSkulll", "icon": "globe" }]
+    },
+    {
+      "title": "IEEE Student Branch — Event Collateral",
+      "kind": "Brand",
+      "description": "Posters, social creatives and slide decks for IEEE Student Branch events as Technical & Design Lead.",
+      "links": []
+    },
+    {
+      "title": "Portfolio — Arcade / VIM dual theme",
+      "kind": "UI",
+      "description": "This site: an arcade-cabinet skin and a terminal/editor skin over one JSON dataset.",
+      "links": [{ "href": "https://github.com/D3athSkulll", "icon": "github" }]
+    }
+  ],
+  "resume": {
+    "downloads": [
+      { "role": "SDE", "label": "SDE / Backend", "href": "/resume-sde.pdf" },
+      { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/resume-embedded.pdf" }
+    ],
+    "source": { "label": "Typst source (.typ)", "href": "/resume.typ" }
+  }
 }

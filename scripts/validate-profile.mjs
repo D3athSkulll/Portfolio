@@ -58,9 +58,16 @@ for (const [i, s] of (data.skills ?? []).entries()) {
   ok(isStr(s.category) && isArr(s.items) && s.items.every(isStr), `skills[${i}] needs category and string items`);
 }
 
-ok(isArr(data.resume) && data.resume.length > 0, "resume must be a non-empty array of variants");
-for (const [i, r] of (data.resume ?? []).entries()) {
-  ok(isStr(r.role) && isStr(r.label) && isStr(r.href), `resume[${i}] needs role, label, href`);
+for (const [i, d] of (data.designs ?? []).entries()) {
+  ok(isStr(d.title) && isStr(d.description), `designs[${i}] needs title and description`);
+}
+
+ok(data.resume && isArr(data.resume.downloads) && data.resume.downloads.length > 0, "resume.downloads must be a non-empty array");
+for (const [i, r] of (data.resume?.downloads ?? []).entries()) {
+  ok(isStr(r.role) && isStr(r.label) && isStr(r.href), `resume.downloads[${i}] needs role, label, href`);
+}
+if (data.resume?.source) {
+  ok(isStr(data.resume.source.label) && isStr(data.resume.source.href), "resume.source needs label and href");
 }
 
 if (errors.length) {

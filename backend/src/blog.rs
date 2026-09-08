@@ -190,6 +190,102 @@ pub fn render_post(dir: &Path, assets_out: &Path) -> Result<Post> {
     })
 }
 
+fn esc(c: char, out: &mut String) {
+    match c {
+        '&' => out.push_str("&amp;"),
+        '<' => out.push_str("&lt;"),
+        '>' => out.push_str("&gt;"),
+        _ => out.push(c),
+    }
+}
+
+const KEYWORDS: &[&str] = &[
+    "fn", "let", "mut", "const", "static", "struct", "enum", "impl", "trait", "pub", "use", "mod",
+    "match", "if", "else", "for", "while", "loop", "return", "break", "continue", "as", "in",
+    "where", "async", "await", "move", "ref", "dyn", "self", "Self", "super", "crate", "type",
+    "unsafe", "extern", "int", "char", "void", "float", "double", "long", "short", "unsigned",
+    "signed", "typedef", "sizeof", "goto", "switch", "case", "default", "function", "var", "new",
+    "class", "import", "export", "from", "def", "None", "True", "False", "null", "true", "false",
+];
+
+/// Tiny, language-agnostic highlighter: escapes HTML, then wraps line comments,
+/// strings, numbers and a shared keyword set. Good enough for blog snippets.
+fn highlight(_lang: &str, src: &str) -> String {
+    let mut out = String::with_capacity(src.len() * 2);
+    let b: Vec<char> = src.chars().collect();
+    let mut i = 0;
+    while i < b.len() {
+        let c = b[i];
+        // line comment: // or #
+        if (c == '/' && i + 1 < b.len() && b[i + 1] == '/') || c == '#' {
+            out.push_str("<span class=\"tok-com\">");
+            while i < b.len() && b[i] != '\n' {
+                esc(b[i], &mut out);
+                i += 1;
+            }
+            out.push_str("</span>");
+            continue;
+        }
+        // string literal
+        if c == '"' || c == '\'' {
+            let q = c;
+            out.push_str("<span class=\"tok-str\">");
+            esc(c, &mut out);
+            i += 1;
+            while i < b.len() {
+                esc(b[i], &mut out);
+                if b[i] == '\\' && i + 1 < b.len() {
+                    i += 1;
+                    esc(b[i], &mut out);
+                    i += 1;
+                    continue;
+                }
+                if b[i] == q {
+                    i += 1;
+                    break;
+                }
+                i += 1;
+            }
+            out.push_str("</span>");
+            continue;
+        }
+        // number
+        if c.is_ascii_digit() {
+            out.push_str("<span class=\"tok-num\">");
+            while i < b.len() && (b[i].is_ascii_alphanumeric() || b[i] == '.' || b[i] == '_') {
+                esc(b[i], &mut out);
+                i += 1;
+            }
+            out.push_str("</span>");
+            continue;
+        }
+        // identifier / keyword
+        if c.is_ascii_alphabetic() || c == '_' {
+            let start = i;
+            while i < b.len() && (b[i].is_ascii_alphanumeric() || b[i] == '_') {
+                i += 1;
+            }
+            let word: String = b[start..i].iter().collect();
+            let is_call = i < b.len() && b[i] == '(';
+            if KEYWORDS.contains(&word.as_str()) {
+                out.push_str("<span class=\"tok-kw\">");
+                out.push_str(&word);
+                out.push_str("</span>");
+            } else if is_call {
+                out.push_str("<span class=\"tok-fn\">");
+                out.push_str(&word);
+                out.push_str("</span>");
+            } else {
+                out.push_str(&word);
+            }
+            continue;
+        }
+        esc(c, &mut out);
+        i += 1;
+    }
+    out
+}
+
 fn markdown_to_html(md: &str) -> (String, Vec<TocItem>) {
     use pulldown_cmark::{CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
@@ -210,6 +306,8 @@ fn markdown_to_html(md: &str) -> (String, Vec<TocItem>) {
     let mut toc = Vec::new();
     // Two-pass so headings can be rewritten with a stable id anchor.
     let mut in_heading: Option<(u8, String, Vec<Event>)> = None;
+    // Buffer fenced code so we can syntax-highlight it.
+    let mut in_code: Option<(String, String)> = None; // (lang, source)
     let mut out: Vec<Event> = Vec::new();
 
     for event in Parser::new_ext(md, opts) {
@@ -231,11 +329,28 @@ fn markdown_to_html(md: &str) -> (String, Vec<TocItem>) {
                 }
             }
             Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) => {
-                out.push(Event::Html(
-                    format!("<pre><code class=\"language-{}\">", lang.trim()).into(),
-                ));
+                in_code = Some((lang.trim().to_string(), String::new()));
             }
-            Event::End(TagEnd::CodeBlock) => out.push(Event::Html("</code></pre>".into())),
+            Event::Start(Tag::CodeBlock(CodeBlockKind::Indented)) => {
+                in_code = Some((String::new(), String::new()));
+            }
+            Event::End(TagEnd::CodeBlock) => {
+                if let Some((lang, src)) = in_code.take() {
+                    out.push(Event::Html(
+                        format!(
+                            "<pre><code class=\"language-{}\">{}</code></pre>",
+                            lang,
+                            highlight(&lang, &src)
+                        )
+                        .into(),
+                    ));
+                }
+            }
+            Event::Text(ref t) if in_code.is_some() => {
+                if let Some((_, ref mut src)) = in_code {
+                    src.push_str(t);
+                }
+            }
             other => {
                 if let Some((_, ref mut text, ref mut inner)) = in_heading {
                     if let Event::Text(ref t) | Event::Code(ref t) = other {

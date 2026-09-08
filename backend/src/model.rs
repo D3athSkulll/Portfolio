@@ -15,7 +15,9 @@ pub struct Profile {
     pub achievements: Vec<String>,
     pub positions: Vec<String>,
     pub skills: Vec<SkillGroup>,
-    pub resume: Vec<ResumeVariant>,
+    #[serde(default)]
+    pub designs: Vec<Design>,
+    pub resume: Resume,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -64,6 +66,8 @@ pub struct Education {
     pub to: String,
     #[serde(default)]
     pub detail: Option<String>,
+    #[serde(default)]
+    pub bullets: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -74,6 +78,9 @@ pub struct Entry {
     /// Optional category tag, e.g. "Systems" / "ML" / "Backend" / "Cloud" / "Embedded".
     #[serde(default, rename = "type")]
     pub kind: Option<String>,
+    /// Free-form filter tags, e.g. "Open Source" / "ML" / "SDE" / "Intern".
+    #[serde(default)]
+    pub tags: Vec<String>,
     #[serde(default)]
     pub subtitle: Option<String>,
     pub from: String,
@@ -90,7 +97,22 @@ pub struct Entry {
 #[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct SkillGroup {
     pub category: String,
+    /// Role facets this group is relevant to, e.g. "ML" / "Systems" / "Backend" / "Cloud" / "SDE".
+    #[serde(default)]
+    pub roles: Vec<String>,
     pub items: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
+pub struct Design {
+    pub title: String,
+    #[serde(default)]
+    pub kind: Option<String>,
+    pub description: String,
+    #[serde(default)]
+    pub links: Vec<Link>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -101,6 +123,23 @@ pub struct ResumeVariant {
     pub role: String,
     pub label: String,
     pub href: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
+pub struct SourceLink {
+    pub label: String,
+    pub href: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
+pub struct Resume {
+    pub downloads: Vec<ResumeVariant>,
+    #[serde(default)]
+    pub source: Option<SourceLink>,
 }
 
 impl Profile {
