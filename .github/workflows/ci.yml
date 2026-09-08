@@ -29,6 +29,12 @@ jobs:
       - run: cargo fmt --check
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
+      - name: check generated TS bindings are current
+        run: cargo test export_bindings
+        env:
+          TS_RS_EXPORT_DIR: ${{ github.workspace }}/frontend/src/types
+      - run: git diff --exit-code frontend/src/types/profile.gen.ts
+        working-directory: ${{ github.workspace }}
       - name: generate blog artifacts
         run: cargo run --bin bloggen -- --dev
         env:

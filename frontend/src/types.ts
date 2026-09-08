@@ -1,56 +1,17 @@
-export interface Link {
-  label?: string;
-  href: string;
-  icon: string;
-}
+// Profile shapes are generated from the Rust model — run
+//   cd backend && TS_RS_EXPORT_DIR=../frontend/src/types cargo test export_bindings
+export type {
+  Profile,
+  Person,
+  Link,
+  Entry,
+  Education,
+  SkillGroup,
+  ResumeLink,
+  Meta,
+} from "./types/profile.gen";
 
-export interface Entry {
-  title: string;
-  subtitle?: string;
-  from: string;
-  to: string;
-  location?: string;
-  links?: Link[];
-  bullets: string[];
-}
-
-export interface Education {
-  institution: string;
-  degree: string;
-  from: string;
-  to: string;
-  detail?: string;
-}
-
-export interface SkillGroup {
-  category: string;
-  items: string[];
-}
-
-export interface Profile {
-  meta: {
-    siteTitle: string;
-    tagline: string;
-    footerCredit: string;
-    visitorCountSeed: number;
-    y2kCountdownTarget: string;
-  };
-  profile: {
-    name: string;
-    role: string;
-    location: string;
-    summary: string;
-    contact: Link[];
-  };
-  education: Education[];
-  experience: Entry[];
-  projects: Entry[];
-  achievements: string[];
-  positions: string[];
-  skills: SkillGroup[];
-  resume: { href: string; label: string };
-}
-
+// Blog shapes are produced by the `bloggen` binary (see backend/src/blog.rs).
 export interface BlogIndexEntry {
   title: string;
   date: string;

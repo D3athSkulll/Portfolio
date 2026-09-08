@@ -4,6 +4,8 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Profile {
     pub meta: Meta,
     pub profile: Person,
@@ -17,6 +19,8 @@ pub struct Profile {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Meta {
     #[serde(rename = "siteTitle")]
     pub site_title: String,
@@ -24,12 +28,14 @@ pub struct Meta {
     #[serde(rename = "footerCredit")]
     pub footer_credit: String,
     #[serde(rename = "visitorCountSeed")]
-    pub visitor_count_seed: i64,
+    pub visitor_count_seed: i32,
     #[serde(rename = "y2kCountdownTarget")]
     pub y2k_countdown_target: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Person {
     pub name: String,
     pub role: String,
@@ -39,6 +45,8 @@ pub struct Person {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Link {
     #[serde(default)]
     pub label: Option<String>,
@@ -47,6 +55,8 @@ pub struct Link {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Education {
     pub institution: String,
     pub degree: String,
@@ -57,6 +67,8 @@ pub struct Education {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Entry {
     pub title: String,
     #[serde(default)]
@@ -71,12 +83,16 @@ pub struct Entry {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct SkillGroup {
     pub category: String,
     pub items: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct ResumeLink {
     pub href: String,
     pub label: String,
@@ -93,4 +109,22 @@ impl Profile {
 /// Tiny error alias so we avoid pulling in `anyhow` for one call site.
 pub mod anyhow_lite {
     pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn seed_profile_json_parses() {
+        // repo root is the parent of `backend/` when tests run
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        let p = Profile::load(&root).expect("profile.json must parse into the model");
+        assert!(!p.profile.name.is_empty());
+        assert!(!p.experience.is_empty());
+        assert!(!p.skills.is_empty());
+    }
 }
