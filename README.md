@@ -63,7 +63,40 @@ npm start         # runs the release binary — everything on http://localhost:8
 `npm start` serves the SPA, the API, the blog, and the hashed assets (with year-long
 immutable caching) from the single `portfolio-backend` binary.
 
-### Docker
+### Deploy to Vercel (no server)
+
+The Axum binary only *serves* static/generated files plus one email endpoint, so the
+whole site runs on Vercel with a single function:
+
+| runtime need | Vercel |
+|---|---|
+| SPA, `/assets/*`, deep-link refresh | static `frontend/dist` + Vite SPA fallback |
+| `/api/profile` | rewrite → `/profile.json` (staged into `public/` at build) |
+| `/api/blog`, `/api/blog/:slug` | rewrite → `/blog-index.json`, `/blog/<slug>.json` |
+| `/blog-assets/*`, `/resume-*.pdf`, `/resume.typ` | plain static files in `public/` |
+| `POST /api/contact` | `frontend/api/contact.ts` — Node function, `nodemailer` + SMTP |
+
+Wiring: [`frontend/vercel.json`](frontend/vercel.json) (rewrites),
+[`frontend/scripts/prepare-static.mjs`](frontend/scripts/prepare-static.mjs) (copies
+`profile.json` + `.gen/blog*.json` + résumés into `public/`), run by the
+`vercel-build` npm script.
+
+**Blog generation still uses `bloggen` (Rust) — but only locally.** `.gen/` and
+`frontend/public/blog-assets/` are committed to the repo, so Vercel never needs cargo.
+After editing a post: `npm run bloggen` (or the `npm run blog` menu) then commit the
+regenerated files.
+
+Setup:
+
+1. Vercel → **New Project** → import the repo.
+2. **Root Directory:** `frontend` · **Framework:** Vite · **Build Command:** `npm run vercel-build` · **Output:** `dist`.
+3. **Environment Variables:** `SMTP_URL`, `CONTACT_TO`, `CONTACT_FROM` (see below). Optional `PUBLIC_SITE_URL`.
+4. Deploy. Smoke-test: hard-refresh `/projects`, open a blog post, download `/resume-sde.pdf`, submit the contact form (check the function log).
+
+Local dev is unchanged (`npm run dev` still runs Vite + the Rust API together), or use
+`cd frontend && vercel dev` to exercise the exact Vercel routing + the contact function.
+
+### Docker (single-binary alternative)
 
 ```bash
 docker build -t portfolio .
@@ -71,16 +104,8 @@ docker run -p 8080:8080 portfolio
 ```
 
 Multi-stage: builds the SPA + the release binary + the blog JSON, ships a slim runtime
-image. Host on Fly.io / Render / Railway / any container host — set `PORT` (the app
-reads it) and the mail env vars below.
-
-> **Vercel?** Not for the whole app — Vercel has no long-running server, and this is a
-> single Rust/Axum binary that also serves the API and the contact-mailer. Two ways to
-> use it: (a) deploy the container to Render/Fly/Railway and point your domain there;
-> or (b) host **only** the static SPA on Vercel (`cd frontend && npm run build`, output
-> `frontend/dist`) and run the Rust binary elsewhere, then set a Vercel rewrite so
-> `/api/*` and `/blog-assets/*` proxy to that backend URL. The contact form needs the
-> backend either way.
+image. Host on Fly.io / Render / Railway / any container host — set `PORT` and the mail
+env vars. Use this if you'd rather run the one Axum binary than split static + function.
 
 ### Configuration (`.env`)
 

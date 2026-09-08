@@ -5,10 +5,16 @@
 node_modules/
 /frontend/dist/
 
-# Generated blog artifacts
-/.gen/
-/frontend/public/blog-assets/
+# Generated blog artifacts — COMMITTED so Vercel can deploy without the Rust
+# toolchain. Regenerate with `npm run bloggen` (or the `npm run blog` menu) and
+# commit the result: /.gen/ and /frontend/public/blog-assets/ .
 *.gen.json
+
+# Copies staged into public/ by frontend/scripts/prepare-static.mjs at build
+# time — the source of truth is profile.json + /.gen/ .
+/frontend/public/profile.json
+/frontend/public/blog-index.json
+/frontend/public/blog/
 
 # Lighthouse CI
 /.lighthouseci/
