@@ -5,8 +5,10 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { loadEnv } from "./lib.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+loadEnv();
 const exe = join(
   root,
   "backend",

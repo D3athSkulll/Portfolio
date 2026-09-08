@@ -2,7 +2,7 @@
   "meta": {
     "siteTitle": "SHIVAM DEOLANKAR",
     "tagline": "This is not a portfolio. It's a system.",
-    "footerCredit": "Made with Rust",
+    "footerCredit": "Cooked with Rust",
     "visitorCountSeed": 0,
     "y2kCountdownTarget": "2028-04-30"
   },
@@ -10,7 +10,7 @@
     "name": "Shivam Deolankar",
     "role": "Systems Programmer",
     "location": "Gwalior, India",
-    "summary": "A systems programmer with 3 years of experience working on low-level systems in C and Rust, focusing on performance and memory safety. An active open-source contributor, proficient in backend, OS internals, embedded systems, and debugging.",
+    "summary": "A systems programmer with 3 years of experience working on low-level systems in C and Rust, focusing on performance and memory safety. An active open-source contributor, proficient in backend, OS internals, embedded systems, and debugging.\n\nI spend most of my time close to the metal — RTOS internals, device drivers, build systems and the sharp edges where hardware descriptions meet software assumptions. Upstreaming fixes to RTEMS taught me to care about reproducible builds and robust failure modes as much as raw throughput.\n\nOutside of systems work I build backends in Rust and Node, ship small ML experiments, and design the occasional poster. This site itself is one dataset rendered two ways — a retro skin and a terminal skin.",
     "contact": [
       { "label": "+91 8390566237", "href": "tel:+918390566237", "icon": "phone" },
       { "label": "shivam.deolankar@gmail.com", "href": "mailto:shivam.deolankar@gmail.com", "icon": "envelope" },
@@ -27,9 +27,27 @@
       "to": "2028-04",
       "detail": "CGPA - 7.95/10 (6th Sem)",
       "bullets": [
-        "Coursework across OS, computer networks, DBMS, compilers, and computer architecture.",
-        "Active in the IEEE Student Branch and the technical Student Activity Council.",
-        "Self-directed focus on systems programming, Rust, and OS internals alongside the curriculum."
+        "Went through some college stuff. Study, Events, CG all stuff included."
+      ]
+    },
+    {
+      "institution": "12th HSC",
+      "degree": "Maharashtra HSC Board",
+      "from": "2022-06",
+      "to": "2023-06",
+      "detail": "86%",
+      "bullets": [
+        "Went through some competitive exams along with this intermediate schooling."
+      ]
+    },
+    {
+      "institution": "10th ICSE",
+      "degree": "Secondary School",
+      "from": "2020-06",
+      "to": "2021-06",
+      "detail": "98.2%",
+      "bullets": [
+        "Picked up some vague stuff and nothing else."
       ]
     }
   ],
@@ -121,11 +139,89 @@
     "Secured 3rd position in Product Management Track of AASF Winter Projects, 2025."
   ],
   "positions": [
-    "Core Team Lead, Alumni Meet 2026, ABV-IIITM Gwalior.",
-    "Technical and Design Lead, IEEE Student Branch, ABV-IIITM Gwalior.",
+    {
+      "title": "Core Team Lead, Alumni Meet 2026, ABV-IIITM Gwalior.",
+      "bullets": [
+        "Coordinated a cross-functional team across logistics, tech and outreach for the annual alumni gathering.",
+        "Owned the event website and registration flow end to end."
+      ]
+    },
+    {
+      "title": "Technical and Design Lead, IEEE Student Branch, ABV-IIITM Gwalior.",
+      "bullets": [
+        "Led the technical and design vertical: posters, social creatives, slide decks and event microsites.",
+        "Mentored juniors on web basics and design tooling."
+      ]
+    },
     "Executive, Student Activity Council 2025 (Technical), at ABV-IIITM Gwalior.",
     "Facilitated a 2-day workshop on Web Basics - JS for 50+ students at ABV-IIITM Gwalior.",
     "Designed official cover page for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF."
+  ],
+  "testScores": [
+    {
+      "title": "JEE Main 2023",
+      "bullets": [
+        "All India Rank: 16989",
+        "Percentile: 98.54"
+      ]
+    },
+    {
+      "title": "JEE Advanced 2023",
+      "bullets": [
+        "All India Rank: 20785"
+      ]
+    },
+    {
+      "title": "IISER IAT 2023",
+      "bullets": [
+        "All India Rank: 884"
+      ]
+    },
+        {
+      "title": "BITSAT 2023",
+      "bullets": [
+        "Score: 276/390"
+      ]
+    }
+  ],
+  "likes": [
+    {
+      "title": "Gaming",
+      "bullets": [
+        "The Legend of Zelda",
+        "Mortal Kombat",
+        "Sonic the Hedgehog",
+        "Metal Gear",
+        "Genres: action-adventure, retro platformers, fighting"
+      ]
+    },
+    {
+      "title": "Music",
+      "bullets": [
+        "AC/DC",
+        "Nirvana",
+        "Pantera",
+        "Genres: classic rock, grunge, metal"
+      ]
+    },
+    {
+      "title": "Movies",
+      "bullets": [
+        "The Terminator",
+        "Die Hard",
+        "Rambo",
+        "Scream",
+        "Transformers: The Movie (1986)"
+      ]
+    },
+    {
+      "title": "Books",
+      "bullets": [
+        "Add a favourite book",
+        "Add another",
+        "Genres / authors you like"
+      ]
+    }
   ],
   "skills": [
     { "category": "Systems Programming", "roles": ["Systems", "SDE"], "items": ["Rust", "Golang", "JavaScript", "C++", "C", "Python"] },
@@ -140,18 +236,18 @@
     {
       "title": "Abhishar V15 — Magazine Cover",
       "kind": "Print",
-      "description": "Official cover for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF. A retro 90s-gaming collage: CRT, cartridges and movie/game posters framing a kid at a console.",
-      "links": [{ "href": "https://github.com/D3athSkulll", "icon": "globe" }]
+      "description": "Official cover for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF. A retro 90s-gaming collage: CRT, cartridges and movie/game posters framing a kid at a console. Lots of stuff with deep meanings embedded along the way.",
+      "links": [{ "href": "https://drive.google.com/file/d/1fdigo_dEYjXwMMUR1u10AvtMQg6y0C1u/view", "icon": "globe" }]
     },
     {
       "title": "IEEE Student Branch — Event Collateral",
       "kind": "Brand",
-      "description": "Posters, social creatives and slide decks for IEEE Student Branch events as Technical & Design Lead.",
+      "description": "Promotional Designs, Banners and Merch for IEEE Student Branch events as Technical & Design Lead.",
       "links": []
     },
     {
-      "title": "Portfolio — Arcade / VIM dual theme",
-      "kind": "UI",
+      "title": "Portfolio Website",
+      "kind": "UI / UX",
       "description": "This site: an arcade-cabinet skin and a terminal/editor skin over one JSON dataset.",
       "links": [{ "href": "https://github.com/D3athSkulll", "icon": "github" }]
     }

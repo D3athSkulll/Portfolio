@@ -61,7 +61,7 @@ export function Bullets({ items }: { items: string[] }) {
   return (
     <ul className="mt-2 space-y-1.5">
       {items.map((b, i) => (
-        <li key={i} className="flex gap-2 text-[0.95rem] leading-snug">
+        <li key={i} className="flex gap-2 text-[1rem] leading-relaxed">
           <span className="shrink-0 select-none text-accent2 retro:text-accent2">
             <span className="hidden retro:inline">⚡</span>
             <span className="retro:hidden">›</span>

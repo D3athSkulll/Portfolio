@@ -1,11 +1,58 @@
 // Shared helpers for the dev/build/doctor scripts.
 import { execSync, spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, copyFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const isWin = process.platform === "win32";
+
+/**
+ * Copy the résumé files from `content/resumes/` (the source of truth) into
+ * `frontend/public/` under the stable names the site links to
+ * (`/resume-sde.pdf`, `/resume-embedded.pdf`, `/resume.typ`). Drop new files in
+ * `content/resumes/` with these source names and re-run `npm run dev` / `build`.
+ */
+export function syncResumes() {
+  const map = {
+    "Shivam_Resume_SDE.pdf": "resume-sde.pdf",
+    "Shivam_Resume_Embedded.pdf": "resume-embedded.pdf",
+    "Shivam_Resume.typ": "resume.typ",
+  };
+  const src = join(ROOT, "content", "resumes");
+  const dst = join(ROOT, "frontend", "public");
+  let n = 0;
+  for (const [from, to] of Object.entries(map)) {
+    const s = join(src, from);
+    if (!existsSync(s)) continue;
+    const d = join(dst, to);
+    if (existsSync(d) && statSync(d).mtimeMs >= statSync(s).mtimeMs) continue;
+    copyFileSync(s, d);
+    n++;
+  }
+  return n;
+}
+
+/**
+ * Load `KEY=value` pairs from a `.env` file at the repo root into `process.env`
+ * (without overriding variables already set in the environment). Lines starting
+ * with `#` and blank lines are ignored. See `.env.example`.
+ */
+export function loadEnv(file = join(ROOT, ".env")) {
+  if (!existsSync(file)) return;
+  for (const raw of readFileSync(file, "utf8").split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq === -1) continue;
+    const key = line.slice(0, eq).trim();
+    let val = line.slice(eq + 1).trim();
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1);
+    }
+    if (key && process.env[key] === undefined) process.env[key] = val;
+  }
+}
 
 const C = {
   reset: "\x1b[0m",

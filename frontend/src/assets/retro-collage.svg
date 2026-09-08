@@ -1,23 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="460" height="560" viewBox="0 0 460 560">
-  <rect width="460" height="560" fill="#0f0b17"/>
-  <g opacity="0.4">
-    <!-- row 1 -->
-    <g transform="rotate(-3 60 90)"><rect x="18" y="24" width="84" height="128" fill="#3a1620"/><rect x="18" y="24" width="84" height="20" fill="#7a2733"/></g>
-    <g transform="rotate(2 170 96)"><rect x="120" y="28" width="96" height="132" fill="#1f2a3c"/><rect x="132" y="44" width="72" height="60" fill="#33465f"/></g>
-    <g transform="rotate(-2 300 88)"><rect x="238" y="22" width="88" height="130" fill="#3a3016"/><rect x="238" y="132" width="88" height="20" fill="#5a4a1c"/></g>
-    <g transform="rotate(3 410 96)"><rect x="344" y="26" width="98" height="134" fill="#2a1730"/><circle cx="393" cy="70" r="20" fill="#432046"/></g>
-    <!-- row 2 -->
-    <g transform="rotate(2 62 250)"><rect x="16" y="182" width="92" height="136" fill="#1d2a22"/><rect x="16" y="182" width="92" height="18" fill="#2f5540"/></g>
-    <g transform="rotate(-3 175 258)"><rect x="122" y="188" width="102" height="140" fill="#2d1a12"/><rect x="136" y="206" width="74" height="52" fill="#4a2a1a"/></g>
-    <g transform="rotate(2 300 250)"><rect x="240" y="180" width="90" height="140" fill="#182838"/><rect x="240" y="300" width="90" height="20" fill="#26506e"/></g>
-    <g transform="rotate(-2 410 256)"><rect x="346" y="186" width="96" height="138" fill="#341a1e"/><rect x="356" y="200" width="76" height="10" fill="#5a2a30"/></g>
-    <!-- row 3 -->
-    <g transform="rotate(-2 60 410)"><rect x="16" y="346" width="90" height="132" fill="#2a2333"/><rect x="16" y="346" width="90" height="18" fill="#463a5a"/></g>
-    <g transform="rotate(3 172 418)"><rect x="120" y="352" width="98" height="136" fill="#1f3230"/><circle cx="169" cy="410" r="18" fill="#2e4a48"/></g>
-    <g transform="rotate(-3 300 410)"><rect x="238" y="344" width="92" height="136" fill="#3a2412"/><rect x="238" y="460" width="92" height="20" fill="#5a3a1a"/></g>
-    <g transform="rotate(2 412 418)"><rect x="346" y="350" width="96" height="138" fill="#221430"/><rect x="358" y="366" width="72" height="50" fill="#3a2050"/></g>
-    <!-- bottom strip -->
-    <g transform="rotate(2 80 520)"><rect x="20" y="500" width="120" height="52" fill="#241820"/><circle cx="46" cy="526" r="12" fill="#3a2730"/><circle cx="94" cy="526" r="12" fill="#3a2730"/></g>
-    <g transform="rotate(-2 300 520)"><rect x="220" y="498" width="120" height="54" fill="#1b2333"/><rect x="238" y="512" width="84" height="26" fill="#2b3a55"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480">
+  <rect width="480" height="480" fill="#0f0b17"/>
+  <g opacity="0.5" stroke="#000" stroke-width="3">
+    <!-- big skewed slabs -->
+    <path d="M28 40 L150 24 L138 150 L20 168 Z" fill="#7c2d12"/>
+    <path d="M180 30 L300 46 L286 156 L172 140 Z" fill="#1e3a5f"/>
+    <path d="M330 24 L452 44 L440 150 L322 132 Z" fill="#3f2d63"/>
+    <!-- circles / targets -->
+    <circle cx="90" cy="300" r="46" fill="#155e3b"/>
+    <circle cx="90" cy="300" r="22" fill="#0f0b17"/>
+    <path d="M188 250 L318 236 L332 366 L200 380 Z" fill="#7a1f3d"/>
+    <circle cx="410" cy="290" r="44" fill="#a16207"/>
+    <!-- zigzag strip -->
+    <path d="M24 402 L64 380 L104 402 L144 380 L184 402 L184 470 L24 470 Z" fill="#1e3a5f"/>
+    <path d="M250 400 L370 388 L384 468 L262 480 Z" fill="#3f2d63"/>
+    <rect x="392" y="392" width="72" height="72" fill="#7c2d12"/>
+    <!-- small accents -->
+    <path d="M330 168 L376 160 L384 208 L336 216 Z" fill="#155e3b"/>
+    <circle cx="240" cy="200" r="14" fill="#a16207"/>
   </g>
 </svg>

@@ -2,9 +2,9 @@
 
 A personal portfolio with **two skins over one dataset**:
 
-- **ARCADE** (default) — an arcade-cabinet treatment: Street-Fighter-style *Brutal Pro*
-  wordmark ("D3athSkulll"), a retro-tech collage background (CRTs, VHS, cartridges,
-  joysticks…), CRT scanlines, health-bar section labels, cartridge nav, `HI-SCORE` /
+- **RETRO** (default) — a retro treatment: Street-Fighter-style *Brutal Pro*
+  wordmark ("D3ATHSKULLL") with a yellow→red gradient face, a neobrutalist
+  geometric background, subtle CRT scanlines, terminal-window chrome and a
   `PUSH START` HUD.
 - **VIM** (dark) — a calm terminal-OS / editor look: letter-spaced lime headings,
   bordered nav endpoints, panels with floating labels, terminal-window chrome, a
@@ -71,21 +71,63 @@ docker run -p 8080:8080 portfolio
 ```
 
 Multi-stage: builds the SPA + the release binary + the blog JSON, ships a slim runtime
-image. Host on Fly.io / Render / any container host. Set `SMTP_URL` to switch
-`POST /api/contact` from mock mode to real delivery.
+image. Host on Fly.io / Render / Railway / any container host — set `PORT` (the app
+reads it) and the mail env vars below.
+
+> **Vercel?** Not for the whole app — Vercel has no long-running server, and this is a
+> single Rust/Axum binary that also serves the API and the contact-mailer. Two ways to
+> use it: (a) deploy the container to Render/Fly/Railway and point your domain there;
+> or (b) host **only** the static SPA on Vercel (`cd frontend && npm run build`, output
+> `frontend/dist`) and run the Rust binary elsewhere, then set a Vercel rewrite so
+> `/api/*` and `/blog-assets/*` proxy to that backend URL. The contact form needs the
+> backend either way.
+
+### Configuration (`.env`)
+
+Copy [`.env.example`](.env.example) to `.env` (git-ignored, auto-loaded by
+`npm run dev` and `npm start`) and set:
+
+| var | purpose |
+|---|---|
+| `PUBLIC_SITE_URL` | the public URL where the site is hosted |
+| `PORT` | backend port (default `8080`) |
+| `SMTP_URL` | `smtps://user:pass@smtp.host:465` — switches `POST /api/contact` from mock mode to real delivery |
+| `CONTACT_TO` | recipient address for contact-form submissions |
+| `CONTACT_FROM` | from address on delivered mail (defaults to `CONTACT_TO`) |
 
 ---
 
 ## Authoring
 
+### Blog — one command
+
+```bash
+npm run blog
+```
+
+Opens an interactive menu that lists every post and lets you **[n]ew · [e]dit ·
+[d]elete · [p]ublish · [u]npublish · [c]heck** by row number. New/edit open the
+post's `index.md` in `$EDITOR`. Each change regenerates the static JSON, so with
+`npm run dev` running you just refresh the browser — `npm run dev` also watches
+`content/blog/` and rebuilds on any file save.
+
+Same actions as plain commands (each regenerates `.gen/`; add `--no-gen` to skip):
+
 | Task | Command |
 |---|---|
-| Edit résumé content | edit [`profile.json`](profile.json) |
-| New blog post | `npm run blog:new "My Post Title"` |
-| Add an image to a post | `npm run blog:add-image <slug> ./path/to/img.png [--cover]` |
+| List posts | `npm run blog:list` |
+| New post | `npm run blog:new "My Post Title"` |
+| Edit a post | `npm run blog:edit <slug>` |
+| Publish / unpublish (toggle `draft:`) | `npm run blog:publish <slug>` · `npm run blog:unpublish <slug>` |
+| Add an image | `npm run blog:add-image <slug> ./path/to/img.png [--cover]` |
 | Remove an image | `npm run blog:rm-image <slug> <image-name>` |
 | Delete a post | `npm run blog:rm <slug>` |
 | Validate all content | `npm run blog:check` |
+
+| Other | Command |
+|---|---|
+| Edit résumé links / labels | edit [`profile.json`](profile.json) → `resume` |
+| Replace a résumé PDF/source | drop it in `content/resumes/` as `Shivam_Resume_SDE.pdf` / `Shivam_Resume_Embedded.pdf` / `Shivam_Resume.typ`; `npm run dev` / `build` copies it to `frontend/public/` |
 | Regenerate TS types from the Rust model | `npm run gen:types` |
 
 ### How the blog is built (fully static)
@@ -97,13 +139,19 @@ image. Host on Fly.io / Render / any container host. Set `SMTP_URL` to switch
 Axum handlers just serve those files. `draft: true` hides a post from the production
 build (`bloggen --dev` includes it).
 
+**Pagination.** A line containing only `<!-- pagebreak -->` (or `+++`) splits a post
+into pages: `bloggen` emits `pages: string[]` + `pageCount` alongside the full `html`,
+and the post view shows Prev / Next controls. The `/blog` index list is paginated too
+(`?page=N`, `POSTS_PER_PAGE` in `frontend/src/pages.tsx`).
+
 ---
 
 ## Routes
 
-`/` · `/experience` · `/projects` · `/skills` · `/education` · `/achievements` ·
-`/resume` · `/contact` · `/blog` · `/blog/:slug` — plus a retro 404. The nav menu is
-generated from [`frontend/src/routes.config.ts`](frontend/src/routes.config.ts).
+`/` · `/experience` · `/projects` · `/skills` · `/designs` · `/education` ·
+`/test-scores` · `/extracurricular` · `/wins` · `/likes` · `/resume` · `/blog` ·
+`/blog/:slug` · `/contact` — plus a retro 404. The nav menu is generated from
+[`frontend/src/routes.config.ts`](frontend/src/routes.config.ts).
 
 ## Test
 

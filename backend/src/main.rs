@@ -97,9 +97,19 @@ async fn main() {
         IMMUTABLE,
     )));
 
-    let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
-        .await
-        .unwrap();
+    let listener = match tokio::net::TcpListener::bind(("0.0.0.0", port)).await {
+        Ok(l) => l,
+        Err(e) if e.kind() == std::io::ErrorKind::AddrInUse => {
+            tracing::error!(
+                "port {port} is already in use — stop the other server or set PORT to a free port"
+            );
+            std::process::exit(1);
+        }
+        Err(e) => {
+            tracing::error!("could not bind 0.0.0.0:{port}: {e}");
+            std::process::exit(1);
+        }
+    };
     tracing::info!("listening on http://localhost:{port}");
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
@@ -169,13 +179,63 @@ async fn contact(Json(form): Json<ContactForm>) -> impl IntoResponse {
         )
             .into_response();
     }
-    let configured = std::env::var("SMTP_URL").is_ok();
-    tracing::info!(%name, %email, configured, "contact message received ({} chars)", message.len());
-    (
-        StatusCode::ACCEPTED,
-        Json(serde_json::json!({ "status": if configured { "sent" } else { "mock" } })),
-    )
-        .into_response()
+    let smtp_url = std::env::var("SMTP_URL").ok().filter(|s| !s.is_empty());
+    tracing::info!(%name, %email, configured = smtp_url.is_some(),
+        "contact message received ({} chars)", message.len());
+
+    match smtp_url {
+        None => (
+            StatusCode::ACCEPTED,
+            Json(serde_json::json!({ "status": "mock" })),
+        )
+            .into_response(),
+        Some(url) => match send_contact_email(&url, name, email, message).await {
+            Ok(()) => (
+                StatusCode::ACCEPTED,
+                Json(serde_json::json!({ "status": "sent" })),
+            )
+                .into_response(),
+            Err(e) => {
+                tracing::error!("contact email failed: {e}");
+                (
+                    StatusCode::BAD_GATEWAY,
+                    Json(serde_json::json!({ "error": "mail delivery failed" })),
+                )
+                    .into_response()
+            }
+        },
+    }
+}
+
+/// Deliver a contact-form message over SMTP. Configuration comes from env:
+/// `SMTP_URL` (e.g. `smtps://user:pass@smtp.host:465`), `CONTACT_TO` (recipient),
+/// and optional `CONTACT_FROM` (envelope sender; defaults to `CONTACT_TO`).
+async fn send_contact_email(
+    smtp_url: &str,
+    name: &str,
+    email: &str,
+    message: &str,
+) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    use lettre::message::{header::ContentType, Mailbox};
+    use lettre::{AsyncSmtpTransport, AsyncTransport, Message, Tokio1Executor};
+
+    let to: String = std::env::var("CONTACT_TO")?;
+    let from: String = std::env::var("CONTACT_FROM").unwrap_or_else(|_| to.clone());
+
+    let msg = Message::builder()
+        .from(from.parse::<Mailbox>()?)
+        .to(to.parse::<Mailbox>()?)
+        .reply_to(format!("{name} <{email}>").parse::<Mailbox>()?)
+        .subject(format!("Portfolio contact — {name}"))
+        .header(ContentType::TEXT_PLAIN)
+        .body(format!(
+            "From: {name} <{email}>\n\n{message}\n"
+        ))?;
+
+    let mailer: AsyncSmtpTransport<Tokio1Executor> =
+        AsyncSmtpTransport::<Tokio1Executor>::from_url(smtp_url)?.build();
+    mailer.send(msg).await?;
+    Ok(())
 }
 
 async fn read_gen_json(root: PathBuf, name: &str) -> axum::response::Response {

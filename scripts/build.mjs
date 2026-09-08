@@ -4,10 +4,13 @@
 // Output: one runnable binary (backend/target/release/portfolio-backend) that serves
 // the SPA, the API and the generated blog. Run it with `npm start`.
 import { join } from "node:path";
-import { ROOT, say, ok, run, ensureRustLinkable } from "./lib.mjs";
+import { ROOT, say, ok, run, ensureRustLinkable, syncResumes } from "./lib.mjs";
 
 const toolchain = ensureRustLinkable();
 ok(`rust: ${toolchain}`);
+
+say("sync résumés from content/resumes/");
+ok(`${syncResumes()} file(s) copied to frontend/public/`);
 
 say("validate profile.json");
 await run("node", ["scripts/validate-profile.mjs"]);

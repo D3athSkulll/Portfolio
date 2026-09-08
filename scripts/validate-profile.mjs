@@ -51,7 +51,16 @@ for (const key of ["experience", "projects"]) {
 }
 
 ok(isArr(data.achievements) && data.achievements.every(isStr), "achievements must be an array of strings");
-ok(isArr(data.positions) && data.positions.every(isStr), "positions must be an array of strings");
+const isDropItem = (p) =>
+  isStr(p) ||
+  (p && isStr(p.title) && (p.bullets === undefined || (isArr(p.bullets) && p.bullets.every(isStr))));
+for (const key of ["positions", "testScores", "likes"]) {
+  if (key !== "positions" && data[key] === undefined) continue; // optional
+  ok(
+    isArr(data[key]) && data[key].every(isDropItem),
+    `${key} must be an array of strings or { title, bullets[] } objects`,
+  );
+}
 
 ok(isArr(data.skills) && data.skills.length > 0, "skills must be a non-empty array");
 for (const [i, s] of (data.skills ?? []).entries()) {

@@ -30,7 +30,7 @@
   --banner-bg: #14101d;
   --banner-fg: #ffd23f;
   --font-body: "Chakra Petch", "Trebuchet MS", system-ui, sans-serif;
-  --font-mono: "VT323", "Courier New", monospace;
+  --font-mono: "Jersey 15", "Silkscreen", "Chakra Petch", ui-monospace, monospace;
   --font-display: "Brutal Pro", "Arial Black", Impact, sans-serif;
 }
 
@@ -38,13 +38,13 @@
   --bg: #0d0f16;
   --panel: #12141c;
   --panel-2: #171a24;
-  --panel-fg: #b7bfcb;
-  --ink: #b7bfcb;
-  --muted: #5a6270;
-  --accent: #c7f544;
-  --accent-2: #7f8a6a;
-  --link: #c7f544;
-  --border: #2a2f3d;
+  --panel-fg: #e9edf3;
+  --ink: #e9edf3;
+  --muted: #939cad;
+  --accent: #d2f95a;
+  --accent-2: #a6b487;
+  --link: #d2f95a;
+  --border: #313747;
   --hud: #c7f544;
   --banner-bg: transparent;
   --banner-fg: #c7f544;
@@ -76,23 +76,22 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
 }
+[data-theme="vim"] body { font-size: 16px; }
 [data-theme="retro"] body {
-  background-image: var(--bg-tile);
-  background-size: 460px auto;
-}
-[data-theme="retro"] body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(1200px 640px at 50% 4%, rgba(255, 150, 40, 0.20), transparent 62%),
-    radial-gradient(1000px 720px at 50% 100%, rgba(170, 22, 12, 0.30), transparent 66%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 26%);
+  /* Neobrutalism: flat dark ground split on a hard diagonal, a fine dot grid and
+     a coarser blueprint grid over it. No motion, no images. Hard-bordered cream
+     panels carry the contrast. */
+  background-color: #141019;
+  background-image:
+    linear-gradient(135deg, #17131f 0 44%, #110d18 44% 100%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1.5px, transparent 1.6px),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px, 132px 132px, 132px 132px;
+  background-attachment: fixed;
 }
 #root { position: relative; z-index: 1; }
 a { color: var(--link); }
@@ -114,13 +113,12 @@ input, textarea, button { font: inherit; }
     0 7px 0 #7a0f06, 3px 10px 10px rgba(0, 0, 0, 0.5);
 }
 [data-theme="vim"] .wordmark {
-  background-image: none;
+  background: none;
   color: var(--accent);
   -webkit-text-fill-color: currentColor;
   transform: none;
-  text-shadow: none;
-  filter: none;
-  text-transform: lowercase;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55), 0 0 24px rgba(210, 249, 90, 0.25);
 }
 
 /* ---- marquee: slow attract-mode ribbon ---- */
@@ -132,6 +130,7 @@ input, textarea, button { font: inherit; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .blink { animation: blink 1.3s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track, .blink { animation: none !important; }
 }
@@ -143,26 +142,29 @@ input, textarea, button { font: inherit; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px);
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.018) 0 2px, transparent 2px 5px);
   mix-blend-mode: multiply;
 }
 [data-theme="vim"] .scanlines::after {
-  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 4px);
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.008) 0 2px, transparent 2px 5px);
   mix-blend-mode: screen;
 }
 
+/* real monospace for code, independent of the retro display font */
+:root { --font-code: ui-monospace, "JetBrains Mono", "Cascadia Code", "SF Mono", "Consolas", "Courier New", monospace; }
+
 /* ---- markdown prose (blog) ---- */
-.prose { line-height: 1.75; }
-.prose > * { margin: 0 0 1.05rem; }
+.prose { line-height: 1.75; font-size: 1rem; }
+.prose > * { margin: 0 0 1.1rem; }
 .prose h2, .prose h3 { margin: 2rem 0 0.7rem; font-weight: 700; letter-spacing: 0.01em; }
-.prose h2 { font-size: 1.3rem; }
-.prose h3 { font-size: 1.1rem; }
+.prose h2 { font-size: 1.45rem; }
+.prose h3 { font-size: 1.18rem; }
 .prose ul, .prose ol { padding-left: 1.4rem; }
-.prose li { margin: 0.3rem 0; }
+.prose li { margin: 0.35rem 0; }
 .prose a { text-decoration: underline; }
 .prose code {
-  font-family: var(--font-mono);
-  font-size: 0.95em;
+  font-family: var(--font-code);
+  font-size: 0.9em;
   background: color-mix(in srgb, var(--panel-fg) 10%, transparent);
   padding: 0.1em 0.35em;
   border-radius: 3px;
@@ -170,6 +172,7 @@ input, textarea, button { font: inherit; }
 .prose pre {
   background: #0b0f16;
   color: #d6def0;
+  font-family: var(--font-code);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 14px 16px;

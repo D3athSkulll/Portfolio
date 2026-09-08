@@ -8,6 +8,8 @@ import {
   Designs,
   EducationPage,
   Extracurricular,
+  TestScores,
+  Likes,
   Wins,
   Resume,
   Contact,
@@ -27,8 +29,10 @@ export default function App() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/designs" element={<Designs />} />
           <Route path="/education" element={<EducationPage />} />
+          <Route path="/test-scores" element={<TestScores />} />
           <Route path="/extracurricular" element={<Extracurricular />} />
           <Route path="/wins" element={<Wins />} />
+          <Route path="/likes" element={<Likes />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<BlogIndex />} />

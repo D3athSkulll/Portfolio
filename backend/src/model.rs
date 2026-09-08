@@ -13,7 +13,11 @@ pub struct Profile {
     pub experience: Vec<Entry>,
     pub projects: Vec<Entry>,
     pub achievements: Vec<String>,
-    pub positions: Vec<String>,
+    pub positions: Vec<Position>,
+    #[serde(default, rename = "testScores")]
+    pub test_scores: Vec<Position>,
+    #[serde(default)]
+    pub likes: Vec<Position>,
     pub skills: Vec<SkillGroup>,
     #[serde(default)]
     pub designs: Vec<Design>,
@@ -90,6 +94,21 @@ pub struct Entry {
     #[serde(default)]
     pub links: Vec<Link>,
     pub bullets: Vec<String>,
+}
+
+/// A position of responsibility. Either a plain one-liner or an entry with
+/// extra bullet points shown in a dropdown.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
+pub enum Position {
+    Detailed {
+        title: String,
+        #[serde(default)]
+        bullets: Vec<String>,
+    },
+    Simple(String),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -20,7 +20,13 @@ export type Meta = { siteTitle: string, tagline: string, footerCredit: string, v
 
 export type Person = { name: string, role: string, location: string, summary: string, contact: Array<Link>, };
 
-export type Profile = { meta: Meta, profile: Person, education: Array<Education>, experience: Array<Entry>, projects: Array<Entry>, achievements: Array<string>, positions: Array<string>, skills: Array<SkillGroup>, designs: Array<Design>, resume: Resume, };
+/**
+ * A position of responsibility. Either a plain one-liner or an entry with
+ * extra bullet points shown in a dropdown.
+ */
+export type Position = { title: string, bullets: Array<string>, } | string;
+
+export type Profile = { meta: Meta, profile: Person, education: Array<Education>, experience: Array<Entry>, projects: Array<Entry>, achievements: Array<string>, positions: Array<Position>, testScores: Array<Position>, likes: Array<Position>, skills: Array<SkillGroup>, designs: Array<Design>, resume: Resume, };
 
 export type Resume = { downloads: Array<ResumeVariant>, source: SourceLink | null, };
 

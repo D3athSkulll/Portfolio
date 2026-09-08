@@ -33,10 +33,41 @@ pub struct TocItem {
 pub struct Post {
     #[serde(flatten)]
     pub front_matter: FrontMatter,
+    /// Full post HTML (every page concatenated) — used for SEO / no-JS fallback.
     pub html: String,
+    /// Rendered HTML for each page, split on page-break markers in the source.
+    /// Always has at least one entry.
+    pub pages: Vec<String>,
+    #[serde(rename = "pageCount")]
+    pub page_count: u32,
     pub toc: Vec<TocItem>,
     #[serde(rename = "readingMinutes")]
     pub reading_minutes: u32,
+}
+
+/// A line consisting solely of one of these (after trimming) starts a new page.
+const PAGE_BREAK_MARKERS: &[&str] = &["<!-- pagebreak -->", "<!--pagebreak-->", "+++"];
+
+/// Split a markdown body into page chunks on page-break marker lines. Always
+/// returns at least one chunk.
+fn split_pages(body: &str) -> Vec<String> {
+    let mut pages: Vec<String> = vec![String::new()];
+    for line in body.split_inclusive('\n') {
+        if PAGE_BREAK_MARKERS.contains(&line.trim()) {
+            pages.push(String::new());
+        } else {
+            pages.last_mut().unwrap().push_str(line);
+        }
+    }
+    let mut out: Vec<String> = pages
+        .into_iter()
+        .map(|p| p.trim().to_string())
+        .filter(|p| !p.is_empty())
+        .collect();
+    if out.is_empty() {
+        out.push(String::new());
+    }
+    out
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -178,13 +209,25 @@ pub fn render_post(dir: &Path, assets_out: &Path) -> Result<Post> {
         v
     });
 
-    let (html, toc) = markdown_to_html(&body);
     let words = body.split_whitespace().count() as u32;
     let reading_minutes = (words / 200).max(1);
+
+    // Render each page separately; the table of contents spans the whole post.
+    let mut pages: Vec<String> = Vec::new();
+    let mut toc: Vec<TocItem> = Vec::new();
+    for src in split_pages(&body) {
+        let (h, mut t) = markdown_to_html(&src);
+        pages.push(h);
+        toc.append(&mut t);
+    }
+    let html = pages.join("\n");
+    let page_count = pages.len() as u32;
 
     Ok(Post {
         front_matter: FrontMatter { cover, ..fm },
         html,
+        pages,
+        page_count,
         toc,
         reading_minutes,
     })
@@ -385,5 +428,16 @@ mod tests {
         assert!(html.contains("<h2 id=\"hi\">Hi</h2>"), "got: {html}");
         assert_eq!(toc[0].id, "hi");
         assert_eq!(toc[0].text, "Hi");
+    }
+
+    #[test]
+    fn page_breaks_split_the_body() {
+        assert_eq!(split_pages("only one page").len(), 1);
+        let p = split_pages("page one\n\n<!-- pagebreak -->\n\npage two\n+++\npage three");
+        assert_eq!(p.len(), 3);
+        assert_eq!(p[0], "page one");
+        assert_eq!(p[2], "page three");
+        // no content at all still yields one (empty) page
+        assert_eq!(split_pages("").len(), 1);
     }
 }

@@ -7,6 +7,7 @@ export type {
   Entry,
   Education,
   SkillGroup,
+  Position,
   Design,
   Resume,
   ResumeVariant,
@@ -26,7 +27,11 @@ export interface BlogIndexEntry {
 
 export interface BlogPost extends BlogIndexEntry {
   draft: boolean;
+  /** Full post HTML (every page concatenated) — SEO / no-JS fallback. */
   html: string;
+  /** Rendered HTML per page, split on page-break markers. Always length >= 1. */
+  pages: string[];
+  pageCount: number;
   toc: { level: number; text: string; id: string }[];
   readingMinutes: number;
 }

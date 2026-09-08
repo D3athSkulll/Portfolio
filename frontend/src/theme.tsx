@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Theme = "retro" | "vim";
 
 export const THEMES: { id: Theme; label: string }[] = [
-  { id: "retro", label: "ARCADE" },
+  { id: "retro", label: "RETRO" },
   { id: "vim", label: "VIM" },
 ];
 

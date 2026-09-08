@@ -11,12 +11,13 @@ export function FilterBar({
   allLabel?: string;
 }) {
   const btn =
-    "font-mono text-[11px] uppercase tracking-wider px-2.5 py-1 border-2 retro:border-black " +
+    "inline-flex items-center font-mono text-[13px] sm:text-sm uppercase tracking-wider px-3 py-1.5 border-2 retro:border-[#0b0810] " +
     "vim:border vim:border-line vim:rounded cursor-pointer transition-colors";
   const on = "bg-accent text-black retro:text-black vim:text-[#0d0f16] font-bold";
-  const off = "bg-transparent text-fg retro:text-black/80 hover:bg-panel2";
+  const off =
+    "bg-transparent text-fg retro:text-black hover:bg-accent hover:text-black vim:hover:text-accent vim:hover:border-accent";
   return (
-    <div className="mb-3 flex flex-wrap items-center gap-1.5">
+    <div className="mb-3 flex flex-wrap items-center gap-2">
       <button className={`${btn} ${value === null ? on : off}`} onClick={() => onChange(null)}>
         {allLabel}
       </button>

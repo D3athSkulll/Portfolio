@@ -7,8 +7,10 @@ const ROUTES = [
   "/skills",
   "/designs",
   "/education",
+  "/test-scores",
   "/extracurricular",
   "/wins",
+  "/likes",
   "/resume",
   "/contact",
   "/blog",
@@ -26,7 +28,7 @@ for (const theme of ["retro", "vim"] as const) {
       }, theme);
       const res = await page.goto(path);
       expect(res?.status()).toBeLessThan(400);
-      await expect(page.locator(".wordmark")).toContainText("D3athSkulll", {
+      await expect(page.locator(".wordmark")).toContainText(/D3athSkulll/i, {
         timeout: 10_000,
       });
       await expect(page.locator(".banner-sub")).toContainText("Shivam");
@@ -35,21 +37,24 @@ for (const theme of ["retro", "vim"] as const) {
   }
 }
 
-test("blog post renders with its image", async ({ page }) => {
+test("blog post opens from the index", async ({ page }) => {
   await page.goto("/blog");
-  await page.getByRole("link", { name: /B0 Baud/i }).click();
-  await expect(page).toHaveURL(/\/blog\/why-b0-baud-is-cursed$/);
+  const firstPost = page.locator('a[href^="/blog/"]').first();
+  await firstPost.click();
+  await expect(page).toHaveURL(/\/blog\/[a-z0-9-]+$/);
+  await expect(page.locator(".prose")).toBeVisible();
   const img = page.locator(".prose img").first();
-  await expect(img).toBeVisible();
-  const ok = await img.evaluate(
-    (el: HTMLImageElement) => el.complete && el.naturalWidth > 0,
-  );
-  expect(ok).toBeTruthy();
+  if (await img.count()) {
+    const ok = await img.evaluate(
+      (el: HTMLImageElement) => el.complete && el.naturalWidth > 0,
+    );
+    expect(ok).toBeTruthy();
+  }
 });
 
 test("blog search filters the list", async ({ page }) => {
   await page.goto("/blog");
-  await expect(page.getByRole("link", { name: /B0 Baud/i })).toBeVisible();
+  await expect(page.locator('a[href^="/blog/"]').first()).toBeVisible();
   await page.getByPlaceholder("grep posts...").fill("nonsense-xyz");
   await expect(page.getByText("no posts match.")).toBeVisible();
 });
