@@ -1,0 +1,22 @@
+{
+  "name": "portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,web -c green,cyan \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cd backend && cargo run",
+    "dev:web": "cd frontend && npm run dev",
+    "build": "node scripts/validate-profile.mjs && npm run blog:check && npm run bloggen -- --dev && cd frontend && npm run build && cd ../backend && cargo build --release",
+    "bloggen": "cd backend && cargo run --bin bloggen --",
+    "blog:new": "node scripts/blog.mjs new",
+    "blog:add-image": "node scripts/blog.mjs add-image",
+    "blog:rm-image": "node scripts/blog.mjs rm-image",
+    "blog:rm": "node scripts/blog.mjs rm",
+    "blog:check": "node scripts/blog.mjs check",
+    "check": "node scripts/validate-profile.mjs && node scripts/blog.mjs check"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

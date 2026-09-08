@@ -1,0 +1,16 @@
+# Rust
+/backend/target/
+
+# Node
+node_modules/
+/frontend/dist/
+
+# Generated blog artifacts
+/.gen/
+/frontend/public/blog-assets/
+*.gen.json
+
+# Env / editor
+.env
+.env.local
+.DS_Store
