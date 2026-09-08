@@ -208,19 +208,38 @@ Derived from the mockups' left-menu (`ABOUT_ME.TXT`, `SKILLS.DAT`, `PROJECTS/`, 
 
 Navigation component renders this route list from a small config array, with the retro boxed-menu presentation in light mode and the Rust-Book sidebar TOC in dark mode. Keep URLs clean and shareable; no hash routing.
 
-## Retro elements to include (light theme), all data-driven
+## Retro elements to include (light/arcade theme), all data-driven
 
-- Top **era switcher** tab row (`1986 · 1996 · 2006 · …`) — repurpose as a decorative "site era" selector or map to a fun timeline of the profile; it must not break navigation.
-- Centered **title banner** with `meta.siteTitle` in green-on-blue, flame accents, and `meta.tagline` beneath.
-- **Marquee status ribbon** with `<< —=(( o ))=— >>` separators cycling short status strings.
-- Boxed **left navigation menu** (`★ MENU ★`).
-- **Visitor counter** widget seeded from `meta.visitorCountSeed` (increment client-side in `localStorage`; purely cosmetic).
-- **`[SYSTEM INFO]`** box: user, role, status `ONLINE`, uptime `99.9%`.
-- **Novelty badges**: "UNDER CONSTRUCTION", "DON'T CLICK HERE" (clicking triggers a harmless easter egg), "YOU'VE GOT MAIL".
-- **Y2K countdown block** counting toward `meta.y2kCountdownTarget`.
-- Twin **orange / green CTA bars** above and below main content (e.g. "◀ PREV SECTION" / "NEXT SECTION ▶").
+The retro skin is an **arcade-cabinet / 90s–2000s console** treatment, drawn from
+the *Abhishar v15* magazine cover (cinematic dark room, warm amber/red glow, a CRT
+running a fighting game, hand-labelled Game Boy cartridges, poster collage, flame
+graffiti title) fused with the *Belleza '96* homepage furniture. Chrome is dark and
+cinematic; the content panel is a **bright CRT-screen / cartridge-label surface**
+(dark text on cream) so body copy stays WCAG AA.
+
+- **Flame graffiti title** — `meta.siteTitle` in a heavy skewed display face with a
+  yellow→orange→red gradient fill, dark stroke and hard drop shadow (the "ABHISHAR"
+  wordmark). `meta.tagline` beneath in uppercase mono, plus a blinking **`▶ PUSH START`**.
+- **Warm room glow**: fixed radial amber (top) + red (bottom) vignette over a faint
+  diagonal poster-tile texture.
+- **CRT content window**: scanline overlay, thick bezel, `C:\USERS\SHIVAM\<FILE>` titlebar.
+- **`— STAGE SELECT —` era row** (`1986 · 1996 · 2006 · …`) — decorative, non-breaking.
+- **Attract-mode marquee**: cycles `INSERT COIN`, `PLAYER 1 READY`, `HI-SCORE …`,
+  `FINISH HIM`, `CONTINUE? 9 8 7…` between `<< —=(( o ))=— >>` separators.
+- **Section labels = health/energy bars**: green→yellow→red fill, prefixed `▶ P1`.
+- **Left nav menu = Game Boy cartridges**: chunky beveled items with a corner notch,
+  active item lit amber; `★ MENU ★` header.
+- **`[SYSTEM INFO]` + `HI-SCORE` panel**: user, role, status `ONLINE`, uptime `99.9%`,
+  and the **visitor counter** rendered as `HI-SCORE` seeded from `meta.visitorCountSeed`
+  (client-side `localStorage`, cosmetic).
+- **Novelty badges** as pause-menu items: `UNDER CONSTRUCTION`, `DON'T CLICK HERE`
+  (harmless easter egg), `YOU'VE GOT MAIL`.
+- **Countdown block** to `meta.y2kCountdownTarget`, styled as a glowing arcade HUD.
+- Twin **green / amber arcade-button CTA bars** above and below content
+  ("◀ PREV" / "NEXT ▶").
 - Footer: `© <year> <name> · <meta.footerCredit> · No frames. No problem.`
-- Tiled background, beveled borders, `Times`/`Courier` era fonts — kept legible and not seizure-inducing (no autoplaying full-page animation; respect `prefers-reduced-motion`).
+- Kept legible and not seizure-inducing: no full-page animation, `prefers-reduced-motion`
+  disables the blink and marquee scroll.
 
 ## Docs elements to include (dark theme)
 

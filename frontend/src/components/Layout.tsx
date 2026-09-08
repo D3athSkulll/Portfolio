@@ -6,11 +6,12 @@ import { useProfile } from "../api";
 
 const ERAS = ["1986", "1996", "2006", "2016", "2026", "2036", "2046"];
 const STATUS = [
-  "SYSTEM ONLINE",
-  "UPTIME 99.9%",
+  "INSERT COIN",
+  "PLAYER 1 READY",
+  "HI-SCORE 013377",
   "NO FRAMES. NO PROBLEM.",
-  "BEST VIEWED IN ANY BROWSER",
-  "COMPILING...",
+  "FINISH HIM",
+  "CONTINUE? 9 8 7...",
 ];
 
 function useCountdown(target: string) {
@@ -62,22 +63,33 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div style={{ maxWidth: 1180, margin: "0 auto", padding: "14px" }}>
-      {/* era tab row (decorative, non-breaking) */}
-      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap" }}>
-        {ERAS.map((e) => (
-          <span
-            key={e}
-            className="chip"
-            style={{ opacity: e === "1996" ? 1 : 0.45 }}
-          >
-            {e}
-          </span>
-        ))}
+      {/* era tab row = arcade STAGE SELECT (decorative, non-breaking) */}
+      <div style={{ textAlign: "center" }}>
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 11,
+            letterSpacing: 2,
+            opacity: 0.7,
+          }}
+        >
+          — STAGE SELECT —
+        </span>
+        <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", marginTop: 4 }}>
+          {ERAS.map((e) => (
+            <span key={e} className="chip" style={{ opacity: e === "1996" ? 1 : 0.4 }}>
+              {e}
+            </span>
+          ))}
+        </div>
       </div>
 
       <header className="banner" style={{ marginTop: 10 }}>
         <h1>{meta?.siteTitle ?? "LOADING..."}</h1>
         <p>{meta?.tagline ?? "\u00a0"}</p>
+        <p className="blink" style={{ marginTop: 4, color: "var(--hud)" }}>
+          {"\u25b6"} PUSH START
+        </p>
       </header>
 
       <div className="marquee" style={{ margin: "10px 0" }}>
