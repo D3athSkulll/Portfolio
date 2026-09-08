@@ -216,32 +216,68 @@ export function Resume() {
 export function Contact() {
   const { data, isLoading } = useProfile();
   if (isLoading || !data) return <Loading />;
+  const c = data.profile.contact;
+  const direct = c.filter((x) => x.icon === "phone" || x.icon === "envelope");
+  const networks = c.filter((x) => !["phone", "envelope"].includes(x.icon));
   return (
     <>
       <Label>COMM_LINK.PROTO</Label>
-      <p>Establish secure connection with system administrator.</p>
-      <ul>
-        {data.profile.contact.map((c) => (
-          <li key={c.href}>
-            <a href={c.href} target="_blank" rel="noreferrer">
-              {c.icon.toUpperCase()}: {c.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <div className="badge" style={{ textAlign: "left", marginTop: 12 }}>
-        AVAILABILITY_STATUS
-        <br />
-        current status: ● ONLINE
-        <br />
-        freelance: AVAILABLE
-        <br />
-        full-time: OPEN TO DISCUSS
-        <br />
-        preferred contact: email or linkedin
+      <p style={{ marginTop: -4 }}>Establish secure connection with system administrator.</p>
+
+      <div className="comm-grid" style={{ marginTop: 14 }}>
+        <div className="comm-panel">
+          <span className="lbl">TERMINAL_MAILER.EXE</span>
+          <ContactForm mailto={direct.find((x) => x.icon === "envelope")?.href} />
+        </div>
+
+        <div>
+          <div className="comm-panel">
+            <span className="lbl">Direct_Communication</span>
+            {direct.map((x) => (
+              <div className="row" key={x.href}>
+                <span className="k">{x.icon === "phone" ? "phone" : "email"}</span>
+                <a href={x.href}>{x.label}</a>
+              </div>
+            ))}
+            <div className="row">
+              <span className="k">location</span>
+              <span>{data.profile.location}</span>
+            </div>
+          </div>
+
+          <div className="comm-panel" style={{ marginTop: 18 }}>
+            <span className="lbl">Professional_Networks</span>
+            {networks.map((x) => (
+              <div className="row" key={x.href}>
+                <span className="k">{x.icon}</span>
+                <a href={x.href} target="_blank" rel="noreferrer">
+                  {x.label}
+                </a>
+              </div>
+            ))}
+          </div>
+
+          <div className="comm-panel" style={{ marginTop: 18 }}>
+            <span className="lbl">Availability_Status</span>
+            <div className="row">
+              <span className="k">status</span>
+              <span>● ONLINE</span>
+            </div>
+            <div className="row">
+              <span className="k">freelance</span>
+              <span>AVAILABLE</span>
+            </div>
+            <div className="row">
+              <span className="k">full-time</span>
+              <span>OPEN TO DISCUSS</span>
+            </div>
+            <div className="row">
+              <span className="k">reply time</span>
+              <span>~1 day · email or linkedin</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <Label>&gt; TRANSMIT_MESSAGE</Label>
-      <ContactForm mailto={data.profile.contact.find((c) => c.icon === "envelope")?.href} />
       <Eof />
     </>
   );
@@ -264,24 +300,46 @@ function ContactForm({ mailto }: { mailto?: string }) {
       setState("err");
     }
   };
-  const field = { display: "block", width: "100%", marginTop: 4, marginBottom: 10, padding: 6, fontFamily: "var(--font-mono)" } as const;
+  const field = { display: "block", width: "100%", marginTop: 4, marginBottom: 12 } as const;
   return (
     <form onSubmit={submit}>
       <label>
-        &gt; NAME
-        <input style={field} required value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+        &gt; ENTER_NAME
+        <input
+          style={field}
+          placeholder="[Type name here...]"
+          required
+          value={f.name}
+          onChange={(e) => setF({ ...f, name: e.target.value })}
+        />
       </label>
       <label>
-        &gt; EMAIL
-        <input style={field} type="email" required value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
+        &gt; YOUR_EMAIL
+        <input
+          style={field}
+          type="email"
+          placeholder="[user@remote_host.net]"
+          required
+          value={f.email}
+          onChange={(e) => setF({ ...f, email: e.target.value })}
+        />
       </label>
       <label>
-        &gt; MESSAGE
-        <textarea style={{ ...field, minHeight: 90 }} required value={f.message} onChange={(e) => setF({ ...f, message: e.target.value })} />
+        &gt; MESSAGE_STRING
+        <textarea
+          style={{ ...field, minHeight: 110 }}
+          placeholder="[Initiating text buffer...]"
+          required
+          value={f.message}
+          onChange={(e) => setF({ ...f, message: e.target.value })}
+        />
       </label>
-      <button className="cta next" style={{ padding: "8px 14px", border: "2px solid var(--border)" }} disabled={state === "sending"}>
-        {state === "sending" ? "TRANSMITTING..." : "TRANSMIT_DATA ▶"}
-      </button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+        <span className="buffer-ready">Buffer_Ready</span>
+        <button className="cta next" style={{ padding: "9px 16px", flex: "0 0 auto" }} disabled={state === "sending"}>
+          {state === "sending" ? "TRANSMITTING..." : "TRANSMIT_DATA ▶"}
+        </button>
+      </div>
       {state === "ok" && <p className="eof">» MESSAGE QUEUED. THANKS.</p>}
       {state === "err" && (
         <p className="eof">

@@ -210,6 +210,17 @@ export default function Layout({ children }: { children: ReactNode }) {
         © {new Date().getFullYear()} {data?.profile.name ?? ""} · {meta?.footerCredit ?? ""} · No
         frames. No problem.
       </footer>
+
+      <div className="statusbar">
+        <span>
+          UPTIME: <span className="lit">99.9%</span> &nbsp;|&nbsp; USER:{" "}
+          <span className="lit">
+            {(data?.profile.name.split(" ")[0] ?? "guest").toLowerCase()}_dev
+          </span>{" "}
+          &nbsp;|&nbsp; NET: <span className="lit">CONNECTED</span>
+        </span>
+        <span>V1.0.4-STABLE</span>
+      </div>
     </div>
   );
 }

@@ -9,7 +9,8 @@
 [data-theme="retro"] {
   /* cinematic arcade-room dark chrome, bright "CRT screen / cartridge label" content */
   --bg: #0c0a12;
-  --bg-tile: repeating-linear-gradient(45deg, #14101d 0 16px, #100c18 16px 32px);
+  /* poster-wall collage (inline SVG) — echoes the Abhishar v15 cover */
+  --bg-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='380'%3E%3Crect width='100%25' height='100%25' fill='%23100c18'/%3E%3Cg opacity='0.55'%3E%3Crect x='10' y='12' width='80' height='118' rx='3' fill='%232f171d' transform='rotate(-3 50 71)'/%3E%3Crect x='108' y='20' width='76' height='110' fill='%23202834' transform='rotate(2 146 75)'/%3E%3Crect x='200' y='10' width='84' height='122' fill='%23342a16' transform='rotate(-2 242 71)'/%3E%3Crect x='20' y='150' width='78' height='116' fill='%231d2a22' transform='rotate(2 59 208)'/%3E%3Crect x='116' y='160' width='80' height='118' fill='%232d1a12' transform='rotate(-3 156 219)'/%3E%3Crect x='210' y='152' width='74' height='112' fill='%23261327' transform='rotate(3 247 208)'/%3E%3Crect x='28' y='292' width='76' height='78' fill='%231f2633' transform='rotate(-2 66 331)'/%3E%3Crect x='122' y='298' width='78' height='74' fill='%23322614' transform='rotate(2 161 335)'/%3E%3Crect x='214' y='290' width='70' height='80' fill='%232a181c' transform='rotate(-3 249 330)'/%3E%3C/g%3E%3C/svg%3E");
   --panel: #ece7d6;
   --panel-fg: #1b1712;
   --ink: #ece7d6;
@@ -29,21 +30,25 @@
 }
 
 [data-theme="docs"] {
-  --bg: #0b0f0a;
+  /* deep blue-black terminal-OS, one lime accent — per the COMM_LINK.PROTO screen */
+  --bg: #0d0f16;
   --bg-tile: none;
-  --panel: #10140f;
-  --panel-fg: #c9d3c1;
-  --ink: #c9d3c1;
+  --panel: #12141c;
+  --panel-2: #161922;
+  --panel-fg: #aeb6c2;
+  --ink: #aeb6c2;
   --banner-bg: transparent;
-  --banner-fg: #b6ff3b;
-  --accent: #b6ff3b;
-  --accent-2: #7f9a5a;
-  --link: #b6ff3b;
-  --border: #26311f;
-  --marquee-fg: #7f9a5a;
-  --chip-bg: #171d14;
-  --font-body: ui-monospace, "JetBrains Mono", "Courier New", monospace;
-  --font-mono: ui-monospace, "JetBrains Mono", "Courier New", monospace;
+  --banner-fg: #c7f544;
+  --accent: #c7f544;
+  --accent-2: #6f7b62;
+  --link: #c7f544;
+  --border: #2a2f3d;
+  --border-lit: #4b5a2e;
+  --marquee-fg: #6f7b62;
+  --chip-bg: #171b24;
+  --muted: #5a6270;
+  --font-body: ui-monospace, "JetBrains Mono", "Cascadia Code", "Courier New", monospace;
+  --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Code", "Courier New", monospace;
   --frame-shadow: none;
 }
 
@@ -492,3 +497,201 @@ form textarea:focus {
 /* readable body text stays dark-on-cream inside the panel */
 [data-theme="retro"] main .win { line-height: 1.55; }
 [data-theme="retro"] .entry { border-top: 2px dashed rgba(0, 0, 0, 0.25); }
+
+/* ============================================================
+   DOCS POLISH — modeled on the COMM_LINK.PROTO terminal screen:
+   big letter-spaced lime title, muted subtitle, bordered panels
+   with floating lime labels, terminal-window chrome, status bar.
+   ============================================================ */
+[data-theme="docs"] body { background: var(--bg); }
+
+[data-theme="docs"] .banner h1 {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+}
+[data-theme="docs"] .banner p {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 11px;
+}
+
+[data-theme="docs"] .win {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+[data-theme="docs"] .win-titlebar {
+  background: var(--panel-2);
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+[data-theme="docs"] .win-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  border-color: var(--muted);
+  background: transparent;
+}
+
+/* the first label inside a content panel = the page's hero title */
+[data-theme="docs"] main .win .section-label:first-child {
+  font-size: clamp(1.3rem, 3.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+[data-theme="docs"] main .win .section-label:first-child::before,
+[data-theme="docs"] main .win .section-label:first-child::after { content: ""; }
+
+[data-theme="docs"] .section-label {
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  font-size: 12px;
+}
+
+/* bordered card with a floating lime label (badges reused as info panels) */
+[data-theme="docs"] .badge {
+  position: relative;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--panel-fg);
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 14px 12px 12px;
+  margin-top: 14px;
+  line-height: 1.9;
+}
+[data-theme="docs"] .badge:first-line {
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+[data-theme="docs"] .menu-title {
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+[data-theme="docs"] .menu a { letter-spacing: 0.08em; font-size: 12px; }
+[data-theme="docs"] .menu a.active {
+  background: var(--accent);
+  color: #0d0f16;
+  border-left-color: var(--accent);
+  font-weight: 700;
+}
+
+[data-theme="docs"] .chip {
+  background: transparent;
+  border: 1px solid var(--border-lit);
+  color: var(--accent);
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+}
+
+[data-theme="docs"] .cta {
+  background: transparent;
+  border: 1px solid var(--border-lit);
+  color: var(--accent);
+  border-radius: 2px;
+  letter-spacing: 0.12em;
+}
+[data-theme="docs"] .cta:hover { background: var(--panel-2); }
+[data-theme="docs"] .theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-lit);
+  color: var(--accent);
+  border-radius: 2px;
+  letter-spacing: 0.12em;
+}
+
+[data-theme="docs"] form label { color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+[data-theme="docs"] form input,
+[data-theme="docs"] form textarea {
+  background: #0b0d13;
+  border: 1px solid var(--border);
+  color: var(--panel-fg);
+  border-radius: 2px;
+}
+[data-theme="docs"] form input::placeholder,
+[data-theme="docs"] form textarea::placeholder { color: var(--muted); }
+[data-theme="docs"] form button.cta {
+  background: var(--accent);
+  color: #0d0f16;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+[data-theme="docs"] .eof { color: var(--muted); letter-spacing: 0.1em; }
+[data-theme="docs"] hr { border: none; border-top: 1px solid var(--border); }
+[data-theme="docs"] .entry { border-top: 1px solid var(--border); }
+
+/* full-width bottom status bar */
+.statusbar {
+  max-width: 1180px;
+  margin: 10px auto 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--panel-2);
+}
+.statusbar .lit { color: var(--accent); }
+[data-theme="retro"] .statusbar {
+  border: 2px solid #000;
+  background: #000;
+  color: #35ff5b;
+}
+[data-theme="retro"] .statusbar .lit { color: #ffd23f; }
+
+/* comm-link two-column layout for the contact page */
+.comm-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 780px) {
+  .comm-grid { grid-template-columns: 1.4fr 1fr; }
+}
+.comm-panel {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  padding: 16px 14px 14px;
+}
+.comm-panel > .lbl {
+  position: absolute;
+  top: -9px;
+  left: 10px;
+  padding: 0 6px;
+  background: var(--panel-2);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.comm-panel .row { display: flex; gap: 8px; padding: 3px 0; font-size: 13px; }
+.comm-panel .row .k { color: var(--accent-2); min-width: 92px; text-transform: uppercase; font-size: 11px; }
+[data-theme="retro"] .comm-panel {
+  background: var(--panel);
+  border: 2px solid var(--border);
+}
+[data-theme="retro"] .comm-panel > .lbl { background: var(--panel); color: #7a4a00; }
+[data-theme="retro"] .comm-panel .row .k { color: #7a4a00; }
+.buffer-ready { font-family: var(--font-mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+.buffer-ready::before { content: "● "; }
