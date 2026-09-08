@@ -15,7 +15,7 @@ const exe = join(
   process.platform === "win32" ? "portfolio-backend.exe" : "portfolio-backend",
 );
 if (!existsSync(exe)) {
-  console.error(`missing ${exe} — run: cargo build --release --manifest-path backend/Cargo.toml`);
+  console.error(`missing ${exe}\nrun \`npm run build\` first to produce the release binary + SPA + blog.`);
   process.exit(1);
 }
 const child = spawn(exe, { cwd: root, stdio: "inherit", env: process.env });
