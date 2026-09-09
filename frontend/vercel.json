@@ -6,7 +6,8 @@
   "rewrites": [
     { "source": "/api/profile", "destination": "/profile.json" },
     { "source": "/api/blog", "destination": "/blog-index.json" },
-    { "source": "/api/blog/:slug", "destination": "/blog/:slug.json" }
+    { "source": "/api/blog/:slug", "destination": "/blog/:slug.json" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -16,4 +17,4 @@
       ]
     }
   ]
-}
+}   
