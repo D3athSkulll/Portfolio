@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-/* theme is toggled via <html data-theme="retro|vim"> */
+/* theme is toggled via <html data-theme="retro|vim|space"> */
 @custom-variant retro (&:where([data-theme="retro"], [data-theme="retro"] *));
-@custom-variant vim (&:where([data-theme="vim"], [data-theme="vim"] *));
+/* `space` reuses the vim (dark terminal) structure, then adds its own polish. */
+@custom-variant vim (&:where([data-theme="vim"], [data-theme="vim"] *, [data-theme="space"], [data-theme="space"] *));
+@custom-variant space (&:where([data-theme="space"], [data-theme="space"] *));
 
 /* ---- fonts ---- */
 @font-face {
@@ -23,7 +25,7 @@
   --ink: #efe9d8;
   --muted: #7c6f57;
   --accent: #ff3b1f;
-  --accent-2: #b5620a;
+  --accent-2: #ff8b0e;
   --link: #164cc4;
   --border: #171310;
   --hud: #1c7a2e;
@@ -49,6 +51,28 @@
   --banner-bg: transparent;
   --banner-fg: #c7f544;
   --font-body: ui-monospace, "JetBrains Mono", "Cascadia Code", "Courier New", monospace;
+  --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Code", "Courier New", monospace;
+}
+
+/* ---- SPACE: NASA mission-control / astronaut HUD phosphor screen ---- */
+[data-theme="space"] {
+  --bg: #03060c;
+  --panel: #081019;
+  --panel-2: #0c1622;
+  --panel-fg: #cfe4ff;
+  --ink: #cfe4ff;
+  --muted: #6a819a;
+  --accent: #ffb648;        /* amber phosphor */
+  --accent-2: #38bdf8;      /* cyan telemetry */
+  --link: #7dd3fc;
+  --border: #17384c;
+  --hud: #39ff9e;           /* green readout */
+  --banner-bg: #05121b;
+  --banner-fg: #39ff9e;
+  /* geometric sans for reading text (a glass-cockpit / EVA-display feel) — this
+     is what separates SPACE from VIM's all-monospace look. Telemetry / labels
+     stay monospace via explicit `font-mono`. */
+  --font-body: "Chakra Petch", "Eurostile", "Trebuchet MS", system-ui, sans-serif;
   --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Code", "Courier New", monospace;
 }
 
@@ -97,6 +121,151 @@ body {
 a { color: var(--link); }
 img { max-width: 100%; }
 input, textarea, button { font: inherit; }
+
+/* =====================================================================
+   Per-theme scroll behaviour, scrollbars, cursors and selection
+   ===================================================================== */
+
+html { scroll-behavior: smooth; }
+body { overscroll-behavior-y: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+/* RETRO is meant to feel mechanical / instant */
+:root[data-theme="retro"] { scroll-behavior: auto; }
+
+/* ---- scrollbars (Firefox) ---- */
+:root[data-theme="retro"] * { scrollbar-width: auto; scrollbar-color: #ff8b0e #14101d; }
+:root[data-theme="vim"] * { scrollbar-width: thin; scrollbar-color: #4a5442 #0d0f16; }
+:root[data-theme="space"] * { scrollbar-width: thin; scrollbar-color: #1f6f8b #05121b; }
+
+/* ---- scrollbars (WebKit / Chromium) ---- */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* RETRO — chunky neobrutalist */
+:root[data-theme="retro"] ::-webkit-scrollbar { width: 16px; height: 16px; }
+:root[data-theme="retro"] ::-webkit-scrollbar-track {
+  background: #14101d;
+  border-left: 3px solid #000;
+}
+:root[data-theme="retro"] ::-webkit-scrollbar-thumb {
+  background: #ff8b0e;
+  border: 3px solid #000;
+  border-radius: 0;
+  box-shadow: inset -3px -3px 0 rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="retro"] ::-webkit-scrollbar-thumb:hover { background: #ff3b1f; }
+:root[data-theme="retro"] ::-webkit-scrollbar-thumb:active { background: #ffd23f; }
+:root[data-theme="retro"] ::-webkit-scrollbar-button {
+  height: 16px;
+  background: #ffd23f;
+  border: 3px solid #000;
+}
+
+/* VIM — thin, quiet */
+:root[data-theme="vim"] ::-webkit-scrollbar { width: 9px; height: 9px; }
+:root[data-theme="vim"] ::-webkit-scrollbar-track { background: transparent; }
+:root[data-theme="vim"] ::-webkit-scrollbar-thumb {
+  background: #3a4235;
+  border-radius: 2px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+:root[data-theme="vim"] ::-webkit-scrollbar-thumb:hover { background: #c7f544; }
+
+/* SPACE — cockpit rail with a cyan glow */
+:root[data-theme="space"] ::-webkit-scrollbar { width: 11px; height: 11px; }
+:root[data-theme="space"] ::-webkit-scrollbar-track {
+  background: #05121b;
+  border-left: 1px solid #17384c;
+}
+:root[data-theme="space"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #38bdf8, #1f6f8b);
+  border-radius: 0;
+  border: 1px solid #0a2230;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
+}
+:root[data-theme="space"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7dd3fc, #38bdf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+}
+
+/* ---- text selection ---- */
+:root[data-theme="retro"] ::selection { background: #000; color: #ffd23f; }
+:root[data-theme="vim"] ::selection { background: #c7f544; color: #0d0f16; }
+:root[data-theme="space"] ::selection { background: #38bdf8; color: #03060c; text-shadow: none; }
+
+/* ---- caret + accent colour for form controls ---- */
+:root[data-theme="retro"] { caret-color: #ff3b1f; accent-color: #ff8b0e; }
+:root[data-theme="vim"] { caret-color: #c7f544; accent-color: #c7f544; }
+:root[data-theme="space"] { caret-color: #38bdf8; accent-color: #38bdf8; }
+
+/* ---- cursors ---- */
+/* default pointer per theme */
+:root[data-theme="retro"] body {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M4 2 L4 21 L9 16 L12.5 24 L16 22.5 L12.5 15 L20 15 Z' fill='%23ffd23f' stroke='%23000' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E")
+      3 2,
+    auto;
+}
+:root[data-theme="vim"] body {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Cpath d='M4 2 L4 17 L8 13 L10.5 19 L12.5 18 L10 12 L15 12 Z' fill='none' stroke='%23d2f95a' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E")
+      3 2,
+    auto;
+}
+:root[data-theme="space"] body {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cg stroke='%2338bdf8' stroke-width='1.6' fill='none'%3E%3Ccircle cx='15' cy='15' r='9'/%3E%3Cpath d='M15 1 V7 M15 23 V29 M1 15 H7 M23 15 H29'/%3E%3C/g%3E%3Ccircle cx='15' cy='15' r='1.6' fill='%2338bdf8'/%3E%3C/svg%3E")
+      15 15,
+    crosshair;
+}
+
+/* interactive elements */
+:root[data-theme="retro"] a,
+:root[data-theme="retro"] button:not(:disabled),
+:root[data-theme="retro"] summary,
+:root[data-theme="retro"] label,
+:root[data-theme="retro"] [role="button"],
+:root[data-theme="retro"] .cursor-pointer {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M4 2 L4 21 L9 16 L12.5 24 L16 22.5 L12.5 15 L20 15 Z' fill='%23ff3b1f' stroke='%23000' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E")
+      3 2,
+    pointer;
+}
+:root[data-theme="vim"] a,
+:root[data-theme="vim"] button:not(:disabled),
+:root[data-theme="vim"] summary,
+:root[data-theme="vim"] label,
+:root[data-theme="vim"] [role="button"],
+:root[data-theme="vim"] .cursor-pointer {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='20'%3E%3Crect x='2' y='1' width='8' height='17' fill='%23d2f95a'/%3E%3C/svg%3E")
+      6 9,
+    pointer;
+}
+:root[data-theme="space"] a,
+:root[data-theme="space"] button:not(:disabled),
+:root[data-theme="space"] summary,
+:root[data-theme="space"] label,
+:root[data-theme="space"] [role="button"],
+:root[data-theme="space"] .cursor-pointer {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cg stroke='%23ffb648' stroke-width='2.4' fill='none' stroke-linecap='square'%3E%3Cpath d='M4 9 V4 H9 M21 4 H26 V9 M26 21 V26 H21 M9 26 H4 V21'/%3E%3C/g%3E%3Ccircle cx='15' cy='15' r='2' fill='%23ffb648'/%3E%3C/svg%3E")
+      15 15,
+    pointer;
+}
+
+/* keep a sane caret in text fields regardless of theme */
+[data-theme] input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]),
+[data-theme] textarea {
+  cursor: text;
+}
+[data-theme] button:disabled,
+[data-theme] [aria-disabled="true"] {
+  cursor: not-allowed;
+}
 
 /* ---- Street-Fighter wordmark (fill in front, dark outline behind via text-shadow) ---- */
 .wordmark {
@@ -182,6 +351,100 @@ input, textarea, button { font: inherit; }
 [data-theme="vim"] .scanlines::after {
   background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.008) 0 2px, transparent 2px 5px);
   mix-blend-mode: screen;
+}
+
+/* ---- SPACE theme: mission-control screen polish ---- */
+[data-theme="space"] body {
+  background:
+    radial-gradient(1100px 700px at 50% -10%, rgba(56, 189, 248, 0.08), transparent 70%),
+    radial-gradient(900px 600px at 50% 110%, rgba(255, 182, 72, 0.06), transparent 70%),
+    #03060c;
+}
+[data-theme="space"] .scanlines::after {
+  background:
+    repeating-linear-gradient(0deg, rgba(57, 255, 158, 0.045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(56, 189, 248, 0.03) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+/* corner registration brackets on the main window frame */
+[data-theme="space"] main > .scanlines::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    linear-gradient(var(--accent-2), var(--accent-2)) 0 0 / 14px 2px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 0 0 / 2px 14px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 100% 0 / 14px 2px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 100% 0 / 2px 14px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 0 100% / 14px 2px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 0 100% / 2px 14px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 100% 100% / 14px 2px no-repeat,
+    linear-gradient(var(--accent-2), var(--accent-2)) 100% 100% / 2px 14px no-repeat;
+  opacity: 0.7;
+}
+[data-theme="space"] h1,
+[data-theme="space"] h2 {
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+[data-theme="space"] .wordmark {
+  background: none;
+  color: var(--accent);
+  -webkit-text-fill-color: currentColor;
+  transform: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 12px rgba(255, 182, 72, 0.55), 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+[data-theme="space"] .marquee-track { color: var(--hud); }
+
+/* chamfered ("cut corner") panels — SpaceX/HUD style, distinct from VIM's rounded */
+[data-theme="space"] .space-chamfer {
+  border-radius: 0 !important;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+[data-theme="space"] .space-panel {
+  border-color: color-mix(in srgb, var(--accent-2) 45%, transparent) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-2) 22%, transparent),
+    0 0 26px -10px color-mix(in srgb, var(--accent-2) 60%, transparent);
+}
+/* reticle grid inside the main content panel */
+[data-theme="space"] [data-panelbody] {
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent-2) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent-2) 8%, transparent) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+/* status LEDs in the window title bar */
+[data-theme="space"] .space-led {
+  border-radius: 9999px;
+  border-color: var(--hud) !important;
+  background: color-mix(in srgb, var(--hud) 55%, transparent);
+  box-shadow: 0 0 6px var(--hud);
+}
+[data-theme="space"] .space-led:nth-child(2) { border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: 0 0 6px var(--accent); }
+[data-theme="space"] .space-led:nth-child(3) { border-color: var(--accent-2) !important; background: color-mix(in srgb, var(--accent-2) 55%, transparent); box-shadow: 0 0 6px var(--accent-2); }
+
+/* play mode: hide the portfolio UI, hand the screen to the game */
+html.space-play #root > div:not([data-space-ui]) { opacity: 0.05; filter: blur(3px); pointer-events: none; transition: opacity .25s ease, filter .25s ease; }
+html.space-play [data-space-ui] { opacity: 1 !important; filter: none !important; pointer-events: auto !important; }
+html.space-play { overflow: hidden; }
+.space-play-hint kbd {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
 }
 
 /* real monospace for code, independent of the retro display font */

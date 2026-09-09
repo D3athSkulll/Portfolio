@@ -52,7 +52,8 @@ export function AccordionCard({
 
   const shell =
     "border-2 retro:border-black retro:bg-panel2 retro:shadow-[3px_3px_0_#000] " +
-    "vim:border vim:border-line vim:bg-panel2 vim:rounded";
+    "vim:border vim:border-line vim:bg-panel2 vim:rounded " +
+    "space-chamfer space-panel space:bg-panel2";
 
   return (
     <div className={shell}>
@@ -91,9 +92,10 @@ export function Bullets({ items }: { items: string[] }) {
     <ul className="mt-2 space-y-1.5">
       {items.map((b, i) => (
         <li key={i} className="flex gap-2 text-[1rem] leading-relaxed">
-          <span className="shrink-0 select-none text-accent2 retro:text-accent2">
+          <span className="shrink-0 select-none text-accent2 retro:text-accent2 space:text-hud">
             <span className="hidden retro:inline">⚡</span>
-            <span className="retro:hidden">›</span>
+            <span className="retro:hidden space:hidden">›</span>
+            <span className="hidden space:inline">▹</span>
           </span>
           <span>{b}</span>
         </li>

@@ -17,7 +17,7 @@ const ROUTES = [
   "/blog",
 ];
 
-for (const theme of ["retro", "vim"] as const) {
+for (const theme of ["retro", "vim", "space"] as const) {
   for (const path of ROUTES) {
     test(`${theme} ${path} renders`, async ({ page }) => {
       await page.addInitScript((t) => {

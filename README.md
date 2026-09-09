@@ -1,17 +1,50 @@
 # Portfolio
 
-A personal portfolio with **two skins over one dataset**:
+A personal portfolio with **three skins over one dataset**:
 
 - **VIM** (default) — a calm terminal-OS / editor look: letter-spaced lime headings,
   bordered nav endpoints, panels with floating labels, terminal-window chrome, a
   bottom status bar.
-- **RETRO** (secondary) — a retro treatment: Street-Fighter-style *Brutal Pro*
-  wordmark ("D3ATHSKULLL") with a yellow→red gradient face, a neobrutalist
-  geometric background, subtle CRT scanlines and terminal-window chrome.
+- **RETRO** — Street-Fighter-style *Brutal Pro* wordmark ("D3ATHSKULLL") with a
+  yellow→red gradient face, a neobrutalist geometric background, CRT scanlines.
+- **SPACE** — a glass-cockpit / mission-control screen. Distinct from VIM on
+  purpose: geometric **sans** type (not monospace), **chamfered** panels with a
+  cyan hairline glow (not rounded borders), a reticle grid in the content panel,
+  registration brackets, status LEDs + `TELEMETRY NOMINAL` in the title bar, a
+  telemetry ticker (`O2 NOMINAL`, `DELTA-V 3.24 KM/S`…), a life-support status
+  bar, and its **own section names** (`flight.log`, `payload.manifest/`,
+  `sys.diagnostics`, `crew.dossier`… — see `routes.config.ts` / `Section.tsx`).
+  Behind it: a drifting star-field ([tsparticles](https://particles.js.org/)) plus
+  an ambient Space-Invaders skirmish. **Press `SPACE`** (or the top-right **▸ PLAY**
+  button on touch) to hide the UI and play; **`TAB`** / the on-screen button
+  switches between two games, **`ESC`** returns:
+  - **Invaders** — 8 enemy types (grunt, darter, weaver, mine-dropping bomber,
+    shielded bulwark, tank, splitter, grunt-spawning carrier, bonus UFO), enemy
+    fire, and 9 swappable **guns** picked up as drops (twin, spread, wave, piercing
+    lance, homing seeker, scatter, railgun, arc-lightning, gravity flak) plus
+    buffs (rapid, shield, nuke, +1 life).
+  - **Breakout** — 13 field **structures** cycled per wave (pyramid, diamond,
+    tunnel, arch, rings, zigzag, towers…) spanning the full width, 7 brick types
+    (multi-hit, unbreakable steel, chain-explosive, mystery, armored, mover,
+    regenerator), a slowly-descending field, and 9 **powerups** (wide paddle,
+    multi-ball, time-dilation, paddle laser *(rare)*, shock round, mag-clamp,
+    phase round, tractor floor, demo charge).
 
-A switch in the top bar flips between them; both render the **same content**. A
+  Both: fast physics, score-scaled waves, 3 lives, screen shake, `MISSION FAILED`
+  retry. **Mouse or touch** — drag to move, tap to fire/release. Everything
+  freezes under
+  `prefers-reduced-motion` and is **code-split** so the weight only loads on the
+  SPACE theme. See [`frontend/src/components/SpaceScene.tsx`](frontend/src/components/SpaceScene.tsx)
+  + [`frontend/src/components/spaceGames.ts`](frontend/src/components/spaceGames.ts).
+
+A switch in the top bar flips between them; all render the **same content**. A
 theme-aware boot loader (in [`frontend/index.html`](frontend/index.html)) shows
-until the profile data loads.
+until the profile data loads. Each theme also carries its own **scrollbars,
+cursors, text-selection colours and scroll behaviour** (RETRO: chunky
+neobrutalist bar + gold pixel arrow, snappy scroll; VIM: thin quiet bar + lime
+block caret, smooth; SPACE: cyan cockpit rail + reticle cursor, smooth) — all in
+[`frontend/src/index.css`](frontend/src/index.css), honouring
+`prefers-reduced-motion`.
 
 | | |
 |---|---|

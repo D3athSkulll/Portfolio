@@ -10,9 +10,11 @@ function Links({ onNavigate }: { onNavigate?: () => void }) {
     "block px-3 py-2 no-underline font-mono text-[15px] sm:text-base tracking-wide transition-colors " +
     "retro:border-2 retro:border-[#0b0810] retro:bg-panel2 retro:text-black retro:mt-1.5 retro:text-center retro:uppercase retro:font-bold " +
     "retro:[clip-path:polygon(0_0,82%_0,100%_14%,100%_100%,0_100%)] retro:hover:!bg-[var(--mc)] retro:hover:!text-white " +
-    "vim:mt-1.5 vim:border vim:border-line vim:rounded vim:text-fg vim:hover:!border-accent vim:hover:!text-accent";
+    "vim:mt-1.5 vim:border vim:border-line vim:rounded vim:text-fg vim:hover:!border-accent vim:hover:!text-accent " +
+    "space:mt-1.5 space-chamfer space:border space:border-accent2/30 space:bg-panel2 space:text-fg space:font-body space:uppercase space:tracking-wider space:hover:!border-accent space:hover:!text-accent";
   const active =
-    "retro:!bg-[var(--mc)] retro:!text-white vim:!bg-accent vim:!text-[#0d0f16] vim:!border-accent vim:font-bold";
+    "retro:!bg-[var(--mc)] retro:!text-white vim:!bg-accent vim:!text-[#0d0f16] vim:!border-accent vim:font-bold " +
+    "space:!border-accent space:!text-accent space:!bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]";
   return (
     <nav>
       {routes.map((r) => (
@@ -24,7 +26,7 @@ function Links({ onNavigate }: { onNavigate?: () => void }) {
           style={{ ["--mc" as string]: r.color }}
           className={({ isActive }) => `${item} ${isActive ? active : ""}`}
         >
-          {theme === "vim" ? r.file : `> ${r.label}`}
+          {theme === "retro" ? `> ${r.label}` : theme === "space" ? r.space : r.file}
         </NavLink>
       ))}
     </nav>
@@ -36,7 +38,7 @@ export function SideMenu({ children }: { children?: React.ReactNode }) {
   return (
     <aside className="hidden w-52 shrink-0 lg:block">
       <div className="mb-2 border-2 retro:border-accent2 retro:bg-[var(--banner-bg)] retro:text-[var(--banner-fg)] retro:text-center retro:shadow-[4px_4px_0_#ff3b1f] vim:border-0 vim:text-accent2 px-1.5 py-1.5 font-mono text-base tracking-widest">
-        {theme === "vim" ? "~/NAVIGATION" : "★ MENU ★"}
+        {theme === "retro" ? "★ MENU ★" : theme === "space" ? "NAV://SYS" : "~/NAVIGATION"}
       </div>
       <Links />
       {children}

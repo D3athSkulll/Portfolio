@@ -12,7 +12,7 @@ export function FilterBar({
 }) {
   const btn =
     "inline-flex items-center font-mono text-[13px] sm:text-sm uppercase tracking-wider px-3 py-1.5 border-2 retro:border-[#0b0810] " +
-    "vim:border vim:border-line vim:rounded cursor-pointer transition-colors";
+    "vim:border vim:border-line vim:rounded space-chamfer space:border space:border-accent2/40 cursor-pointer transition-colors";
   const on = "bg-accent text-black retro:text-black vim:text-[#0d0f16] font-bold";
   const off =
     "bg-transparent text-fg retro:text-black hover:bg-accent hover:text-black vim:hover:text-accent vim:hover:border-accent";

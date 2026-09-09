@@ -21,7 +21,7 @@
         var q = new URLSearchParams(location.search).get("theme");
         var t = q || localStorage.getItem("theme");
         if (t === "docs") t = "vim"; // migrate old value
-        if (t !== "retro" && t !== "vim") t = "vim";
+        if (t !== "retro" && t !== "vim" && t !== "space") t = "vim";
         document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
@@ -69,11 +69,11 @@
 
       /* VIM look (default) */
       :root[data-theme="vim"] #boot,
-      html:not([data-theme="retro"]) #boot {
+      html:not([data-theme="retro"]):not([data-theme="space"]) #boot {
         background: #0d0f16;
         color: #d2f95a;
       }
-      #boot .retro-only { display: none; }
+      #boot .retro-only, #boot .space-only { display: none; }
       #boot .vim-only { display: block; }
 
       /* RETRO look */
@@ -85,6 +85,15 @@
       }
       :root[data-theme="retro"] #boot .retro-only { display: block; }
       :root[data-theme="retro"] #boot .vim-only { display: none; }
+
+      /* SPACE look */
+      :root[data-theme="space"] #boot {
+        background: #03060c;
+        color: #39ff9e;
+        letter-spacing: 2px;
+      }
+      :root[data-theme="space"] #boot .space-only { display: block; }
+      :root[data-theme="space"] #boot .vim-only { display: none; }
     </style>
   </head>
   <body>
@@ -93,6 +102,9 @@
         ~/shivam&nbsp;<span class="cursor">$</span>&nbsp;booting portfolio…
       </div>
       <div class="retro-only" style="font-size: 18px">▶ Insert Coin — Loading</div>
+      <div class="space-only" style="font-size: 14px">
+        GROUND CONTROL&nbsp;<span class="cursor">▮</span>&nbsp;ESTABLISHING UPLINK…
+      </div>
       <div class="bar" aria-hidden="true"></div>
     </div>
     <div id="root"></div>

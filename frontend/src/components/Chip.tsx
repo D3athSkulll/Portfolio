@@ -51,7 +51,10 @@ const BASE =
   "inline-flex items-center whitespace-nowrap rounded-sm border-2 px-2 py-0.5 " +
   "font-mono retro:font-body text-[11px] font-bold uppercase tracking-widest " +
   "retro:border-[#0b0810] retro:bg-[#1b1712] retro:text-[#ffd23f] " +
-  "vim:border-line vim:bg-transparent vim:text-accent";
+  "vim:border-line vim:bg-transparent vim:text-accent " +
+  "space:rounded-none space:border space:border-accent2/45 space:bg-transparent space:text-accent2 " +
+  "space:before:content-['['] space:before:mr-1 space:before:opacity-50 " +
+  "space:after:content-[']'] space:after:ml-1 space:after:opacity-50";
 
 export function Chip({ label, colored = false }: { label: string; colored?: boolean; tone?: boolean }) {
   const variant = colored ? VARIANTS[CATEGORY_VARIANT[slugify(label)] ?? hashPick(label)] : "";

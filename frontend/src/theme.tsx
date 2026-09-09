@@ -1,11 +1,15 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
-export type Theme = "retro" | "vim";
+export type Theme = "retro" | "vim" | "space";
 
 export const THEMES: { id: Theme; label: string }[] = [
   { id: "vim", label: "VIM" },
   { id: "retro", label: "RETRO" },
+  { id: "space", label: "SPACE" },
 ];
+
+const ORDER: Theme[] = THEMES.map((t) => t.id);
+const isTheme = (t: unknown): t is Theme => ORDER.includes(t as Theme);
 
 const ThemeCtx = createContext<{
   theme: Theme;
@@ -17,7 +21,7 @@ const ThemeCtx = createContext<{
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     const t = document.documentElement.dataset.theme;
-    return t === "vim" || t === "retro" ? t : "vim";
+    return isTheme(t) ? t : "vim";
   });
   const [switching, setSwitching] = useState(false);
   const timers = useRef<number[]>([]);
@@ -48,7 +52,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       value={{
         theme,
         setTheme,
-        toggle: () => setTheme(theme === "retro" ? "vim" : "retro"),
+        toggle: () => setTheme(ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length]),
         switching,
       }}
     >
