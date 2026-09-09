@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="retro">
+<html lang="en" data-theme="vim">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
       name="description"
       content="Shivam Deolankar — systems programmer. C and Rust, OS internals, embedded, backend. Portfolio, projects and blog."
     />
-    <meta name="theme-color" content="#0c0a12" />
+    <meta name="theme-color" content="#0d0f16" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,18 +16,85 @@
     />
     <title>SHIVAM DEOLANKAR</title>
     <script>
-      // Set theme before paint to avoid a flash.
+      // Set theme before paint to avoid a flash. VIM is the default.
       try {
         var q = new URLSearchParams(location.search).get("theme");
         var t = q || localStorage.getItem("theme");
         if (t === "docs") t = "vim"; // migrate old value
-        if (t !== "retro" && t !== "vim")
-          t = matchMedia("(prefers-color-scheme: dark)").matches ? "vim" : "retro";
+        if (t !== "retro" && t !== "vim") t = "vim";
         document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <style>
+      /* ---- boot loader (theme-aware); removed by main.tsx once React mounts ---- */
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 14px;
+        font-family: "Silkscreen", "Jersey 15", ui-monospace, monospace;
+        transition: opacity 0.35s ease;
+      }
+      #boot.boot--done {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #boot .bar {
+        width: 220px;
+        height: 14px;
+        border: 3px solid currentColor;
+        overflow: hidden;
+      }
+      #boot .bar::after {
+        content: "";
+        display: block;
+        height: 100%;
+        width: 40%;
+        background: currentColor;
+        animation: boot-scan 1.1s ease-in-out infinite;
+      }
+      @keyframes boot-scan {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(310%); }
+      }
+      #boot .cursor { animation: boot-blink 1s step-end infinite; }
+      @keyframes boot-blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) {
+        #boot .bar::after, #boot .cursor { animation: none; }
+      }
+
+      /* VIM look (default) */
+      :root[data-theme="vim"] #boot,
+      html:not([data-theme="retro"]) #boot {
+        background: #0d0f16;
+        color: #d2f95a;
+      }
+      #boot .retro-only { display: none; }
+      #boot .vim-only { display: block; }
+
+      /* RETRO look */
+      :root[data-theme="retro"] #boot {
+        background: #141019;
+        color: #ffd23f;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      :root[data-theme="retro"] #boot .retro-only { display: block; }
+      :root[data-theme="retro"] #boot .vim-only { display: none; }
+    </style>
   </head>
   <body>
+    <div id="boot" role="status" aria-label="loading">
+      <div class="vim-only" style="font-size: 15px">
+        ~/shivam&nbsp;<span class="cursor">$</span>&nbsp;booting portfolio…
+      </div>
+      <div class="retro-only" style="font-size: 18px">▶ Insert Coin — Loading</div>
+      <div class="bar" aria-hidden="true"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

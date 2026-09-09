@@ -49,3 +49,9 @@ What’s my ‘*Ikigai’* then? There’s no specific answer. There are strong 
 
 
 
+
+
+
+
+
+

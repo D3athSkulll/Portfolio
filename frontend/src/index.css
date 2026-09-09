@@ -131,8 +131,42 @@ input, textarea, button { font: inherit; }
 .blink { animation: blink 1.3s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* ---- common loader shown briefly while switching themes ---- */
+.theme-switching {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #0b0810;
+  color: #ffd23f;
+  font-family: "Silkscreen", "Jersey 15", ui-monospace, monospace;
+  animation: ts-fade 0.72s ease both;
+}
+.theme-switching__label { font-size: 13px; letter-spacing: 3px; }
+.theme-switching__bar {
+  width: 200px;
+  height: 12px;
+  border: 3px solid currentColor;
+  overflow: hidden;
+}
+.theme-switching__bar::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 38%;
+  background: currentColor;
+  animation: ts-scan 0.72s ease-in-out infinite;
+}
+@keyframes ts-scan { 0% { transform: translateX(-110%); } 100% { transform: translateX(320%); } }
+@keyframes ts-fade { 0%, 100% { opacity: 0; } 12%, 80% { opacity: 1; } }
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track, .blink { animation: none !important; }
+  .theme-switching__bar::after { animation: none !important; }
 }
 
 /* ---- CRT scanline overlay for windowed panels (both themes) ---- */

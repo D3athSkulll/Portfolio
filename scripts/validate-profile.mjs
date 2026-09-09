@@ -44,6 +44,13 @@ for (const key of ["experience", "projects"]) {
     ok(isStr(it.title), `${key}[${i}].title required`);
     ok(ym.test(it.from) && ym.test(it.to), `${key}[${i}] from/to must be YYYY-MM`);
     ok(isArr(it.bullets) && it.bullets.every(isStr), `${key}[${i}].bullets must be strings`);
+    ok(
+      it.type === undefined ||
+        it.type === null ||
+        isStr(it.type) ||
+        (isArr(it.type) && it.type.every(isStr)),
+      `${key}[${i}].type must be a string or array of strings`,
+    );
     for (const [j, l] of (it.links ?? []).entries()) {
       ok(isStr(l.href) && isStr(l.icon), `${key}[${i}].links[${j}] needs href and icon`);
     }

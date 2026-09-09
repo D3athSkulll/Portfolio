@@ -4,6 +4,7 @@ import {
   Home,
   Experience,
   Projects,
+  Collaborations,
   Skills,
   Designs,
   EducationPage,
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/experience" element={<Experience />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/collaborations" element={<Collaborations />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/designs" element={<Designs />} />
           <Route path="/education" element={<EducationPage />} />

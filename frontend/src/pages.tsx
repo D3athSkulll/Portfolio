@@ -3,10 +3,11 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Search, FileText, FileCode } from "lucide-react";
 import { useProfile, useBlogIndex, useBlogPost } from "./api";
 import type { Entry, Position } from "./types";
-import { AccordionCard, Bullets } from "./components/Accordion";
+import { AccordionCard, AccordionGroup, Bullets } from "./components/Accordion";
 import { SectionHead, Eof, Loading, Broken } from "./components/Section";
 import { FilterBar } from "./components/FilterBar";
 import { Icon, IconLink } from "./components/Icon";
+import { Chip, Chips } from "./components/Chip";
 
 const MONTHS = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const ym = (s: string) => {
@@ -14,7 +15,6 @@ const ym = (s: string) => {
   return `${MONTHS[Number(m)] ?? m} ${y}`;
 };
 const range = (a: string, b: string) => (a === b ? ym(a) : `${ym(a)} – ${ym(b)}`);
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
 const LINK_LABELS: Record<string, string> = {
   github: "GitHub",
@@ -26,28 +26,20 @@ const LINK_LABELS: Record<string, string> = {
   linkedin: "LinkedIn",
 };
 
-const TYPE_COLORS: Record<string, string> = {
-  systems: "text-[#c2410c] border-[#c2410c] retro:bg-[#ffe4c4]",
-  "low-level": "text-[#c2410c] border-[#c2410c] retro:bg-[#ffe4c4]",
-  ml: "text-[#7c3aed] border-[#7c3aed] retro:bg-[#ece0ff]",
-  backend: "text-[#0369a1] border-[#0369a1] retro:bg-[#d6ecff]",
-  cloud: "text-[#15803d] border-[#15803d] retro:bg-[#d6f5df]",
-  embedded: "text-[#be123c] border-[#be123c] retro:bg-[#ffe0e6]",
-  brand: "text-[#b45309] border-[#b45309] retro:bg-[#ffedcf]",
-  print: "text-[#7c3aed] border-[#7c3aed] retro:bg-[#ece0ff]",
-  ui: "text-[#0369a1] border-[#0369a1] retro:bg-[#d6ecff]",
-};
+/** Categories for an Entry — the JSON `type` is a string or string[]. */
+const catsOf = (e: { type?: string | string[] | null }): string[] =>
+  e.type == null ? [] : Array.isArray(e.type) ? e.type : [e.type];
 
-function Tag({ label }: { label: string }) {
-  const c = TYPE_COLORS[slug(label)] ?? "text-accent2 border-accent2";
-  return (
-    <span
-      className={`whitespace-nowrap rounded-sm border px-2 py-0.5 font-mono text-[12px] retro:text-[13px] font-bold uppercase tracking-widest vim:!border-line vim:!text-accent vim:!bg-transparent ${c}`}
-    >
-      {label}
-    </span>
-  );
-}
+/** Newest first: by `to`, then `from`, then title. */
+const byRecency = <T extends { from: string; to: string; title?: string; institution?: string }>(
+  a: T,
+  b: T,
+) =>
+  b.to.localeCompare(a.to) ||
+  b.from.localeCompare(a.from) ||
+  (a.title ?? a.institution ?? "").localeCompare(b.title ?? b.institution ?? "");
+
+const COLLAB = "Collaboration";
 
 function EntryHeader({ e }: { e: Entry }) {
   return (
@@ -88,25 +80,64 @@ export function Home() {
   );
 }
 
-const WORK_FILTERS = ["Open Source", "ML", "SDE", "Intern"];
+/** Shared list of project/experience cards: sorted newest-first, one-open-at-a-time,
+ *  filterable by category. */
+function EntryList({
+  entries,
+  filterKey = "cats",
+  extraFilters = [],
+}: {
+  entries: Entry[];
+  /** "cats" filters on `type[]`; "tags" filters on `tags[]`. */
+  filterKey?: "cats" | "tags";
+  extraFilters?: string[];
+}) {
+  const [f, setF] = useState<string | null>(null);
+  const sorted = useMemo(() => [...entries].sort(byRecency), [entries]);
+  const facetsOf = (e: Entry) => (filterKey === "tags" ? e.tags : catsOf(e));
+  const options = useMemo(
+    () =>
+      [...new Set([...extraFilters, ...sorted.flatMap(facetsOf)])]
+        .filter((o) => o !== COLLAB)
+        .sort(),
+    [sorted], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  const shown = f ? sorted.filter((e) => facetsOf(e).includes(f)) : sorted;
+
+  return (
+    <>
+      {options.length > 1 && <FilterBar options={options} value={f} onChange={setF} />}
+      <AccordionGroup>
+        <div className="flex flex-col gap-2.5">
+          {shown.map((e) => {
+            const cats = catsOf(e).filter((c) => c !== COLLAB);
+            return (
+              <AccordionCard
+                key={e.title}
+                itemKey={e.title}
+                header={<EntryHeader e={e} />}
+                right={cats.length ? <Chips items={cats} colored /> : null}
+              >
+                <Bullets items={e.bullets} />
+              </AccordionCard>
+            );
+          })}
+          {shown.length === 0 && (
+            <p className="font-mono text-sm text-muted">no entries for “{f}”.</p>
+          )}
+        </div>
+      </AccordionGroup>
+    </>
+  );
+}
 
 export function Experience() {
   const { data, isLoading } = useProfile();
-  const [f, setF] = useState<string | null>(null);
   if (isLoading || !data) return <Loading />;
-  const shown = f ? data.experience.filter((e) => e.tags.includes(f)) : data.experience;
   return (
     <>
       <SectionHead name="work.log" />
-      <FilterBar options={WORK_FILTERS} value={f} onChange={setF} />
-      <div className="flex flex-col gap-2.5">
-        {shown.map((e) => (
-          <AccordionCard key={e.title} header={<EntryHeader e={e} />}>
-            <Bullets items={e.bullets} />
-          </AccordionCard>
-        ))}
-        {shown.length === 0 && <p className="font-mono text-sm text-muted">no entries tagged “{f}”.</p>}
-      </div>
+      <EntryList entries={data.experience} filterKey="tags" />
       <Eof />
     </>
   );
@@ -114,37 +145,48 @@ export function Experience() {
 
 export function Projects() {
   const { data, isLoading } = useProfile();
-  const [f, setF] = useState<string | null>(null);
   if (isLoading || !data) return <Loading />;
-  const types = [...new Set(data.projects.map((p) => p.type).filter(Boolean) as string[])];
-  const shown = f ? data.projects.filter((p) => p.type === f) : data.projects;
+  const solo = data.projects.filter((p) => !catsOf(p).includes(COLLAB));
   return (
     <>
       <SectionHead name="projects/" />
-      {types.length > 1 && <FilterBar options={types} value={f} onChange={setF} />}
-      <div className="flex flex-col gap-2.5">
-        {shown.map((e) => (
-          <AccordionCard
-            key={e.title}
-            header={<EntryHeader e={e} />}
-            right={e.type ? <Tag label={e.type} /> : null}
-          >
-            <Bullets items={e.bullets} />
-          </AccordionCard>
-        ))}
-      </div>
+      <EntryList entries={solo} />
       <Eof />
     </>
   );
 }
 
-const SKILL_ROLES = ["ML", "Systems", "Backend", "Cloud", "SDE"];
+export function Collaborations() {
+  const { data, isLoading } = useProfile();
+  if (isLoading || !data) return <Loading />;
+  const collabs = data.projects.filter((p) => catsOf(p).includes(COLLAB));
+  return (
+    <>
+      <SectionHead name="collabs/" />
+      <p className="mb-4 max-w-[70ch] text-[1rem] opacity-90">
+        Projects built with a team — coursework, hackathons and side builds.
+      </p>
+      {collabs.length ? (
+        <EntryList entries={collabs} />
+      ) : (
+        <p className="font-mono text-sm text-muted">no collaborations yet.</p>
+      )}
+      <Eof />
+    </>
+  );
+}
+
+const SKILL_ROLES = ["Rust", "ML", "Systems", "Backend", "Cloud", "SDE"];
+// Groups tagged with one of these roles are hidden until that role is picked.
+const HIDDEN_UNTIL_SELECTED = ["Rust"];
 
 export function Skills() {
   const { data, isLoading } = useProfile();
   const [f, setF] = useState<string | null>(null);
   if (isLoading || !data) return <Loading />;
-  const shown = f ? data.skills.filter((g) => g.roles.includes(f)) : data.skills;
+  const shown = f
+    ? data.skills.filter((g) => g.roles.includes(f))
+    : data.skills.filter((g) => !g.roles.some((r) => HIDDEN_UNTIL_SELECTED.includes(r)));
   return (
     <>
       <SectionHead name="skills.dat" />
@@ -158,16 +200,7 @@ export function Skills() {
             <h3 className="m-0 mb-2 font-mono text-sm font-bold uppercase tracking-wider text-accent retro:text-accent2 vim:text-accent2">
               {g.category}
             </h3>
-            <div className="flex flex-wrap gap-1.5">
-              {g.items.map((it) => (
-                <span
-                  key={it}
-                  className="border retro:border-black retro:bg-[#1b1712] retro:text-[#ffd23f] vim:border-line vim:text-accent rounded-sm px-2 py-0.5 font-mono retro:font-body text-[12px] font-bold uppercase"
-                >
-                  {it}
-                </span>
-              ))}
-            </div>
+            <Chips items={g.items} tone={false} />
           </div>
         ))}
       </div>
@@ -200,7 +233,7 @@ export function Designs() {
                 )}
               </>
             }
-            right={d.kind ? <Tag label={d.kind} /> : null}
+            right={d.kind ? <Chip label={d.kind} /> : null}
           />
         ))}
         {data.designs.length === 0 && (
@@ -218,11 +251,12 @@ export function EducationPage() {
   return (
     <>
       <SectionHead name="school.sys" />
+      <AccordionGroup>
       <div className="flex flex-col gap-2.5">
-        {data.education.map((e) => (
+        {[...data.education].sort(byRecency).map((e) => (
           <AccordionCard
             key={e.institution}
-            defaultOpen
+            itemKey={e.institution}
             header={
               <>
                 <span className="text-[1.1rem] font-bold retro:text-black">{e.institution}</span>
@@ -244,6 +278,7 @@ export function EducationPage() {
           </AccordionCard>
         ))}
       </div>
+      </AccordionGroup>
       <Eof />
     </>
   );
@@ -252,29 +287,32 @@ export function EducationPage() {
 /** A list of collapsible entries (string, or { title, bullets } with a dropdown). */
 function DropList({ items, badge }: { items: Position[]; badge: string }) {
   return (
-    <div className="flex flex-col gap-2.5">
-      {items.map((p, i) => {
-        const title = typeof p === "string" ? p : p.title;
-        const bullets = typeof p === "string" ? [] : p.bullets ?? [];
-        return (
-          <AccordionCard
-            key={i}
-            collapsible={bullets.length > 0}
-            header={
-              <span className="flex items-baseline gap-2.5">
-                <span className="shrink-0 border border-current px-1.5 font-mono retro:font-body text-[11px] font-bold uppercase tracking-widest text-accent2">
-                  {badge}
+    <AccordionGroup>
+      <div className="flex flex-col gap-2.5">
+        {items.map((p, i) => {
+          const title = typeof p === "string" ? p : p.title;
+          const bullets = typeof p === "string" ? [] : p.bullets ?? [];
+          return (
+            <AccordionCard
+              key={i}
+              itemKey={i}
+              collapsible={bullets.length > 0}
+              header={
+                <span className="flex items-baseline gap-2.5">
+                  <Chip label={badge} tone={false} />
+                  <span className="text-[1.02rem]">{title}</span>
                 </span>
-                <span className="text-[1.02rem]">{title}</span>
-              </span>
-            }
-          >
-            {bullets.length > 0 && <Bullets items={bullets} />}
-          </AccordionCard>
-        );
-      })}
-      {items.length === 0 && <p className="font-mono text-sm text-muted">nothing here yet.</p>}
-    </div>
+              }
+            >
+              {bullets.length > 0 && <Bullets items={bullets} />}
+            </AccordionCard>
+          );
+        })}
+        {items.length === 0 && (
+          <p className="font-mono text-sm text-muted">nothing here yet.</p>
+        )}
+      </div>
+    </AccordionGroup>
   );
 }
 
@@ -320,19 +358,7 @@ export function Wins() {
   return (
     <>
       <SectionHead name="wins.bak" />
-      <div className="flex flex-col gap-2">
-        {data.achievements.map((a, i) => (
-          <div
-            key={i}
-            className="flex items-baseline gap-2.5 border-l-4 border-hud bg-panel2 px-3 py-2"
-          >
-            <span className="shrink-0 border border-current px-1.5 font-mono text-[10px] uppercase tracking-widest text-hud">
-              WIN
-            </span>
-            <span>{a}</span>
-          </div>
-        ))}
-      </div>
+      <DropList items={data.achievements} badge="WIN" />
       <Eof />
     </>
   );
@@ -646,15 +672,8 @@ export function BlogIndex() {
             <span className="flex min-w-0 flex-col gap-1.5">
               <span className="text-[1.1rem] font-bold text-fg retro:text-black">{p.title}</span>
               <span className="text-[0.98rem] opacity-90">{p.summary}</span>
-              <span className="mt-0.5 flex flex-wrap gap-1.5">
-                {p.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-sm border px-2 py-0.5 font-mono retro:font-body text-[11px] font-bold uppercase retro:border-black retro:bg-[#1b1712] retro:text-[#ffd23f] vim:border-line vim:text-accent"
-                  >
-                    {t}
-                  </span>
-                ))}
+              <span className="mt-0.5">
+                <Chips items={p.tags} tone={false} />
               </span>
             </span>
           </Link>
@@ -709,14 +728,7 @@ export function BlogPost() {
           {data.date}
         </span>
         <span>· {data.readingMinutes} min read</span>
-        {data.tags.map((t) => (
-          <span
-            key={t}
-            className="rounded-sm border px-2 py-0.5 text-[11px] font-bold uppercase retro:border-black retro:bg-[#1b1712] retro:text-[#ffd23f] vim:border-line vim:text-accent"
-          >
-            {t}
-          </span>
-        ))}
+        <Chips items={data.tags} tone={false} />
       </div>
       {data.toc.length > 1 && (
         <nav className="mb-6 border-l-2 retro:border-accent2 vim:border-line pl-3">

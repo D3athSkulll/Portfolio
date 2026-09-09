@@ -4,14 +4,30 @@ import { routes } from "../routes.config";
 import { THEMES, useTheme } from "../theme";
 import { useProfile } from "../api";
 import { SideMenu, MobileMenu } from "./Menu";
+import { dismissBoot } from "../boot";
 
 const TICKER = [
   "SYSTEMS PROGRAMMER",
   "RUSTACEAN",
+  "C",
   "ZIG",
+  "LOW LEVEL",
+  "OS INTERNALS",
+  "RTOS",
+  "EMBEDDED SYSTEMS",
+  "DEVICE DRIVERS",
   "SAFETY CRITICAL SYSTEMS",
   "BACKEND",
   "CLOUD",
+  "OPEN SOURCE",
+  "PERFORMANCE",
+  "MEMORY SAFETY",
+  "ARCH LINUX",
+  "RTOS",
+  "SPACE",
+  "BUILD SYSTEMS",
+  "DEBUGGING",
+  "SAFETY CRITICAL CODE",
 ];
 
 function ThemeSwitch() {
@@ -19,7 +35,7 @@ function ThemeSwitch() {
   return (
     <div className="inline-flex items-stretch overflow-hidden border-2 retro:border-[#0b0810] retro:shadow-[4px_4px_0_#ff3b1f] vim:border-line font-mono text-[11px]">
       <span className="flex items-center bg-[var(--banner-bg)] px-2.5 tracking-widest text-[var(--banner-fg)] vim:bg-transparent vim:text-accent2">
-        THEME
+        WANNA SEE MAGIC?
       </span>
       {THEMES.map((t) => (
         <button
@@ -56,6 +72,10 @@ export default function Layout({ children }: { children: ReactNode }) {
     const section = idx >= 0 && idx !== 0 ? routes[idx].label : null;
     document.title = section ? `${section} · ${name}` : name;
   }, [data?.profile.name, idx, loc.pathname]);
+
+  useEffect(() => {
+    if (data) dismissBoot();
+  }, [data]);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[1180px] flex-col overflow-x-hidden px-3 py-4 sm:px-4">

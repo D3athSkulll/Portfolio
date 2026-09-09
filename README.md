@@ -2,15 +2,16 @@
 
 A personal portfolio with **two skins over one dataset**:
 
-- **RETRO** (default) — a retro treatment: Street-Fighter-style *Brutal Pro*
-  wordmark ("D3ATHSKULLL") with a yellow→red gradient face, a neobrutalist
-  geometric background, subtle CRT scanlines, terminal-window chrome and a
-  `PUSH START` HUD.
-- **VIM** (dark) — a calm terminal-OS / editor look: letter-spaced lime headings,
+- **VIM** (default) — a calm terminal-OS / editor look: letter-spaced lime headings,
   bordered nav endpoints, panels with floating labels, terminal-window chrome, a
   bottom status bar.
+- **RETRO** (secondary) — a retro treatment: Street-Fighter-style *Brutal Pro*
+  wordmark ("D3ATHSKULLL") with a yellow→red gradient face, a neobrutalist
+  geometric background, subtle CRT scanlines and terminal-window chrome.
 
-A switch in the top bar flips between them; both render the **same content**.
+A switch in the top bar flips between them; both render the **same content**. A
+theme-aware boot loader (in [`frontend/index.html`](frontend/index.html)) shows
+until the profile data loads.
 
 | | |
 |---|---|
@@ -70,16 +71,16 @@ whole site runs on Vercel with a single function:
 
 | runtime need | Vercel |
 |---|---|
-| SPA, `/assets/*`, deep-link refresh | static `frontend/dist` + Vite SPA fallback |
-| `/api/profile` | rewrite → `/profile.json` (staged into `public/` at build) |
-| `/api/blog`, `/api/blog/:slug` | rewrite → `/blog-index.json`, `/blog/<slug>.json` |
+| SPA, `/assets/*`, deep-link refresh | static `frontend/dist` + a single SPA-fallback rewrite (excludes `/api/` and any dotted path) |
+| profile + blog data | the `vercel-build` sets `VITE_STATIC_DATA=true`, so the app fetches `/profile.json`, `/blog-index.json`, `/blog/<slug>.json` **directly** (no `/api/*` rewrites — see [`frontend/src/api.ts`](frontend/src/api.ts)) |
 | `/blog-assets/*`, `/resume-*.pdf`, `/resume.typ` | plain static files in `public/` |
 | `POST /api/contact` | `frontend/api/contact.ts` — Node function, `nodemailer` + SMTP |
 
-Wiring: [`frontend/vercel.json`](frontend/vercel.json) (rewrites),
-[`frontend/scripts/prepare-static.mjs`](frontend/scripts/prepare-static.mjs) (copies
-`profile.json` + `.gen/blog*.json` + résumés into `public/`), run by the
-`vercel-build` npm script.
+Wiring: [`frontend/vercel.json`](frontend/vercel.json) (build env + SPA fallback + cache
+headers), [`frontend/scripts/prepare-static.mjs`](frontend/scripts/prepare-static.mjs)
+(copies `profile.json` + `.gen/blog*.json` + résumés into `public/`), run by the
+`vercel-build` npm script. Local dev and the single-binary/Docker build leave
+`VITE_STATIC_DATA` unset and keep using the Axum `/api/*` routes.
 
 **Blog generation still uses `bloggen` (Rust) — but only locally.** `.gen/` and
 `frontend/public/blog-assets/` are committed to the repo, so Vercel never needs cargo.
@@ -173,10 +174,17 @@ and the post view shows Prev / Next controls. The `/blog` index list is paginate
 
 ## Routes
 
-`/` · `/experience` · `/projects` · `/skills` · `/designs` · `/education` ·
-`/test-scores` · `/extracurricular` · `/wins` · `/likes` · `/resume` · `/blog` ·
-`/blog/:slug` · `/contact` — plus a retro 404. The nav menu is generated from
-[`frontend/src/routes.config.ts`](frontend/src/routes.config.ts).
+`/` · `/experience` · `/projects` · `/collaborations` · `/skills` · `/designs` ·
+`/education` · `/test-scores` · `/extracurricular` · `/wins` · `/likes` ·
+`/resume` · `/blog` · `/blog/:slug` · `/contact` — plus a retro 404. The nav menu
+is generated from [`frontend/src/routes.config.ts`](frontend/src/routes.config.ts).
+
+**Projects & categories.** A project's `type` in `profile.json` is a string **or an
+array** of category names (`"type": ["HCI", "Collaboration"]`). Any project whose
+categories include `"Collaboration"` is shown on `/collaborations` instead of
+`/projects`. Experience, projects, collaborations and education auto-sort
+newest-first by their `to`/`from` dates. Within a section only one accordion card
+is open at a time.
 
 ## Test
 

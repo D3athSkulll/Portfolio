@@ -10,7 +10,7 @@
     "name": "Shivam Deolankar",
     "role": "Systems Programmer",
     "location": "Gwalior, India",
-    "summary": "A systems programmer with 3 years of experience working on low-level systems in C and Rust, focusing on performance and memory safety. An active open-source contributor, proficient in backend, OS internals, embedded systems, and debugging.\n\nI spend most of my time close to the metal — RTOS internals, device drivers, build systems and the sharp edges where hardware descriptions meet software assumptions. Upstreaming fixes to RTEMS taught me to care about reproducible builds and robust failure modes as much as raw throughput.\n\nOutside of systems work I build backends in Rust and Node, ship small ML experiments, and design the occasional poster. This site itself is one dataset rendered two ways — a retro skin and a terminal skin.",
+    "summary": "I'm a systems programmer with 3 years of experience working with C and Rust, mostly interested in the stuff that happens underneath the abstractions — OS internals, RTOS, device drivers, build systems, and debugging. I like knowing how things actually work, and sometimes breaking them just to figure out why.\n\nI spend most of my time close to the metal, somewhere between hardware and software, figuring out why something decided to stop working at 2 AM. Working with RTEMS and contributing upstream has taught me to care about reproducible builds, proper failure handling, and writing systems that don’t fall apart when things go wrong.\n\nOutside of systems, I like messing around with design, interfaces, typography, and generally making things look and feel a little more interesting. I’m also really into video games and the mix of engineering, art, mechanics, and storytelling that goes into making them. I like tinkering more than necessary as evident from this portfolio.",
     "contact": [
       { "label": "+91 8390566237", "href": "tel:+918390566237", "icon": "phone" },
       { "label": "shivam.deolankar@gmail.com", "href": "mailto:shivam.deolankar@gmail.com", "icon": "envelope" },
@@ -27,7 +27,7 @@
       "to": "2028-04",
       "detail": "CGPA - 7.95/10 (6th Sem)",
       "bullets": [
-        "Went through some college stuff. Study, Events, CG all stuff included."
+        "Went through some college stuff. Study, Events, CGPA all stuff included. Rarely attended class mentally."
       ]
     },
     {
@@ -37,7 +37,7 @@
       "to": "2023-06",
       "detail": "86%",
       "bullets": [
-        "Went through some competitive exams along with this intermediate schooling."
+        "Went through some competitive exams along with this intermediate schooling. Practically a dummy school but with real centre so doomed at end."
       ]
     },
     {
@@ -47,7 +47,7 @@
       "to": "2021-06",
       "detail": "98.2%",
       "bullets": [
-        "Picked up some vague stuff and nothing else."
+        "Picked up some vague stuff and nothing else. Learned reading Shakespeare's melodrama tho."
       ]
     }
   ],
@@ -65,7 +65,7 @@
       ],
       "bullets": [
         "Developed a Band Attention module for SimpleTM, inspired by FEDformer's frequency domain approach.",
-        "Enabled adaptive frequency weighting through wavelet bands to capture multi-scale patterns in electricity load dataset.",
+        "Enabled adaptive frequency weighting through wavelet bands to capture multi-scale patterns in SHEERM House electricity load consumption dataset.",
         "Improved forecasting accuracy across 5+ horizons, achieving 23.5% higher R2, 17.4% higher EVS, and 1.3% lower MSE."
       ]
     },
@@ -132,7 +132,141 @@
         "Developed bidirectional incremental search with live highlighting using an annotated string system for large buffers.",
         "Designed a modular terminal UI with 3 components including editor view, message/command bar and a status bar."
       ]
+    },
+    {
+      "title": "IIITM Campus Marketplace",
+      "type": ["HCI","Collaboration"],
+      "subtitle": "A campus marketplace prototype exploring HCI principles, user behaviour, and Neo-Brutalist interface design.",
+      "from": "2026-02",
+      "to": "2026-04",
+      "links": [
+        {
+          "href": "https://github.com/D3athSkulll/IIITM-Campus-Marketplace",
+          "icon": "github"
+        }
+      ],
+      "bullets": [
+        "Listed everything from a black man to quirky items to our astonishing professor as 'products' — because obviously that was the most simplest to test a campus marketplace attracting 100+ users.",
+        "Applied HCI principles including user feedback, affordances, visual hierarchy, consistency, and feedback-driven interface decisions to study how students interacted with the marketplace.",
+        "Designed the interface around a Neo-Brutalist visual language with bold typography, high-contrast elements, hard borders, strong shadows, and intentionally raw visual styling.",
+        "Conducted usability testing with 100+ students to observe navigation patterns, interaction behaviour, and discoverability issues across the marketplace experience.",
+        "Iterated on the UI based on user observations and feedback, refining information hierarchy, product discovery, interactions, and overall usability."
+      ]
+    },
+    {
+      "title": "Secure UWCN Authentication Protocol",
+      "type": ["Cybersecurity","Communications","Collaboration"],
+      "subtitle": "Lightweight mutual authentication protocol for secure underwater wireless communication networks.",
+      "from": "2026-02",
+      "to": "2026-04",
+      "links": [
+        {
+          "href": "https://github.com/D3athSkulll/Auth-Protocol-for-Secure-UWCN",
+          "icon": "github"
+        }
+      ],
+      "bullets": [
+        "Implemented and simulated a lightweight multi-hop authentication protocol for underwater networks spanning sensors, submarines, buoys, satellites and a base station.",
+        "Combined ECDH key exchange, AES-GCM encryption, and nonce-timestamp validation to provide mutual authentication while addressing replay and impersonation attacks.",
+        "Built a Python simulation modelling underwater-specific constraints including packet loss, propagation delay, node mobility, bandwidth and energy limitations.",
+        "Formally verified the protocol using Scyther against a Dolev-Yao attacker model, validating security properties including secrecy, aliveness, weak agreement and non-injective agreement.",
+        "Implemented dynamic route fallback to maintain authenticated communication when an intermediate buoy or satellite path becomes unavailable."
+      ]
+    },
+    {
+      "title": "ChurnAware",
+      "type": ["Collaboration","ML"],
+      "subtitle": "Sentiment-aware customer churn prediction and retention optimization platform.",
+      "from": "2025-09",
+      "to": "2025-11",
+      "links": [
+        {
+          "href": "https://github.com/D3athSkulll/ChurnAware",
+          "icon": "github"
+        }
+      ],
+      "bullets": [
+        "Built a churn prediction pipeline using RFM/R+FMD features, customer behaviour and review sentiment to identify customers at risk of leaving.",
+        "Used Gaussian Mixture Models to segment customers into 4 behavioural groups and a Random Forest model to estimate 90-day churn probability without temporal data leakage.",
+        "Developed a Double DQN retention engine that selects between 4 interventions based on predicted customer behaviour, incentive cost and long-term profit.",
+        "Built the serving layer with FastAPI and SQLite, with Next.js and Streamlit dashboards for customer segments, churn risk, KPIs and retention recommendations.",
+        "Evaluated the churn model on an unseen temporal snapshot of 1,574 customers, achieving 0.806 F1 for the churned class."
+      ]
+    },
+    {
+      "title": "YatraMitra",
+      "type": ["Full Stack","Collaboration"],
+      "subtitle": "A full-stack travel booking platform for train, flight and bus ticket reservations.",
+      "from": "2024-08",
+      "to": "2024-11",
+      "links": [
+        {
+          "href": "https://github.com/D3athSkulll/yatramitra-frontend",
+          "icon": "github"
+        },
+        {
+          "href": "https://github.com/D3athSkulll/yatramitra-backend",
+          "icon": "github"
+        },
+        {
+          "href": "https://yatramitra.vercel.app/views/homepage.html",
+          "icon": "globe"
+        }
+      ],
+      "bullets": [
+        "Collaborated on a full-stack travel booking platform supporting train, flight and bus reservations with authentication and responsive user flows.",
+        "Built and integrated the frontend with the backend API, connecting booking workflows, user data and server-side routes into a complete application.",
+        "Implemented Stripe-based payment processing and checkout flows for handling ticket reservations.",
+        "Structured the backend with separate routes, models, middleware and database connection layers to keep the application modular and maintainable.",
+        "Designed a responsive frontend with interactive navigation, booking forms and a media-driven landing page for a smoother travel-booking experience."
+      ]
+  },
+  {
+  "title": "Hardware Projects",
+  "type": ["Embedded Systems", "Collaboration"],
+  "subtitle": "Embedded hardware projects involving sensors, real-time control, telemetry and embedded ML.",
+  "from": "2024-01",
+  "to": "2024-05",
+  "links": [
+    {
+      "href": "https://github.com/D3athSkulll/avionics_telemetry_tool",
+      "icon": "github"
+    },
+    {
+      "href": "https://github.com/D3athSkulll/AI-Based-Rotten-Fruit-Segregator",
+      "icon": "github"
+    },
+    {
+      "href": "https://drive.google.com/file/d/1zE6Aj0hGs_-uRSeE9Eacwmo7N6ySRAQj/view?usp=sharing",
+      "icon": "google-drive"
     }
+  ],
+  "bullets": [
+    "Built an avionics telemetry tool processing 100+ records, with validation, filtering and anomaly detection for 15+ telemetry issues.",
+    "Developed a gesture-controlled Glove Mouse using ESP32 and MPU6050, mapping gyroscope data to real-time cursor movement.",
+    "Built an Arduino-based rotten fruit segregation system using ML classification and servo-driven actuation for automated sorting."
+  ]
+},
+{
+  "title": "KoinX Reconciliation Engine",
+  "type": "Backend",
+  "subtitle": "Transaction reconciliation engine built with Node.js, Express.js and MongoDB.",
+  "from": "2026-01",
+  "to": "2026-02",
+  "links": [
+    {
+      "href": "https://github.com/D3athSkulll/Koinx",
+      "icon": "github"
+    }
+  ],
+  "bullets": [
+    "Built a transaction reconciliation engine that ingests, validates, normalizes and reconciles user and exchange CSV data.",
+    "Implemented matching with timestamp and quantity tolerances, categorizing transactions into MATCHED, CONFLICTING, USER_ONLY and EXCHANGE_ONLY.",
+    "Added duplicate detection and validation for missing fields, invalid quantities, timestamps and transaction prices while retaining invalid records for traceability.",
+    "Developed reporting APIs for reconciliation summaries, unmatched transactions and downloadable CSV reports, with results persisted in MongoDB.",
+    "Deployed the Node.js and Express.js backend on Render with MongoDB Atlas for persistent transaction and reconciliation data."
+  ]
+}
   ],
   "achievements": [
     "Overall Winner of Webkriti 2024, organised by AASF for developing Yatramitra, a travel ticket booking platform.",
@@ -142,18 +276,35 @@
     {
       "title": "Core Team Lead, Alumni Meet 2026, ABV-IIITM Gwalior.",
       "bullets": [
-        "Coordinated a cross-functional team across logistics, tech and outreach for the annual alumni gathering.",
-        "Owned the event website and registration flow end to end."
+        "Coordinated a cross-functional team of 80+ juniors for handling and successfully organizing the multi day event for 50+ Attending Alumni.",
+        "Managed the alumni directory and website, making 4500+ alumni records publicly accessible with improved search and update functionality."
+      ]
+    },
+    {
+      "title": "Executive, Student Activity Council 2025 (Technical), at ABV-IIITM Gwalior.",
+      "bullets": [
+        "Aurora 2024 — Content & Client Relations Team",
+        "Infotsav 2024 — Design Team & Core Team",
+        "National Space Day 2024 — Organized an inter-school quiz for school students",
+        "Alumni Meet 2025 — Core Team",
+        "INSPECT 2024 — Core Team",
+        "Ganesh Chaturthi 2025 — Core Team",
+        "Twaran Inter-IIIT Sports Meet 2025 — Design & Hospitality Teams",
+        "Alumni Meet 2026 — Core Team Lead",
+        "Infotsav 2025 — Design Lead"
       ]
     },
     {
       "title": "Technical and Design Lead, IEEE Student Branch, ABV-IIITM Gwalior.",
       "bullets": [
-        "Led the technical and design vertical: posters, social creatives, slide decks and event microsites.",
-        "Mentored juniors on web basics and design tooling."
+        "Handled Design and Core Team responsibilities across 15+ workshops, events, and flagship conferences",
+        "Garba Night 2024 & 2025 — Annual cultural nights with 300+ attendees.",
+        "Battlezone 3.0 & 4.0 — Annual national-level esports event with 300+ participating teams.",
+        "IEEE IATMSI 2025 — International conference with 200+ research delegates.",
+        "IEEE MP Section Student & Leadership Congress 2024 — Annual conference with 50+ IEEE representatives.",
+        "HACKSAGON 2025 — National-level hackathon with 550+ participants."
       ]
     },
-    "Executive, Student Activity Council 2025 (Technical), at ABV-IIITM Gwalior.",
     "Facilitated a 2-day workshop on Web Basics - JS for 50+ students at ABV-IIITM Gwalior.",
     "Designed official cover page for Abhishar V15, the annual magazine of ABV-IIITM Gwalior published by AASF."
   ],
@@ -188,28 +339,29 @@
     {
       "title": "Gaming",
       "bullets": [
-        "The Legend of Zelda",
-        "Mortal Kombat",
-        "Sonic the Hedgehog",
-        "Metal Gear",
-        "Genres: action-adventure, retro platformers, fighting"
+        "Batman Arkham",
+        "Spider-man",
+        "Call of Duty",
+        "Ghost of Tsushima",
+        "God of War",
+        "Assassin's Creed"
       ]
     },
     {
       "title": "Music",
       "bullets": [
-        "AC/DC",
-        "Nirvana",
-        "Pantera",
-        "Genres: classic rock, grunge, metal"
+        "Linkin Park",
+        "Green Day",
+        "Arijit Singh",
+        "KK"
       ]
     },
     {
       "title": "Movies",
       "bullets": [
-        "The Terminator",
-        "Die Hard",
-        "Rambo",
+        "Prestige",
+        "Dark Knight Series",
+        "Marvel Cinematic Universe",
         "Scream",
         "Transformers: The Movie (1986)"
       ]
@@ -217,20 +369,25 @@
     {
       "title": "Books",
       "bullets": [
-        "Add a favourite book",
-        "Add another",
-        "Genres / authors you like"
+        "Ikigai",
+        "The Prince",
+        "Mein Kampf",
+        "Communist Manifesto",
+        "Osamu Dazai",
+        "Art of War"
       ]
     }
   ],
   "skills": [
-    { "category": "Systems Programming", "roles": ["Systems", "SDE"], "items": ["Rust", "Golang", "JavaScript", "C++", "C", "Python"] },
-    { "category": "Backend Frameworks", "roles": ["Backend", "SDE"], "items": ["Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets"] },
-    { "category": "Databases and ORM", "roles": ["Backend", "SDE"], "items": ["SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB"] },
-    { "category": "DevOps", "roles": ["Cloud", "SDE"], "items": ["Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "EC2", "S3"] },
-    { "category": "AI and ML", "roles": ["ML"], "items": ["MCP", "Vector Embeddings", "Transformers", "LLMS", "Predictive Load Forecasting"] },
+    { "category": "Systems Programming", "roles": ["Systems", "SDE"], "items": ["Rust", "Zig", "Golang", "JavaScript", "C++", "C", "Python"] },
+    { "category": "Backend Frameworks", "roles": ["Backend", "SDE"], "items": ["Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets", "Webhooks"] },
+    { "category": "Databases and ORM", "roles": ["Backend", "SDE"], "items": ["SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB", "Neo4j"] },
+    { "category": "DevOps", "roles": ["Cloud", "SDE"], "items": ["Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "AWS EC2", "AWS S3"] },
+    { "category": "AI/ML", "roles": ["ML"], "items": ["MCP", "Vector Embeddings", "Transformers", "LLMS", "Predictive Load Forecasting"] },
     { "category": "Development Tools", "roles": ["SDE", "Systems", "Backend"], "items": ["Git", "GitHub", "Gitlab", "Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React"] },
-    { "category": "Other Tools", "roles": ["Systems", "Cloud"], "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion"] }
+    { "category": "Embedded Systems", "roles": ["Systems","Embedded"], "items": ["ABI", "RTOS", "GDB", "QEMU", "CMake"] },
+    { "category": "Other Tools", "roles": ["Others"], "items": ["Canva", "Photoshop", "Figma", "Notion"] },
+    { "category": "Rust Ecosystem", "roles": ["Rust"], "items": ["Axum", "Tokio", "Serde", "Reqwest", "SQLx", "Diesel", "SurrealDB", "Tower", "Tracing", "Anyhow", "Clap", "Ratatui", "Crossterm"] }
   ],
   "designs": [
     {
@@ -242,8 +399,8 @@
     {
       "title": "IEEE Student Branch — Event Collateral",
       "kind": "Brand",
-      "description": "Promotional Designs, Banners and Merch for IEEE Student Branch events as Technical & Design Lead.",
-      "links": []
+      "description": "Promotional Designs, Banners and Merch for IEEE Student Branch events and conferences as Technical & Design Lead.",
+      "links": [{"href": "https://drive.google.com/drive/folders/1UlbPh1qKcNh-uvXscu74LV2vEtYSNy11?usp=sharing", "icon":"google-drive"}]
     },
     {
       "title": "Portfolio Website",
@@ -254,8 +411,8 @@
   ],
   "resume": {
     "downloads": [
-      { "role": "SDE", "label": "SDE / Backend", "href": "/resume-sde.pdf" },
-      { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/resume-embedded.pdf" }
+      { "role": "SDE", "label": "SDE / Backend", "href": "/Shivam_SDE.pdf" },
+      { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/Shivam_Embedded.pdf" }
     ],
     "source": { "label": "Typst source (.typ)", "href": "/resume.typ" }
   }

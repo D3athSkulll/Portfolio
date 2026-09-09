@@ -12,6 +12,7 @@ export const routes: RouteDef[] = [
   { path: "/", label: "About", file: "ABOUT_ME.TXT", color: "#ff8a1e" },
   { path: "/experience", label: "Work", file: "WORK.LOG", color: "#ff3b1f" },
   { path: "/projects", label: "Projects", file: "PROJECTS/", color: "#e11d74" },
+  { path: "/collaborations", label: "Collabs", file: "COLLABS/", color: "#0ea5e9" },
   { path: "/skills", label: "Skills", file: "SKILLS.DAT", color: "#7c3aed" },
   { path: "/designs", label: "Designs", file: "DESIGNS/", color: "#2563eb" },
   { path: "/education", label: "School", file: "SCHOOL.SYS", color: "#0891b2" },

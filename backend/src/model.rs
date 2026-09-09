@@ -1,7 +1,23 @@
 //! Types mirroring `profile.json`. The backend does not reshape this data; it
 //! validates that it parses and serves it straight to the frontend.
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
+
+/// Accept `"Backend"` or `["Backend", "Collaboration"]` and normalize to a Vec.
+fn de_string_or_vec<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<String>, D::Error> {
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum OneOrMany {
+        One(String),
+        Many(Vec<String>),
+    }
+    Ok(Option::<OneOrMany>::deserialize(d)?
+        .map(|x| match x {
+            OneOrMany::One(s) => vec![s],
+            OneOrMany::Many(v) => v,
+        })
+        .unwrap_or_default())
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(test, derive(ts_rs::TS))]
@@ -79,9 +95,12 @@ pub struct Education {
 #[cfg_attr(test, ts(export, export_to = "profile.gen.ts"))]
 pub struct Entry {
     pub title: String,
-    /// Optional category tag, e.g. "Systems" / "ML" / "Backend" / "Cloud" / "Embedded".
-    #[serde(default, rename = "type")]
-    pub kind: Option<String>,
+    /// One or more category tags, e.g. "Systems" / "ML" / "Backend" / "Collaboration".
+    /// Accepts a bare string or an array of strings in `profile.json`; always
+    /// serialized back as an array.
+    #[serde(default, rename = "type", deserialize_with = "de_string_or_vec")]
+    #[cfg_attr(test, ts(type = "string | Array<string>"))]
+    pub kind: Vec<String>,
     /// Free-form filter tags, e.g. "Open Source" / "ML" / "SDE" / "Intern".
     #[serde(default)]
     pub tags: Vec<String>,

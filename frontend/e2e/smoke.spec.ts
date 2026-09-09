@@ -4,6 +4,7 @@ const ROUTES = [
   "/",
   "/experience",
   "/projects",
+  "/collaborations",
   "/skills",
   "/designs",
   "/education",
@@ -66,9 +67,10 @@ test("unknown route shows the 404 section", async ({ page }) => {
 
 test("theme switch persists across reload", async ({ page }) => {
   await page.goto("/");
+  // vim is the default
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "vim");
+  await page.getByRole("button", { name: "RETRO", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "retro");
-  await page.getByRole("button", { name: "VIM", exact: true }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "vim");
   await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "vim");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "retro");
 });

@@ -1,23 +1,26 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 export type Theme = "retro" | "vim";
 
 export const THEMES: { id: Theme; label: string }[] = [
-  { id: "retro", label: "RETRO" },
   { id: "vim", label: "VIM" },
+  { id: "retro", label: "RETRO" },
 ];
 
 const ThemeCtx = createContext<{
   theme: Theme;
   setTheme: (t: Theme) => void;
   toggle: () => void;
-}>({ theme: "retro", setTheme: () => {}, toggle: () => {} });
+  switching: boolean;
+}>({ theme: "vim", setTheme: () => {}, toggle: () => {}, switching: false });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<Theme>(() => {
     const t = document.documentElement.dataset.theme;
-    return t === "vim" || t === "retro" ? t : "retro";
+    return t === "vim" || t === "retro" ? t : "vim";
   });
+  const [switching, setSwitching] = useState(false);
+  const timers = useRef<number[]>([]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -28,15 +31,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [theme]);
 
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  /** Switch themes behind a brief common loader so the repaint isn't jarring. */
+  const setTheme = (next: Theme) => {
+    if (next === theme || switching) return;
+    setSwitching(true);
+    timers.current.push(
+      window.setTimeout(() => setThemeState(next), 260),
+      window.setTimeout(() => setSwitching(false), 720),
+    );
+  };
+
   return (
     <ThemeCtx.Provider
       value={{
         theme,
         setTheme,
-        toggle: () => setTheme((t) => (t === "retro" ? "vim" : "retro")),
+        toggle: () => setTheme(theme === "retro" ? "vim" : "retro"),
+        switching,
       }}
     >
       {children}
+      {switching && (
+        <div className="theme-switching" role="status" aria-label="switching theme">
+          <div className="theme-switching__bar" aria-hidden />
+          <span className="theme-switching__label">SWITCHING&nbsp;THEME…</span>
+        </div>
+      )}
     </ThemeCtx.Provider>
   );
 }

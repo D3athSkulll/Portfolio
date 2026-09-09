@@ -6,9 +6,11 @@ export type Education = { institution: string, degree: string, from: string, to:
 
 export type Entry = { title: string, 
 /**
- * Optional category tag, e.g. "Systems" / "ML" / "Backend" / "Cloud" / "Embedded".
+ * One or more category tags, e.g. "Systems" / "ML" / "Backend" / "Collaboration".
+ * Accepts a bare string or an array of strings in `profile.json`; always
+ * serialized back as an array.
  */
-type: string | null, 
+kind: string | Array<string>, 
 /**
  * Free-form filter tags, e.g. "Open Source" / "ML" / "SDE" / "Intern".
  */
