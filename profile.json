@@ -134,6 +134,26 @@
       ]
     },
     {
+      "title": "IIITM Alumni Directory",
+      "type": "Database",
+      "subtitle": "Alumni directory backed by structured MongoDB data, optimized search, filtering and data processing.",
+      "from": "2026-01",
+      "to": "2026-08",
+      "links": [
+        {
+          "href": "https://alumni.iiitm.ac.in/directory",
+          "icon": "globe"
+        }
+      ],
+      "bullets": [
+        "Handled and modified the MongoDB database containing 4500+ alumni records, preprocessing and restructuring raw data into consistent, searchable schemas.",
+        "Built regex-based search and filtering logic across alumni fields, handling inconsistent entries, aliases and missing data to improve query accuracy.",
+        "Optimized directory queries by structuring fields and applying targeted filters, making alumni records faster to search and easier to navigate.",
+        "Cleaned and normalized large sets of alumni data before integrating them into the public directory, improving data consistency and reliability.",
+        "Worked on the directory's data and search layer to support efficient discovery across batches, companies, expertise and other alumni attributes."
+      ]
+},
+    {
       "title": "IIITM Campus Marketplace",
       "type": ["HCI","Collaboration"],
       "subtitle": "A campus marketplace prototype exploring HCI principles, user behaviour, and Neo-Brutalist interface design.",
