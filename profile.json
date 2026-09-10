@@ -197,8 +197,8 @@
       "title": "LunarTriGSM",
       "type": ["Image Processing","Collaboration"],
       "subtitle": "Triangle-based lunar crater matching for precision terrain-relative navigation.",
-      "from": "2025-02",
-      "to": "2025-04",
+      "from": "2026-02",
+      "to": "2026-04",
       "links": [
         {
           "href": "https://github.com/D3athSkulll/lunar_crater_detection/tree/main",
