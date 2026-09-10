@@ -134,6 +134,27 @@
       ]
     },
     {
+      "title": "LunarTriGSM",
+      "type": "Image Processing",
+      "subtitle": "Triangle-based lunar crater matching for precision terrain-relative navigation.",
+      "from": "2025-02",
+      "to": "2025-04",
+      "links": [
+        {
+          "href": "https://github.com/D3athSkulll/lunar_crater_detection/tree/main",
+          "icon": "github"
+        }
+      ],
+      "bullets": [
+        "Extended a triangle-based crater matching algorithm using the LRO NAC dataset with 13,453 training and 9,797 test crater annotations across 20 lunar images.",
+        "Upgraded crater detection from YOLOv8n to YOLOv8s and achieved 0.617 precision, 0.232 recall and 0.416 mAP@50 for automated crater localization.",
+        "Extended the first-order descriptor from 3D to 5D with crater-radius ratios and expanded the second-order descriptor from 12D to 25D using 4 neighbouring triangles.",
+        "Implemented adaptive similarity thresholds, confidence-weighted voting and RANSAC-based geometric verification to improve global crater correspondence and suppress false matches.",
+        "Reduced navigation position error by 31.2% in X and 33.1% in Y, achieving 100% navigation success while maintaining 0.157s average matching time.",
+        "Evaluated robustness using Monte Carlo simulations with 5-pixel Gaussian detection noise, maintaining 99.5% navigation success at 10% detection error."
+      ]
+    },
+    {
       "title": "IIITM Alumni Directory",
       "type": "Database",
       "subtitle": "Alumni directory backed by structured MongoDB data, optimized search, filtering and data processing.",
