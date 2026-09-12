@@ -184,7 +184,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         {theme === "space" && (
-          <p className="space-play-hint relative z-10 mt-2.5 text-center font-mono text-[12px] uppercase tracking-[0.18em] text-accent2">
+          <p className="space-play-hint relative z-10 mt-2.5 hidden text-center font-mono text-[12px] uppercase tracking-[0.18em] text-accent2 sm:block">
             ▸ <kbd>SPACE</kbd> hide UI &amp; play &nbsp;·&nbsp; <kbd>TAB</kbd> switch game
             (invaders / breakout) &nbsp;·&nbsp; <kbd>ESC</kbd> return
           </p>

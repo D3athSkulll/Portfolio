@@ -247,19 +247,7 @@ function GameCanvas() {
           touchAction: "none",
         }}
       />
-      <div
-        data-space-ui
-        style={{
-          position: "fixed",
-          top: 8,
-          right: 8,
-          zIndex: 70,
-          display: "flex",
-          gap: 6,
-          flexWrap: "wrap",
-          justifyContent: "flex-end",
-        }}
-      >
+      <div data-space-ui className="space-ui-buttons">
         {!playing ? (
           <button style={btn} onClick={() => setPlaying(true)}>
             ▸ Play Game

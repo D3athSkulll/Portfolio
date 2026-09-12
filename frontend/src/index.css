@@ -447,6 +447,25 @@ html.space-play { overflow: hidden; }
   font-size: 0.9em;
 }
 
+/* mobile: tappable play/switch/retry/quit controls, docked at the bottom
+   near the keyboard-hint line instead of covering the header/content up top.
+   Desktop relies on the SPACE / TAB / ESC hint text instead. */
+.space-ui-buttons {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  z-index: 70;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 12px;
+}
+@media (min-width: 640px) {
+  .space-ui-buttons { display: none; }
+}
+
 /* real monospace for code, independent of the retro display font */
 :root { --font-code: ui-monospace, "JetBrains Mono", "Cascadia Code", "SF Mono", "Consolas", "Courier New", monospace; }
 
