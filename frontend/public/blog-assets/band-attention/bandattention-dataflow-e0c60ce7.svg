@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" font-family="ui-monospace, 'JetBrains Mono', monospace">
+  <rect width="1200" height="320" fill="#0b0e14"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#39ff9e"/>
+    </marker>
+  </defs>
+
+  <g font-size="13" fill="#cfe4ff">
+    <rect x="15"  y="70" width="170" height="90" rx="6" fill="#141a24" stroke="#3a4656"/>
+    <rect x="235" y="70" width="170" height="90" rx="6" fill="#16261c" stroke="#39ff9e"/>
+    <rect x="455" y="70" width="170" height="90" rx="6" fill="#16261c" stroke="#39ff9e"/>
+    <rect x="675" y="70" width="170" height="90" rx="6" fill="#16261c" stroke="#39ff9e"/>
+    <rect x="895" y="70" width="170" height="90" rx="6" fill="#16261c" stroke="#39ff9e"/>
+    <rect x="1115" y="70" width="70" height="90" rx="6" fill="#141a24" stroke="#3a4656"/>
+
+    <text x="100" y="100" text-anchor="middle" font-weight="700">SWT</text>
+    <text x="100" y="118" text-anchor="middle" font-size="11" fill="#8aa0b8">coefficients</text>
+    <text x="100" y="136" text-anchor="middle" font-size="11" fill="#8aa0b8">[B,N,S,D]</text>
+
+    <text x="320" y="100" text-anchor="middle" font-weight="700" fill="#39ff9e">1. Squeeze</text>
+    <text x="320" y="118" text-anchor="middle" font-size="11" fill="#8aa0b8">avg. pool over</text>
+    <text x="320" y="134" text-anchor="middle" font-size="11" fill="#8aa0b8">N and D → g</text>
+    <text x="320" y="150" text-anchor="middle" font-size="11" fill="#6a819a">[B,S]</text>
+
+    <text x="540" y="100" text-anchor="middle" font-weight="700" fill="#39ff9e">2. Excite</text>
+    <text x="540" y="118" text-anchor="middle" font-size="11" fill="#8aa0b8">Linear → GELU</text>
+    <text x="540" y="134" text-anchor="middle" font-size="11" fill="#8aa0b8">→ Linear → z</text>
+    <text x="540" y="150" text-anchor="middle" font-size="11" fill="#6a819a">[B,S]</text>
+
+    <text x="760" y="100" text-anchor="middle" font-weight="700" fill="#39ff9e">3. Normalise</text>
+    <text x="760" y="118" text-anchor="middle" font-size="11" fill="#8aa0b8">softmax(z)</text>
+    <text x="760" y="134" text-anchor="middle" font-size="11" fill="#8aa0b8">→ α</text>
+    <text x="760" y="150" text-anchor="middle" font-size="11" fill="#6a819a">α ∈ [B,S]</text>
+
+    <text x="980" y="100" text-anchor="middle" font-weight="700" fill="#39ff9e">4. Rescale</text>
+    <text x="980" y="118" text-anchor="middle" font-size="11" fill="#8aa0b8">Ĉ = α ⊙ C</text>
+    <text x="980" y="150" text-anchor="middle" font-size="11" fill="#6a819a">[B,N,S,D]</text>
+
+    <text x="1150" y="105" text-anchor="middle" font-size="11">To</text>
+    <text x="1150" y="121" text-anchor="middle" font-size="11">Q/K/V</text>
+
+    <line x1="185" y1="115" x2="233" y2="115" stroke="#39ff9e" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="405" y1="115" x2="453" y2="115" stroke="#39ff9e" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="625" y1="115" x2="673" y2="115" stroke="#39ff9e" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="845" y1="115" x2="893" y2="115" stroke="#39ff9e" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="1065" y1="115" x2="1113" y2="115" stroke="#39ff9e" stroke-width="2" marker-end="url(#arrow2)"/>
+  </g>
+
+  <text x="20" y="230" font-size="12" fill="#6a819a">Fig. 2 — BandAttention dataflow, applied once each to the Q, K and V coefficient streams.</text>
+  <text x="20" y="250" font-size="12" fill="#6a819a">This exact pipeline — signed average pooling in step 1, softmax in step 3 — is what</text>
+  <text x="20" y="270" font-size="12" fill="#6a819a">was implemented and evaluated. It costs about 40 extra parameters per layer.</text>
+</svg>

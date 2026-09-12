@@ -11,6 +11,7 @@
     (label: "shivam.deolankar@gmail.com", href: "mailto:shivam.deolankar@gmail.com", icon: "envelope"),
     (label: "D3athSkulll", href: "https://github.com/D3athSkulll",       icon: "github"),
     (label: "shivamdeolankar2211", href: "https://linkedin.com/in/shivamdeolankar2211", icon: "linkedin"),
+    (label: "Portfolio", href:"https://D3athSkulll.vercel.app", icon: "globe"),
     (label: "D3athSkulll", href:"https://leetcode.com/u/D3athSkulll/", icon: "code"),
   ),
 

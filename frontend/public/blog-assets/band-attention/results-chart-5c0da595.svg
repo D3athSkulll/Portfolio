@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" font-family="ui-monospace, 'JetBrains Mono', monospace">
+  <rect width="1100" height="480" fill="#0b0e14"/>
+  <text x="270" y="34" text-anchor="middle" font-size="16" fill="#cfe4ff" font-weight="700">MSE by prediction length</text>
+  <text x="820" y="34" text-anchor="middle" font-size="16" fill="#cfe4ff" font-weight="700">MAE by prediction length</text>
+
+  <!-- shared horizons -->
+  <!-- MSE panel: baseline 0.903,1.054,1.085,1.075,1.089 ; ours 0.890,1.031,1.051,1.061,1.084 -->
+  <!-- plot range 0.85 to 1.10 mapped to y 380..70 -->
+  <g>
+    <line x1="70" y1="380" x2="470" y2="380" stroke="#3a4656"/>
+    <line x1="70" y1="70"  x2="70"  y2="380" stroke="#3a4656"/>
+    <text x="40" y="384" font-size="10" fill="#8aa0b8">0.85</text>
+    <text x="40" y="76"  font-size="10" fill="#8aa0b8">1.10</text>
+
+    <!-- baseline polyline (dashed) -->
+    <polyline fill="none" stroke="#6a819a" stroke-width="2" stroke-dasharray="6 4"
+      points="110,171.6 190,336.8 270,384.0 350,352.0 430,392.0"/>
+    <!-- ours polyline -->
+    <polyline fill="none" stroke="#39ff9e" stroke-width="2.5"
+      points="110,152.0 190,264.4 270,304.4 350,338.4 430,382.4"/>
+
+    <g font-size="10" fill="#cfe4ff">
+      <circle cx="110" cy="171.6" r="3" fill="#6a819a"/>
+      <circle cx="190" cy="336.8" r="3" fill="#6a819a"/>
+      <circle cx="270" cy="384.0" r="3" fill="#6a819a"/>
+      <circle cx="350" cy="352.0" r="3" fill="#6a819a"/>
+      <circle cx="430" cy="392.0" r="3" fill="#6a819a"/>
+      <circle cx="110" cy="152.0" r="3" fill="#39ff9e"/>
+      <circle cx="190" cy="264.4" r="3" fill="#39ff9e"/>
+      <circle cx="270" cy="304.4" r="3" fill="#39ff9e"/>
+      <circle cx="350" cy="338.4" r="3" fill="#39ff9e"/>
+      <circle cx="430" cy="382.4" r="3" fill="#39ff9e"/>
+    </g>
+
+    <g font-size="11" fill="#8aa0b8" text-anchor="middle">
+      <text x="110" y="400">4 (1h)</text>
+      <text x="190" y="400">32 (8h)</text>
+      <text x="270" y="400">48 (12h)</text>
+      <text x="350" y="400">96 (24h)</text>
+      <text x="430" y="400">192 (48h)</text>
+    </g>
+  </g>
+
+  <!-- MAE panel: baseline .448,.468,.478,.471,.475 ; ours .426,.465,.465,.477,.475 ; range .42-.49 -->
+  <g>
+    <line x1="620" y1="380" x2="1020" y2="380" stroke="#3a4656"/>
+    <line x1="620" y1="70"  x2="620" y2="380" stroke="#3a4656"/>
+    <text x="588" y="384" font-size="10" fill="#8aa0b8">0.42</text>
+    <text x="588" y="76"  font-size="10" fill="#8aa0b8">0.49</text>
+
+    <polyline fill="none" stroke="#6a819a" stroke-width="2" stroke-dasharray="6 4"
+      points="660,246.9 740,349.7 820,393.7 900,357.6 980,371.4"/>
+    <polyline fill="none" stroke="#39ff9e" stroke-width="2.5"
+      points="660,157.7 740,343.3 820,343.3 900,384.9 980,371.4"/>
+
+    <g>
+      <circle cx="660" cy="246.9" r="3" fill="#6a819a"/>
+      <circle cx="740" cy="349.7" r="3" fill="#6a819a"/>
+      <circle cx="820" cy="393.7" r="3" fill="#6a819a"/>
+      <circle cx="900" cy="357.6" r="3" fill="#6a819a"/>
+      <circle cx="980" cy="371.4" r="3" fill="#6a819a"/>
+      <circle cx="660" cy="157.7" r="3" fill="#39ff9e"/>
+      <circle cx="740" cy="343.3" r="3" fill="#39ff9e"/>
+      <circle cx="820" cy="343.3" r="3" fill="#39ff9e"/>
+      <circle cx="900" cy="384.9" r="3" fill="#39ff9e"/>
+      <circle cx="980" cy="371.4" r="3" fill="#39ff9e"/>
+    </g>
+
+    <g font-size="11" fill="#8aa0b8" text-anchor="middle">
+      <text x="660" y="400">4 (1h)</text>
+      <text x="740" y="400">32 (8h)</text>
+      <text x="820" y="400">48 (12h)</text>
+      <text x="900" y="400">96 (24h)</text>
+      <text x="980" y="400">192 (48h)</text>
+    </g>
+  </g>
+
+  <!-- legend -->
+  <g font-size="12" fill="#cfe4ff">
+    <line x1="300" y1="440" x2="330" y2="440" stroke="#6a819a" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="338" y="444">SimpleTM (original)</text>
+    <line x1="540" y1="440" x2="570" y2="440" stroke="#39ff9e" stroke-width="2.5"/>
+    <text x="578" y="444">+ BandAttention</text>
+  </g>
+  <text x="550" y="466" text-anchor="middle" font-size="11" fill="#6a819a">Gap is widest at the 1-hour horizon and closes by 48 hours.</text>
+</svg>

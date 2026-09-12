@@ -1,5 +1,18 @@
 [
   {
+    "title": "Teaching a Forecaster Which Frequencies to Trust",
+    "date": "2026-09-12",
+    "slug": "band-attention",
+    "summary": "How BandAttention learns to weigh wavelet bands, why that helps household load forecasting, and what it actually gained over SimpleTM.",
+    "tags": [
+      "machine-learning",
+      "time-series",
+      "btp",
+      "research"
+    ],
+    "cover": "/blog-assets/band-attention/architecture-46c657b0.png"
+  },
+  {
     "title": "Finding My Ikigai...",
     "date": "2026-09-08",
     "slug": "finding-my-ikigai",
