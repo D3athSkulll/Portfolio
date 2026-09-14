@@ -452,9 +452,9 @@
   ],
   "resume": {
     "downloads": [
-      { "role": "SDE", "label": "SDE / Backend", "href": "/Shivam_SDE.pdf" },
-      { "role": "Embedded", "label": "Embedded / Low-Level", "href": "/Shivam_Embedded.pdf" }
+      { "role": "SDE", "label": "SDE / Backend", "href": "./Shivam_SDE.pdf" },
+      { "role": "Embedded", "label": "Embedded / Low-Level", "href": "./Shivam_Embedded.pdf" }
     ],
-    "source": { "label": "Typst source (.typ)", "href": "/resume.typ" }
+    "source": { "label": "Typst source (.typ)", "href": "./resume.typ" }
   }
 }
