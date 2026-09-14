@@ -451,7 +451,7 @@
     }
   ],
   "resume": {
-    "downloads": [
+    "downloads": [  
       { "role": "SDE", "label": "SDE / Backend", "href": "https://github.com/D3athSkulll/Portfolio/tree/main/content/resumes/Shivam_SDE.pdf" },
       { "role": "Embedded", "label": "Embedded / Low-Level", "href": "https://github.com/D3athSkulll/Portfolio/tree/main/content/resumes/Shivam_Embedded.pdf" }
     ],

@@ -178,7 +178,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <span className="text-accent retro:text-[#ffd23f]">D3athSkulll.dev</span>{" "}
                 &nbsp;|&nbsp; NET: <span className="text-accent retro:text-[#ffd23f]">CONNECTED</span>
               </span>
-              <span>V1.0.4-STABLE</span>
+              <span>V1.0.5-STABLE</span>
             </>
           )}
         </div>
