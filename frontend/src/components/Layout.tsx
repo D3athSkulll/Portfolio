@@ -80,7 +80,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   useEffect(() => {
     const name = data?.profile.name ?? "Portfolio";
     const section = idx >= 0 && idx !== 0 ? routes[idx].label : null;
-    document.title = section ? `${section} · ${name}` : name;
+    document.title = section ? `D3athSkulll` : `D3athSkulll`;
   }, [data?.profile.name, idx, loc.pathname]);
 
   useEffect(() => {
