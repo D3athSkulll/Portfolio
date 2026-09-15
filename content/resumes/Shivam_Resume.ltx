@@ -1,0 +1,294 @@
+%!TEX program = pdflatex
+% ============================================================
+%  Shivam Deolankar — Resume
+%  LaTeX port of the original Typst source (same layout/colors)
+% ============================================================
+\documentclass[10pt]{extarticle} % base class size — only affects LaTeX's internal defaults; actual sizes below override it everywhere it matters
+
+\usepackage[left=1.05cm, right=1.05cm, top=0.5cm, bottom=0.5cm]{geometry}
+\usepackage{fontawesome7}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ---------------- Colors ----------------
+\definecolor{accent}{HTML}{000080} % navy blue, same as hsl(240,100%,25%)
+\definecolor{sgrey}{HTML}{444444}
+\definecolor{iconblack}{HTML}{000080}
+\definecolor{linkedinblue}{HTML}{000080}
+\definecolor{codegreen}{HTML}{000080}
+
+% ============================================================
+%  FONT SIZE CONTROL PANEL
+%  ------------------------------------------------------------
+%  Every text size in the resume is a named length defined here,
+%  as a (point size, line height) pair — exactly what LaTeX's
+%  \fontsize{size}{baselineskip} expects. Change a value in ONE
+%  place and it updates everywhere that text is used. Line
+%  height should normally stay ~1.15–1.2x the point size.
+% ============================================================
+
+% ---- Name (top of header) ----
+\newlength{\nameFontSize}         \setlength{\nameFontSize}{20pt}
+\newlength{\nameLineHeight}       \setlength{\nameLineHeight}{20pt}
+
+% ---- Contact info line (phone / email / github / linkedin / leetcode) ----
+\newlength{\contactFontSize}      \setlength{\contactFontSize}{9.6pt}
+\newlength{\contactLineHeight}    \setlength{\contactLineHeight}{11.2pt}
+
+% ---- Section titles (Summary, Education, Experience, ...) ----
+\newlength{\sectionTitleFontSize}   \setlength{\sectionTitleFontSize}{10.5pt}
+\newlength{\sectionTitleLineHeight} \setlength{\sectionTitleLineHeight}{12pt}
+
+% ---- Entry title (e.g. "ML Research Intern @ ABV-IIITM Gwalior", "SMTP Server") ----
+\newlength{\entryTitleFontSize}     \setlength{\entryTitleFontSize}{10.5pt}
+\newlength{\entryTitleLineHeight}   \setlength{\entryTitleLineHeight}{12pt}
+
+% ---- Entry date range (right-aligned, e.g. "May 2026 -- Aug 2026") ----
+\newlength{\entryDateFontSize}      \setlength{\entryDateFontSize}{9.6pt}
+\newlength{\entryDateLineHeight}    \setlength{\entryDateLineHeight}{12pt}
+
+% ---- Body text (Summary paragraph, subtitles, bullets, Education, Skills) ----
+\newlength{\bodyFontSize}         \setlength{\bodyFontSize}{9.2pt}
+\newlength{\bodyLineHeight}       \setlength{\bodyLineHeight}{10.8pt}
+
+% Apply body size as the document's default \normalsize (extsizes only offers
+% discrete pt options, so we override \normalsize directly for exact control).
+\renewcommand{\normalsize}{\fontsize{\bodyFontSize}{\bodyLineHeight}\selectfont}
+\normalsize
+
+% ============================================================
+%  SPACING CONTROL PANEL
+%  ------------------------------------------------------------
+%  Every vertical/horizontal gap in the resume is a named length
+%  defined here. Change a value in ONE place and it updates
+%  everywhere that gap is used. Values shown reproduce the
+%  original layout exactly — nudge them up/down as needed.
+%  (Negative values are used in a few places to pull LaTeX's
+%  default paragraph/table spacing back in — that's expected.)
+% ============================================================
+
+% ---- Page margins (edit directly in \usepackage[...]{geometry} above) ----
+%   left=1.05cm  right=1.05cm  top=0.5cm  bottom=0.5cm
+
+% ---- Header block ----
+\newlength{\headerNameGap}    \setlength{\headerNameGap}{3pt}   % space BETWEEN the name and the contact-info line
+\newlength{\headerPipeGap}    \setlength{\headerPipeGap}{6pt}   % horizontal space on EACH SIDE of "|" separators in the contact line
+\newlength{\headerBottomGap}  \setlength{\headerBottomGap}{-9pt} % space AFTER the whole header block, before the first section (Summary)
+
+% ---- Section titles (applies to every \sectiontitle, e.g. "Experience", "Projects", ...) ----
+\newlength{\secTopSpace}      \setlength{\secTopSpace}{3pt}    % space BEFORE a section title (above the small-caps text)
+\newlength{\secTitleRuleGap}  \setlength{\secTitleRuleGap}{-6pt} % space BETWEEN the section title text and the rule/line under it
+\newlength{\secRuleGap}       \setlength{\secRuleGap}{3pt}     % space AFTER the rule, before the section's content starts
+
+% ---- Entries inside a section (Experience / Projects entries) ----
+\newlength{\entryGap}              \setlength{\entryGap}{6pt}    % space BETWEEN two entries inside the same section
+\newlength{\entryLinkPipeGap}      \setlength{\entryLinkPipeGap}{6pt} % horizontal space on EACH SIDE of "|" between an entry title and its icon links
+\newlength{\entryHeadingSubtitleSkip} \setlength{\entryHeadingSubtitleSkip}{0pt} % space BETWEEN the title/date row and the subtitle row below it
+\newlength{\subtitleGap}      \setlength{\subtitleGap}{-9pt}   % space BETWEEN an entry's subtitle line and its bullet list
+
+% ---- Bullets (all bullet lists use these) ----
+\newlength{\bulletIndent}     \setlength{\bulletIndent}{12pt}  % left indent of bullet text from the margin
+\newlength{\bulletItemSep}    \setlength{\bulletItemSep}{1pt}  % space BETWEEN individual bullet lines
+
+% ---- Education rows ----
+\newlength{\eduRowGap}        \setlength{\eduRowGap}{1pt}      % space BETWEEN the two Education rows (institute line / degree line)
+
+% ---- Bullet-only sections with no entry heading (Achievements / Positions of Responsibility / Technical Skills) ----
+%      These sit slightly tighter than a normal section, so they get a small manual trim:
+\newlength{\subsectionTopExtra}   \setlength{\subsectionTopExtra}{3pt}   % EXTRA space added before the section title (on top of \secTopSpace) — currently unused below, kept for your tuning
+\newlength{\subsectionRuleAdjust} \setlength{\subsectionRuleAdjust}{-12pt} % adjustment pulling the bullet list closer to the rule (negative = tighter)
+
+% ---- Technical Skills rows ----
+\newlength{\skillRowSep}      \setlength{\skillRowSep}{1.5pt}  % space BETWEEN rows in the Technical Skills list
+\newlength{\skillLabelWidth}  \setlength{\skillLabelWidth}{3.5cm} % width of the left-hand skill-category label column
+
+% ---------------- Global text settings ----------------
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\renewcommand{\baselinestretch}{1.0}
+
+% ---------------- Section title (small caps + rule) ----------------
+\newcommand{\sectiontitle}[1]{%
+  \vspace{\secTopSpace}
+  {\color{sgrey}\fontsize{\sectionTitleFontSize}{\sectionTitleLineHeight}\selectfont\bfseries\scshape\textls[60]{#1}}\\[\secTitleRuleGap]
+  {\color{sgrey}\rule{\linewidth}{0.8pt}}\\[\secRuleGap]
+}
+
+% ---------------- Icon-link helper ----------------
+% \iconlink{color}{icon-command}{url}
+\newcommand{\iconlink}[3]{\href{#3}{\textcolor{#1}{#2}}}
+
+% ---------------- Pipe separators ----------------
+% \headersep: used in the header contact-info line
+% \entrysep : used between an entry's title and its icon links
+\newcommand{\headersep}{\hspace{\headerPipeGap}\textbar\hspace{\headerPipeGap}}
+\newcommand{\entrysep}{\hspace{\entryLinkPipeGap}\textbar\hspace{\entryLinkPipeGap}}
+% Backwards-compatible alias (kept so old calls to \sep still work; defaults to entry spacing)
+\newcommand{\sep}{\entrysep}
+
+% ---------------- Entry heading: Title + icon links ..... Date range ----------------
+% #1 title  #2 icon-links (already formatted, or empty)  #3 date range  #4 subtitle (bold)
+\newcommand{\entryheading}[4]{%
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    \textbf{\color{accent}\fontsize{\entryTitleFontSize}{\entryTitleLineHeight}\selectfont #1}\entrysep#2%
+    & \fontsize{\entryDateFontSize}{\entryDateLineHeight}\selectfont #3 \\
+  \end{tabularx}\\[\entryHeadingSubtitleSkip]
+  \textbf{#4}\\[\subtitleGap]
+}
+
+% ---------------- Tight bullet list ----------------
+\newlist{tightlist}{itemize}{1}
+\setlist[tightlist]{leftmargin=\bulletIndent, itemsep=\bulletItemSep, topsep=0pt, parsep=0pt, label=\textbullet}
+
+\begin{document}
+
+% ============================================================
+%  HEADER
+% ============================================================
+\begin{center}
+  {\color{accent}\fontsize{\nameFontSize}{\nameLineHeight}\selectfont\bfseries\textls[80]{Shivam Deolankar}}\\[\headerNameGap]
+  \fontsize{\contactFontSize}{\contactLineHeight}\selectfont
+  \iconlink{iconblack}{\faPhone}{tel:+918390566237}\ +91 8390566237%
+  \headersep%
+  \iconlink{iconblack}{\faEnvelope}{mailto:shivam.deolankar@gmail.com}\ shivam.deolankar@gmail.com%
+  \headersep%
+  \iconlink{iconblack}{\faGithub}{https://github.com/D3athSkulll}\ D3athSkulll%
+  \headersep%
+  \iconlink{linkedinblue}{\faLinkedin}{https://linkedin.com/in/shivamdeolankar2211}\ shivamdeolankar2211%
+  \headersep%
+  \iconlink{iconblack}{\faGlobe}{https://d3athskulll.vercel.app}\ Portfolio%
+  \headersep%
+  \iconlink{codegreen}{\faCode}{https://leetcode.com/u/D3athSkulll/}\ Leetcode
+\end{center}
+\vspace{\headerBottomGap}
+% ============================================================
+%  SUMMARY
+% ============================================================
+\sectiontitle{Summary}
+A \textbf{systems programmer} with \textbf{3 years} of experience working on \textbf{low-level systems} in \textbf{C and Rust}, focusing \textbf{performance} and \textbf{memory safety}. An active \textbf{open-source contributor}, proficient in \textbf{backend}, \textbf{OS internals}, \textbf{embedded systems}, and \textbf{debugging}.
+
+% ============================================================
+%  EDUCATION
+% ============================================================
+\sectiontitle{Education}
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+  \textbf{ABV - Indian Institute of Information Technology and Management, Gwalior} & Aug 2023 -- Apr 2028 \\
+\end{tabularx}\\[\eduRowGap]
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+  Integrated B.Tech. + M.Tech. in Information Technology & \textit{\textbf{CGPA - 7.95/10 (6th Sem)}} \\
+\end{tabularx}
+
+% ============================================================
+%  EXPERIENCE
+% ============================================================
+\sectiontitle{Experience}
+\entryheading{ML Research Intern @ ABV-IIITM Gwalior}%
+  {\iconlink{iconblack}{\faGithub}{https://github.com/D3athSkulll/SIMPLETM/tree/main}%
+   \entrysep\iconlink{iconblack}{\faExternalLinkAlt}{https://github.com/D3athSkulll/SIMPLETM/blob/main/BTP\%20Combined\%20Report.pdf}}%
+  {May 2026 -- Aug 2026}%
+  {Adaptive Wavelet Attention for improving Energy Forecasting Models}
+\begin{tightlist}
+  \item Developed a \textbf{Band Attention module for SimpleTM}, inspired by \textbf{FEDformer's frequency domain approach}.
+  \item Enabled \textbf{adaptive frequency weighting} through \textbf{wavelet bands} to capture multi-scale patterns in electricity load dataset.
+  \item Improved \textbf{forecasting accuracy} across \textbf{5+ horizons}, achieving \textbf{23.5\% higher R\textsuperscript{2}}, \textbf{17.4\% higher EVS}, and \textbf{1.3\% lower MSE}.
+\end{tightlist}
+\vspace{\entryGap}
+
+\entryheading{RTEMS - Real Time Operating System}%
+  {\iconlink{iconblack}{\faGlobe}{https://www.rtems.org/}%
+   \entrysep\iconlink{iconblack}{\faGithub}{https://github.com/RTEMS/rtems/commits/main/?author=D3athSkulll}%
+   \entrysep\iconlink{iconblack}{\faGitlab}{https://gitlab.rtems.org/rtems/rtos/rtems/-/merge_requests/?sort=merged_at_desc\&state=all\&author_username=D3athSkulll\&first_page_size=20}}%
+  {Jan 2026 -- Jun 2026}%
+  {Open Source Contributor}
+\begin{tightlist}
+  \item Resolved a \textbf{Stack Checker Reporter defect} by restructuring flag handling and decoupling \textbf{SECTION FLAGS} from \textbf{COMPILER FLAGS}, eliminating flag conflicts and ensuring consistent configuration, improving overall \textbf{build reliability}.
+  \item Resolved \textbf{POSIX B0 baud rate edge case} issue across UART drivers for \textbf{13 BSPs and drivers}, implementing runtime safeguard mechanisms to prevent \textbf{divide-by-zero}, and standardizing \textbf{termios handling} for robust serial communication.
+  \item Implemented \textbf{fallback-safe MMU mapping} for missing \textbf{PCIe nodes} in \textbf{device trees}, ensuring reliable handling of incomplete hardware descriptions and enabling stable \textbf{boot} with correct memory initialization across BSP environments.
+  \item \textbf{Migrated FatFS codebase}, fixed \textbf{error.h macro conflicts} and \textbf{libdl overflow}, improving build stability and safety.
+\end{tightlist}
+
+% ============================================================
+%  PROJECTS
+% ============================================================
+\sectiontitle{Projects}
+\entryheading{SMTP Server}%
+  {\iconlink{iconblack}{\faGithub}{https://github.com/D3athSkulll/SMTP-Server}}%
+  {Aug 2026 -- Aug 2026}%
+  {Custom SMTP Server using Golang (smtpd), Node.js (smtp-server), AWS EC2, Cloudflare DNS}
+\begin{tightlist}
+  \item Implemented a custom \textbf{AWS EC2 instance} to securely handle incoming emails using a self-managed infrastructure.
+  \item Integrated the instance with a custom domain via \textbf{Cloudflare DNS} by setting up isolated MX records, effectively masking the personal email address and enforcing strict receive-only protocols for enhanced security and privacy.
+\end{tightlist}
+\vspace{\entryGap}
+
+\entryheading{FerrisLedger}%
+  {\iconlink{iconblack}{\faGithub}{https://github.com/D3athSkulll/FerrisLedger}%
+   \entrysep\iconlink{iconblack}{\faGlobe}{https://fintech-backend-n1n0.onrender.com/}}%
+  {Mar 2026 -- Mar 2026}%
+  {Rust-based fintech backend with RBAC, secure APIs and real-time analytics.}
+\begin{tightlist}
+  \item \texttt{Rust} based \textbf{fintech backend} using \texttt{Axum}, \texttt{Tokio}, and \texttt{PostgreSQL} with \textbf{JWT auth}, \textbf{RBAC (3 roles)}, and \texttt{Argon2} \textbf{hashing}.
+  \item Developed \textbf{transaction APIs} with \textbf{filtering, pagination, and ownership} to secure CRUD operations over \textbf{100+ records}.
+  \item Implemented a \textbf{financial analytics dashboard} computing \textbf{5+ metrics}, for real-time insights and data-driven decisions.
+\end{tightlist}
+\vspace{\entryGap}
+
+\entryheading{PikaNote}%
+  {\iconlink{iconblack}{\faGithub}{https://github.com/D3athSkulll/PikaNote}}%
+  {Feb 2025 -- Aug 2025}%
+  {A light weight terminal text editor in Rust featuring efficient rendering and low-level control.}
+\begin{tightlist}
+  \item Implemented \textbf{rich text editing features} including \textbf{insertion, deletion, line breaks, cursor navigation, and file I/O}.
+  \item Built \textbf{real-time terminal interaction} using \texttt{Crossterm}, handling \textbf{key events} and \textbf{dynamic cursor control} responsively.
+  \item Implemented \textbf{incremental screen rendering} using queued terminal updates to minimize redraw overhead efficiently.
+  \item Developed \textbf{bidirectional incremental search} with \textbf{live highlighting} using an \texttt{annotated string} system for large buffers.
+  \item Designed a \textbf{modular terminal UI} with \textbf{3 components} including \textbf{editor view}, \textbf{message/command bar} and a \textbf{status bar}.
+\end{tightlist}
+
+% ============================================================
+%  ACHIEVEMENTS
+% ============================================================
+
+\sectiontitle{Achievements}
+\vspace{\subsectionRuleAdjust}
+\begin{tightlist}
+  \item \textbf{Overall Winner} of \textbf{Webkriti 2024}, organised by \textbf{AASF} for developing Yatramitra, a travel ticket booking platform.
+  \item Secured \textbf{3rd} position in Product Management Track of \textbf{AASF Winter Projects, 2025}.
+\end{tightlist}
+
+% ============================================================
+%  POSITIONS OF RESPONSIBILITY
+% ============================================================
+
+\sectiontitle{Positions of Responsibility}
+\vspace{\subsectionRuleAdjust}
+\begin{tightlist}
+  \item \textbf{Core Team Lead}, Alumni Meet 2026, \textbf{ABV-IIITM Gwalior}.
+  \item \textbf{Technical and Design Lead,} IEEE Student Branch, \textbf{ABV-IIITM Gwalior}.
+  \item \textbf{Executive}, Student Activity Council 2025 (Technical), at \textbf{ABV-IIITM Gwalior}.
+  \item Facilitated a \textbf{2}-day workshop on \textbf{Web Basics - JS} for \textbf{50+} students at \textbf{ABV-IIITM Gwalior}.
+  \item Designed official cover page for \textbf{Abhishar V15}, the annual magazine of \textbf{ABV-IIITM Gwalior} published by \textbf{AASF}.
+\end{tightlist}
+
+% ============================================================
+%  TECHNICAL SKILLS
+% ============================================================
+\sectiontitle{Technical Skills}
+\vspace{\subsectionRuleAdjust}
+\begin{itemize}[leftmargin=0pt, itemsep=\skillRowSep, topsep=0pt, parsep=0pt, label={}]
+  \item \makebox[\skillLabelWidth][l]{Systems Programming} \textcolor{accent}{\textbf{Rust, Golang, JavaScript, C++, C, Python}}
+  \item \makebox[\skillLabelWidth][l]{Backend Frameworks} \textcolor{accent}{\textbf{Axum, Tokio, Reqwest, Node.js, Express.js, Redis, Kafka, REST APIs, Websockets}}
+  \item \makebox[\skillLabelWidth][l]{Databases and ORM} \textcolor{accent}{\textbf{SQL, PostgreSQL, MongoDB, Diesel, Sqlx, SurrealDB}}
+  \item \makebox[\skillLabelWidth][l]{DevOps} \textcolor{accent}{\textbf{Docker, CI/CD, Amazon Web Services, AWS Lambda, EC2, S3}}
+  \item \makebox[\skillLabelWidth][l]{AI and ML} \textcolor{accent}{\textbf{MCP, Vector Embeddings, Transformers, LLMS, Predictive Load Forecasting}}
+  \item \makebox[\skillLabelWidth][l]{Development Tools} \textcolor{accent}{\textbf{Git, GitHub, Gitlab, Claude Code, Arch Linux, Postman, HTML, TailwindCSS, React}}
+  \item \makebox[\skillLabelWidth][l]{Other Tools} \textcolor{accent}{\textbf{ABI, RTOS, GDB, QEMU, CMake, Canva, Photoshop, Figma, Notion}}
+\end{itemize}
+
+\end{document}
