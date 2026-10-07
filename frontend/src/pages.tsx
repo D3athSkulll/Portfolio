@@ -388,9 +388,9 @@ export function Resume() {
             </span>
           </a>
         ))}
-        {data.resume.source && (
+        {data.resume.source_typ && (
           <a
-            href={data.resume.source.href}
+            href={data.resume.source_typ.href}
             download
             className="flex min-w-[230px] items-center gap-3 border-2 no-underline retro:border-[#0b0810] retro:bg-panel2 retro:!text-black retro:shadow-[6px_6px_0_#0b0810] vim:rounded vim:border-line vim:!text-accent px-4 py-3"
           >
@@ -398,7 +398,22 @@ export function Resume() {
             <span className="flex flex-col items-start leading-tight">
               <span className="font-mono text-base font-bold uppercase tracking-wide">Typst source</span>
               <span className="mt-0.5 font-body text-[13px] opacity-85">
-                {data.resume.source.label}
+                {data.resume.source_typ.label}
+              </span>
+            </span>
+          </a>
+        )}
+        {data.resume.source_ltx && (
+          <a
+            href={data.resume.source_ltx.href}
+            download
+            className="flex min-w-[230px] items-center gap-3 border-2 no-underline retro:border-[#0b0810] retro:bg-panel2 retro:!text-black retro:shadow-[6px_6px_0_#0b0810] vim:rounded vim:border-line vim:!text-accent px-4 py-3"
+          >
+            <FileCode size={20} className="shrink-0" />
+            <span className="flex flex-col items-start leading-tight">
+              <span className="font-mono text-base font-bold uppercase tracking-wide">Latex source</span>
+              <span className="mt-0.5 font-body text-[13px] opacity-85">
+                {data.resume.source_ltx.label}
               </span>
             </span>
           </a>

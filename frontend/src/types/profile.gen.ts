@@ -30,7 +30,7 @@ export type Position = { title: string, bullets: Array<string>, } | string;
 
 export type Profile = { meta: Meta, profile: Person, education: Array<Education>, experience: Array<Entry>, projects: Array<Entry>, achievements: Array<string>, positions: Array<Position>, testScores: Array<Position>, likes: Array<Position>, skills: Array<SkillGroup>, designs: Array<Design>, resume: Resume, };
 
-export type Resume = { downloads: Array<ResumeVariant>, source: SourceLink | null, };
+export type Resume = { downloads: Array<ResumeVariant>, source_typ: SourceLink | null, source_ltx: SourceLink | null };
 
 export type ResumeVariant = { 
 /**

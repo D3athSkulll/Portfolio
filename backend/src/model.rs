@@ -177,7 +177,8 @@ pub struct SourceLink {
 pub struct Resume {
     pub downloads: Vec<ResumeVariant>,
     #[serde(default)]
-    pub source: Option<SourceLink>,
+    pub source_typ: Option<SourceLink>,
+    pub source_ltx: Option<SourceLink>,
 }
 
 impl Profile {
