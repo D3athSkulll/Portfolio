@@ -12,7 +12,7 @@
     (label: "D3athSkulll", href: "https://github.com/D3athSkulll",       icon: "github"),
     (label: "shivamdeolankar2211", href: "https://linkedin.com/in/shivamdeolankar2211", icon: "linkedin"),
     (label: "Portfolio", href:"https://D3athSkulll.vercel.app", icon: "globe"),
-    (label: "D3athSkulll", href:"https://leetcode.com/u/D3athSkulll/", icon: "code"),
+    (label: "Leetcode", href:"https://leetcode.com/u/D3athSkulll/", icon: "code"),
   ),
 
   summary: "A *systems programmer* with *3 years* of experience working on *low-level systems* in *C and Rust*, focusing *performance* and *memory safety*. An active *open-source contributor*, proficient in *backend*, *OS internals*, *embedded systems*, and *debugging*.",
@@ -26,27 +26,43 @@
   ),
 
   experience: (
-    (
+        (
       title: "ML Research Intern @ ABV-IIITM Gwalior",
-      subtitle: "Adaptive Wavelet Attention for improving Energy Forecasting Models",
+      subtitle: "Adaptive Wavelet Attention for Improving Energy Forecasting Models",
       from: (5, 2026),
       to: (8, 2026),
       location: "Remote",
       links: (
         ("https://github.com/D3athSkulll/SIMPLETM/tree/main", "github"),
-        ("https://github.com/D3athSkulll/SIMPLETM/blob/main/BTP%20Combined%20Report.pdf", "google-drive")
       ),
+      tech: ("PyTorch", "Wavelets", "Transformers", "Time-Series"),
       bullets: (
-        "Developed a *Band Attention module for SimpleTM*, inspired by *FEDformer's frequency domain approach*.",
-"Enabled *adaptive frequency weighting* through *wavelet bands* to capture multi-scale patterns in electricity load dataset.",
-"Improved *forecasting accuracy* across *5+ horizons*, achieving *23.5% higher R²*, *17.4% higher EVS*, and *1.3% lower MSE*."
+        "Built an *Adaptive Band-Reweighing module* in *SimpleTM*, inspired by *FEDformer's selective frequency* domain approach.",
+        "Improved forecasting *accuracy* on *SHEERM Household Energy* data across *5+ horizons*, *23.5% higher R²*, *1.3% lower MSE*.",
+      ),
+    ),
+  ),
+
+  open_source: (
+    (
+      title: "Rust Foundation and LLVM",
+      from: (10, 2026),
+      location: "Remote",
+      links: (
+        ("https://rust-lang.org/", "globe"),
+        ("https://github.com/rust-lang/rust/issues/164667", "github"),
+        ("https://github.com/llvm/llvm-project/issues/234781", "github"),
+        
+        
+      ),
+      tech:("Rust Compiler","LLVM IR","Codegen","MIR", "CMake", "Ninja"),
+      bullets: (
+                "Isolated a *Rust miscompilation* due to *LLVM's stack-coloring pass* by *bisecting passes* and ruling out *MIR optimizations*.",
       ),
     ),
     (
       title: "RTEMS - Real Time Operating System",
-      subtitle: "Open Source Contributor",
       from: (1, 2026),
-      to: (6,2026),
       location: "Remote",
       links: (
         ("https://www.rtems.org/", "globe"),
@@ -56,77 +72,100 @@
           "gitlab",
         ),
       ),
+      tech:("Embedded C","GDB","QEMU","CMake", "Waf"),
       bullets: (
-        "Resolved a *Stack Checker Reporter defect* by restructuring flag handling and decoupling *SECTION FLAGS* from *COMPILER FLAGS*, eliminating flag conflicts and ensuring consistent configuration, improving overall *build reliability*.",
-        "Resolved *POSIX B0 baud rate edge case* issue across UART drivers for *13 BSPs and drivers*, implementing runtime safeguard mechanisms to prevent *divide-by-zero*, and standardizing *termios handling* for robust serial communication.",
-        "Implemented *fallback-safe MMU mapping* for missing *PCIe nodes* in *device trees*, ensuring reliable handling of incomplete hardware descriptions and enabling stable *boot* with correct memory initialization across BSP environments.",
-        "*Migrated FatFS codebase*, fixed *error.h macro conflicts* and *libdl overflow*, improving build stability and safety.",
+        "Contributed *10+ Merges* which include *Migrating FatFS codebase*, fixing *error.h macro conflicts* and *libdl overflow*.",
+        "Implemented *fallback-safe MMU mapping* for *PCIe nodes* in *FDT*, mapping config and memory windows for a boot fault.",
+        "Resolved *Stack Checker Reporter defect* by decoupling *SECTION FLAGS* from *OPTIMIZATION FLAGS*, fixing build errors.",
+        "Standardized *APIC definitions* across *pc386* and *x86_64* BSPs via a *shared header*, removing *cross-BSP dependencies*.",
+        "Detected *POSIX B0 baud rate* divide-by-zero flaw via audit of UART drivers across *4 architectures*, driving fixes for *13+ BSPs*.",
       ),
     ),
   ),
 
   projects: (
     (
-  title:    "SMTP Server",
-  subtitle: "Custom SMTP Server using Golang (smtpd), Node.js (smtp-server), AWS EC2, Cloudflare DNS",
-  from:     (8, 2026),
-  to:       (8, 2026),
-  links:    (("https://github.com/D3athSkulll/SMTP-Server", "github"),),
-  bullets: (
-    "Implemented a custom *AWS EC2 instance* to securely handle incoming emails using a self-managed infrastructure.",
-    "Integrated the instance with a custom domain via *Cloudflare DNS* by setting up isolated MX records, effectively masking the personal email address and enforcing strict receive-only protocols for enhanced security and privacy.",
-  ),
-),
-    (
-      title:    "FerrisLedger",
-      subtitle: "Rust-based fintech backend with RBAC, secure APIs and real-time analytics.",
-      from:     (3, 2026),
-      to:       (3, 2026),
-      links:    (("https://github.com/D3athSkulll/FerrisLedger", "github"),
-                ("https://fintech-backend-n1n0.onrender.com/", "globe")),
-      bullets: (
-        "`Rust` based *fintech backend* using `Axum`, `Tokio`, and `PostgreSQL` with *JWT auth*, *RBAC (3 roles)*, and `Argon2` *hashing*.",
-        "Developed *transaction APIs* with *filtering, pagination, and ownership* to secure CRUD operations over *100+ records*.",
-        "Implemented a *financial analytics dashboard* computing *5+ metrics*, for real-time insights and data-driven decisions.",
-      ),
-    ),
-    (
       title:    "PikaNote",
       subtitle: "A light weight terminal text editor in Rust featuring efficient rendering and low-level control.",
       from:     (2, 2025),
       to:       (8, 2025),
       links:    (("https://github.com/D3athSkulll/PikaNote", "github"),),
+      tech:("Rust","Clippy","Crossterm","Unicode-width","Docker"),
       bullets: (
-        "Implemented *rich text editing features* including *insertion, deletion, line breaks, cursor navigation, and file I/O*.",
-        "Built *real-time terminal interaction* using `Crossterm`, handling *key events* and *dynamic cursor control* responsively.",
-        "Implemented *incremental screen rendering* using queued terminal updates to minimize redraw overhead efficiently.",
-        "Developed *bidirectional incremental search* with *live highlighting* using an `annotated string` system for large buffers.",
-        "Designed a *modular terminal UI* with *3 components* including *editor view*, *message/command bar* and a *status bar*.",
+        "Implemented *insert, delete, line split/merge and save-as* with an *unsaved-changes guard*, achieving safe file I/O.",
+        "Built *real-time terminal input* using `Crossterm` *key events* and *Unicode graphemes* to achieve correct emoji/CJK editing.",
+        "Implemented *incremental rendering* via queued writes and cursor hiding to minimize redraws, achieving flicker-free updates.",
+        "Developed *bidirectional wrap-around search* with *live highlighting* via `AnnotatedString`, achieving quick navigation.",
+        "Designed *modular terminal UI* with *view*, *status*, *command bars* and *System/Move/Edit* dispatch, easing extension.",
+      ),
+    ),
+    (
+  title:    "SMTP Server",
+  subtitle: "Self-hosted, receive-only mail server that captures and logs inbound email on a custom domain.",
+  links:    (("https://github.com/D3athSkulll/SMTP-Server", "github"),),
+  tech:     ("Node.js", "Go", "SMTP", "AWS EC2", "Cloudflare DNS"),
+  bullets: (
+    "Implemented a custom *AWS EC2 instance* to securely handle incoming emails using self-managed infrastructure.",
+    "Integrated a custom domain via *Cloudflare DNS* with isolated MX records, masking personal email and enforcing receive-only.",
+    "Used *event-driven SMTP hooks* on port 25 to stream and log inbound mail, achieving end-to-end visibility of mail flow.",
+  ),
+),
+    // (
+    //   title:    "FerrisLedger",
+    //   subtitle: "Rust-based fintech backend with RBAC, secure APIs and real-time analytics.",
+    //   from:     (3, 2026),
+    //   to:       (3, 2026),
+    //   links:    (("https://github.com/D3athSkulll/FerrisLedger", "github"),
+    //             ("https://fintech-backend-n1n0.onrender.com/", "globe")),
+    //   tech:("Axum","Tokio","PostgreSQL","NeoDB","Vercel"),
+    //   bullets: (
+    //     "Built `Rust` *fintech backend* using `Axum`, `Tokio`, `PostgreSQL` with *JWT auth*, *RBAC (3 roles)*, `Argon2` hashing for secure access.",
+    //     "Developed *transaction APIs* with *filtering, pagination, ownership* via `SQLx` QueryBuilder to secure CRUD over *100+ records*.",
+    //     "Implemented a *financial analytics dashboard* computing *5+ metrics* via aggregation, achieving real-time data-driven insights.",
+    //   ),
+    // ),
+    (
+      title:    "KoinX Reconciliation Engine",
+      subtitle: "Transaction reconciliation backend that validates, normalizes and matches user and exchange CSV data.",
+      from:     (5, 2026),
+      to:       (5, 2026),
+      links:    (("https://github.com/D3athSkulll/Koinx", "github"),
+                ("https://koinx-m5v4.onrender.com/", "globe")),
+      tech:     ("Node.js", "Express", "MongoDB", "Mongoose", "Render"),
+      bullets: (
+        "Built a *CSV ingestion pipeline* with *6 validation checks*, *asset/type normalization* and duplicate flagging for full traceability.",
+        "Developed a *tolerance-based matching engine* (timestamp, quantity) to classify transactions into *4 categories* accurately.",
+        "Exposed *report APIs* (full, summary, unmatched) with *CSV export* over persisted runs, achieving auditable results.",
       ),
     ),
   ),
 
   achievements: (
-    "*Overall Winner* of *Webkriti 2024*, organised by *AASF* for developing Yatramitra, a travel ticket booking platform.",
-    "Secured *3rd* position in Product Management Track of *AASF Winter Projects, 2025*.",
+    "*Winner of Webkriti 2024* | *3rd rank in Product Management Track,   Winter Projects 2025* | *4th rank in WJPS-3* by *AASF*.",
+    "*AIR 16989 (98.54 Percentile) in JEE Mains 2023* | *AIR 20785 in JEE Advance 2023* | *AIR 884 in IISER IAT 2023 .*"
   ),
 
   positions: (
-    "*Core Team Lead*, Alumni Meet 2026, *ABV-IIITM Gwalior*.",
-    "*Technical and Design Lead,* IEEE Student Branch, *ABV-IIITM Gwalior*.",
-    "*Executive*, Student Activity Council 2025 (Technical), at *ABV-IIITM Gwalior*.",
-    "Facilitated a *2*-day workshop on *Web Basics - JS* for *50+* students at *ABV-IIITM Gwalior*.",
-    "Designed official cover page for *Abhishar V15*, the annual magazine of *ABV-IIITM Gwalior* published by *AASF*.",
+    (text: "*Core Team Lead*, *Alumni Meet 2026*, *ABV-IIITM Gwalior* - Launched a live *Alumni Directory* of *4500+ alumni*.",href: "https://alumni.iiitm.ac.in/directory",
+      icon: "globe",),
+    (text: "*Technical and Design Lead,* IEEE Student Branch, *ABV-IIITM Gwalior*."),
+    (text: "*Executive*, Student Activity Council 2025 (Technical), at *ABV-IIITM Gwalior*."),
+    (text: "Facilitated a *2*-day HIQ workshop on *Web Basics - JS* for *50+* students at *ABV-IIITM Gwalior*, organised by *AASF*."),
+    (
+      text: "Designed official cover page for *Abhishar V15*, the annual magazine of *ABV-IIITM Gwalior* published by *AASF*.",
+      href: "https://drive.google.com/file/d/1fdigo_dEYjXwMMUR1u10AvtMQg6y0C1u/view",
+      icon: "globe",
+    ),
   ),
 
   skills: (
     (category: "Systems Programming", items: ("Rust", "Golang","JavaScript", "C++", "C", "Python")),
     (category: "Backend Frameworks",  items: ("Axum", "Tokio", "Reqwest", "Node.js", "Express.js", "Redis", "Kafka", "REST APIs", "Websockets")),
     (category: "Databases and ORM",   items: ("SQL", "PostgreSQL", "MongoDB", "Diesel", "Sqlx", "SurrealDB")),
-    (category: "DevOps",  items: ("Docker", "CI/CD", "Amazon Web Services", "AWS Lambda", "EC2", "S3")),
-    (category: "AI and ML", items:("MCP","Vector Embeddings","Transformers", "LLMS", "Predictive Load Forecasting")),
+    (category: "DevOps",  items: ("Docker", "CI/CD", "Amazon Web Services", "AWS EC2", "S3")),
+    (category: "AI and ML", items:("MCP","Embeddings","Transformers", "Predictive Load Forecasting", "Inference Engineering")),
     (category: "Development Tools",   items: ("Git", "GitHub", "Gitlab","Claude Code", "Arch Linux", "Postman", "HTML", "TailwindCSS", "React")),
-    (category: "Other Tools",         items: ("ABI","RTOS", "GDB", "QEMU", "CMake", "Canva", "Photoshop", "Figma", "Notion")),
+    (category: "Other Tools",         items: ("ABI","RTOS", "GDB", "QEMU", "CMake","LLVM","Ninja", "Canva", "Photoshop", "Figma", "Notion")),
   ),
 )
 
@@ -146,11 +185,11 @@
 #let date(month, year) = datetime(day: 1, month: month, year: year)
 #let format(from, to: none) = {
   from.display("[month repr:short] [year]")
-  " – "
-  if to != none {
+  if to == none {
+    " – Present"
+  } else if to != from {
+    " – "
     to.display("[month repr:short] [year]")
-  } else {
-    "Present"
   }
 }
 
@@ -177,15 +216,23 @@
   content
 }
 
-#let exp_subsection(title, subtitle, from, to: none, href: none, location: none, links: none) = {
+#let exp_subsection(title, subtitle, from, to: none, href: none, location: none, links: none, tech: none) = {
   v(0pt)
   text(title, size: big, fill: accent, weight: "bold")
   h(6pt)
-  for (url, icon) in links {
+  if links != none {
+    for (url, icon) in links {
+      text("|")
+      h(5pt)
+      link(url, iconpill("", fa-icon(icon)))
+      h(2pt)
+    }
+  }
+  if tech != none {
     text("|")
-    h(6pt)
-    link(url, iconpill("", fa-icon(icon)))
-    h(6pt)
+    h(4pt)
+    let tech-text = if type(tech) == array { tech.join(", ") } else { tech }
+    text(tech-text, style: "italic", weight: "regular")
   }
   h(1fr)
   text(format(from, to: to))
@@ -193,18 +240,48 @@
   text(subtitle, weight: "bold")
 }
 
-#let proj_subsection(title, subtitle, from, to: none, links: none) = {
+#let open_src_subsection(title, from, to: none, href: none, location: none, links: none, tech: none) = {
   v(0pt)
   text(title, size: big, fill: accent, weight: "bold")
   h(6pt)
-  for (url, icon) in links {
+  if links != none {
+    for (url, icon) in links {
+      text("|")
+      h(5pt)
+      link(url, iconpill("", fa-icon(icon)))
+      h(2pt)
+    }
+  }
+  if tech != none {
     text("|")
-    h(6pt)
-    link(url, iconpill("", fa-icon(icon)))
-    h(6pt)
+    h(4pt)
+    let tech-text = if type(tech) == array { tech.join(", ") } else { tech }
+    text(tech-text, style: "italic", weight: "regular")
   }
   h(1fr)
   text(format(from, to: to))
+  linebreak()
+}
+
+#let proj_subsection(title, subtitle, links: none, tech: none) = {
+  v(0pt)
+  text(title, size: big, fill: accent, weight: "bold")
+  h(6pt)
+  if links != none {
+    for (url, icon) in links {
+      text("|")
+      h(5pt)
+      link(url, iconpill("", fa-icon(icon)))
+      h(2pt)
+    }
+  }
+  if tech != none {
+    text("|")
+    h(4pt)
+    let tech-text = if type(tech) == array { tech.join(", ") } else { tech }
+    text(tech-text, style: "italic", weight: "regular")
+  }
+  h(1fr)
   linebreak()
   text(subtitle, weight: "bold")
 }
@@ -229,6 +306,22 @@
     #text(title, weight: "bold", fill: accent, size: 20pt, tracking: 2pt) \
     #about
   ]
+}
+
+#let pos_item(item) = {
+  eval(item.text, mode: "markup")
+  if item.at("href", default: none) != none {
+    h(4pt)
+    box(
+      width: 1em,
+      height: 0pt,
+      place(
+        top + left,
+        dy: -1.010em,
+        link(item.href, text(fill: accent, fa-icon(item.at("icon", default: "globe")))),
+      ),
+    )
+  }
 }
 
 // ============================================================
@@ -273,7 +366,27 @@
         date(..entry.from),
         to: if "to" in entry { date(..entry.to) } else { none },
         location: entry.at("location", default: none),
-        links: entry.links,
+        links: entry.at("links", default: none),
+        tech: entry.at("tech", default: none),
+      )
+      for bullet in entry.bullets [
+        - #eval(bullet, mode: "markup")
+      ]
+      v(-4pt)
+    }
+    #v(3pt)
+  ]
+
+  // — Open Source —
+  section(title: "Open Source")[
+    #for entry in data.open_source {
+      open_src_subsection(
+        entry.title,
+        date(..entry.from),
+        to: if "to" in entry { date(..entry.to) } else { none },
+        location: entry.at("location", default: none),
+        links: entry.at("links", default: none),
+        tech: entry.at("tech", default: none),
       )
       for bullet in entry.bullets [
         - #eval(bullet, mode: "markup")
@@ -289,18 +402,15 @@
       proj_subsection(
         proj.title,
         proj.subtitle,
-        date(..proj.from),
-        to: if "to" in proj { date(..proj.to) } else { none },
-        links: proj.links,
+        links: proj.at("links", default: none),
+        tech: proj.at("tech", default: none),
       )
       for bullet in proj.bullets [
         - #eval(bullet, mode: "markup")
       ]
       v(-4pt)
     }
-
-    #v(3pt);
-    
+    #v(3pt)
   ]
 
   // — Achievements —
@@ -313,7 +423,7 @@
   // — Positions of Responsibility —
   section(title: "Positions of Responsibility")[
     #for item in data.positions [
-      - #eval(item, mode: "markup")
+      - #pos_item(item)
     ]
   ]
 
