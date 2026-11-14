@@ -1,5 +1,16 @@
 [
   {
+    "title": "Race To Break",
+    "date": "2026-11-14",
+    "slug": "race-to-break",
+    "summary": "Deep dive on video game piracy and cracking scenario from a reverse engineering perspective.",
+    "tags": [
+      "Reverse Engineering",
+      "Systems"
+    ],
+    "cover": null
+  },
+  {
     "title": "Teaching a Forecaster Which Frequencies to Trust",
     "date": "2026-09-12",
     "slug": "band-attention",
