@@ -3,7 +3,7 @@ title: Finding My Ikigai...
 date: 2026-09-08
 slug: finding-my-ikigai
 summary: Blog on reflecting on the Japanese Concept with my Life which got published in Abhishar v15.
-tags: [Lifescape, Abhishar v15]
+tags: [Lifescape, Abhishar]
 cover:
 draft: false
 ---
